@@ -6,7 +6,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace GamePlay.Setup
+namespace GamePlay.Common
 {
     public static class GamePlayScopeExtensions
     {

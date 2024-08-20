@@ -1,9 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
+using GamePlay.Common;
 using GamePlay.Loop;
-using GamePlay.Setup;
 using Internal;
 
-namespace Tools.SceneTools
+namespace Tools
 {
     public class GameMock : MockBase
     {

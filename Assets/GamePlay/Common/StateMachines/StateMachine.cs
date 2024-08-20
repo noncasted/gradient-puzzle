@@ -1,14 +1,14 @@
 ﻿using System;
 using Internal;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
-    public class LocalStateMachine : ILocalStateMachine, IScopeSetup
+    public class StateMachine : IStateMachine, IScopeSetup
     {
         private readonly ViewableDelegate _exited = new();
         private IReadOnlyLifetime _entityLifetime;
 
-        private ILocalState _currentLocalState;
+        private IState _currentState;
         private ILifetime _currentLifetime;
 
         public IViewableDelegate Exited => _exited;
@@ -18,23 +18,23 @@ namespace Common.StateMachines
             _entityLifetime = lifetime;
         }
 
-        public bool IsAvailable(ILocalState localState)
+        public bool IsAvailable(IState state)
         {
-            if (_currentLocalState == null)
+            if (_currentState == null)
                 return true;
 
-            if (_currentLocalState.Definition == localState.Definition)
+            if (_currentState.Definition == state.Definition)
                 return false;
 
-            var result = _currentLocalState.Definition.IsTransitable(localState.Definition);
+            var result = _currentState.Definition.IsTransitable(state.Definition);
 
             return result;
         }
 
-        public IStateHandle CreateHandle(ILocalState state, object payload = null)
+        public IStateHandle CreateHandle(IState state, object payload = null)
         {
             _currentLifetime?.Terminate();
-            _currentLocalState = state;
+            _currentState = state;
 
             _currentLifetime = _entityLifetime.Child();
             var handle = new StateHandle(state, this, _currentLifetime);
@@ -42,14 +42,14 @@ namespace Common.StateMachines
             return handle;
         }
 
-        public void Exit(ILocalState localState)
+        public void Exit(IState state)
         {
-            if (localState != _currentLocalState)
+            if (state != _currentState)
                 throw new Exception();
 
             _currentLifetime?.Terminate();
             _currentLifetime = null;
-            _currentLocalState = null;
+            _currentState = null;
 
             _exited?.Invoke();
         }

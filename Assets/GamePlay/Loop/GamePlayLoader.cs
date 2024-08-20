@@ -1,12 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
-using GamePlay.Setup;
+using GamePlay.Common;
 using Global.Cameras;
 using Global.Systems;
 using Global.UI;
 using Internal;
 using VContainer.Unity;
 
-namespace Loop
+namespace GamePlay.Loop
 {
     public class GamePlayLoader : IScopeLoadedAsync
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Internal;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
     public static class StateMachineExtensions
     {

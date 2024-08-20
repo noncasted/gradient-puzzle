@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Common.UniversalAnimators
+namespace GamePlay.Common
 {
     public interface IAnimationData
     {

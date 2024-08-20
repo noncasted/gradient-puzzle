@@ -1,4 +1,4 @@
-﻿namespace Tools.EditorTools
+﻿namespace Tools
 {
     public interface IAssemblyToggles
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public class AssemblyToggles : IAssemblyToggles
     {

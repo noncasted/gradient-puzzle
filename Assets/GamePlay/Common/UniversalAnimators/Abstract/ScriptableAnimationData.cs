@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Common.UniversalAnimators
+namespace GamePlay.Common
 {
     [InlineEditor]
     public class ScriptableAnimationData : EnvAsset, IAnimationData

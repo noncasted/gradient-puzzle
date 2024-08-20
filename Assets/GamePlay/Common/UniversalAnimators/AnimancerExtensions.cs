@@ -3,7 +3,7 @@ using Animancer;
 using Cysharp.Threading.Tasks;
 using Internal;
 
-namespace Common.UniversalAnimators
+namespace GamePlay.Common
 {
     public static class AnimancerExtensions
     {

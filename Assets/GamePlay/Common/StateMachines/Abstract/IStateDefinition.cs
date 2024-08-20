@@ -1,4 +1,5 @@
-﻿namespace Common.StateMachines
+﻿
+namespace GamePlay.Common
 {
     public interface IStateDefinition
     {

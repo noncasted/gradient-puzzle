@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public static class ResetAssembliesEngineReferences
     {

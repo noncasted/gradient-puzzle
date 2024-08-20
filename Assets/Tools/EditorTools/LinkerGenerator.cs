@@ -8,7 +8,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public class LinkerGenerator : IPreprocessBuildWithReport
     {

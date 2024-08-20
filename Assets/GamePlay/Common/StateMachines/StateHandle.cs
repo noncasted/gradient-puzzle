@@ -1,21 +1,21 @@
 ﻿using Internal;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
     public class StateHandle : IStateHandle
     {
         public StateHandle(
-            ILocalState localState,
-            ILocalStateMachine localStateMachine,
+            IState state,
+            IStateMachine stateMachine,
             IReadOnlyLifetime lifetime)
         {
-            _localState = localState;
-            _localStateMachine = localStateMachine;
+            _state = state;
+            _stateMachine = stateMachine;
             Lifetime = lifetime;
         }
 
-        private readonly ILocalState _localState;
-        private readonly ILocalStateMachine _localStateMachine;
+        private readonly IState _state;
+        private readonly IStateMachine _stateMachine;
 
         public IReadOnlyLifetime Lifetime { get; }
 
@@ -24,7 +24,7 @@ namespace Common.StateMachines
             if (Lifetime.IsTerminated == true)
                 return;
 
-            _localStateMachine.Exit(_localState);
+            _stateMachine.Exit(_state);
         }
     }
 }

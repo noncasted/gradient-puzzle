@@ -1,6 +1,6 @@
 ﻿using Internal;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
     public interface IStateHandle
     {

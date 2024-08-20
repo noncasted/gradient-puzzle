@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public interface IAssemblyDetails
     {

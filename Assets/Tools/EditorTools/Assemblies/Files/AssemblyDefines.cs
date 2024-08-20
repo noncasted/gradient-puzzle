@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public class AssemblyDefines : IAssemblyDefines
     {

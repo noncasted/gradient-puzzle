@@ -1,8 +1,7 @@
-﻿using Tools.SceneTools;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     [InitializeOnLoad]
     public static class MockSwitcher

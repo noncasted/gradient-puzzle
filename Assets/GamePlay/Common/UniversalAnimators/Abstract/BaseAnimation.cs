@@ -1,4 +1,4 @@
-﻿namespace Common.UniversalAnimators
+﻿namespace GamePlay.Common
 {
     public class BaseAnimation : IAnimation
     {

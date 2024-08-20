@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEditor;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public class AssemblyReferencesValidator
     {

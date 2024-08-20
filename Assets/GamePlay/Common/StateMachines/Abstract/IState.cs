@@ -1,8 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
-    public interface ILocalState
+    public interface IState
     {
         IStateDefinition Definition { get; }
 

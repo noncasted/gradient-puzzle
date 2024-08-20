@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Tools.EditorTools
+namespace Tools
 {
     public class ScriptableObjectsDestroyer
     {

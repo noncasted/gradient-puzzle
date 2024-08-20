@@ -1,6 +1,6 @@
 ﻿using Internal;
 
-namespace GamePlay.Setup
+namespace GamePlay.Common
 {
     public class GamePlayScopeOptions : ServiceScopeDataAsset
     {

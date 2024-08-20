@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Common.StateMachines
+namespace GamePlay.Common
 {
     public abstract class StateDefinition : EnvAsset, IStateDefinition
     {
