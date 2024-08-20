@@ -1,4 +1,4 @@
-﻿namespace Global.Publisher
+﻿namespace Global.Publisher.Yandex
 {
     public interface IStorageAPI
     {

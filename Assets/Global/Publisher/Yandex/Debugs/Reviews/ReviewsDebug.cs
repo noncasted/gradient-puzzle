@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     [DisallowMultipleComponent]
     public class ReviewsDebug : MonoBehaviour, IReviewsDebug

@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Global.UI.Sample.Elements
+namespace Global.UI
 {
     [InlineEditor]
     [CreateAssetMenu(fileName = "NestedElementConfig", menuName = "UI/Design/ElementConfig/Nested")]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Global.Audio.Abstract
+namespace Global.Audio
 {
     public interface IGlobalVolume
     {

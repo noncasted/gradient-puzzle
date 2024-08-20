@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Internal.Editor.Attributes
+namespace Internal.Editor
 {
     [DrawerPriority(DrawerPriorityLevel.SuperPriority)]
     public class CreateSOAttributeDrawer<T> :

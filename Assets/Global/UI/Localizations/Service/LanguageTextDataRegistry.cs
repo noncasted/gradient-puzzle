@@ -1,7 +1,6 @@
-﻿using Global.UI.Texts;
-using Internal;
+﻿using Internal;
 
-namespace Global.UI.Service
+namespace Global.UI
 {
     public class LanguageTextDataRegistry : ScriptableRegistry<LanguageTextData>
     {

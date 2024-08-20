@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Global.UI.Texts
+namespace Global.UI
 {
     [InlineEditor]
     public class LanguageEntry : ScriptableObject

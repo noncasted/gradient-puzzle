@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Global.UI.Texts;
 
-namespace Global.UI.Service
+namespace Global.UI
 {
     public class LocalizationStorage : ILocalizationStorage
     {

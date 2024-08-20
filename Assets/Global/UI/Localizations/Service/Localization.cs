@@ -4,7 +4,7 @@ using Global.Publisher;
 using Global.Saves;
 using Internal;
 
-namespace Global.UI.Service
+namespace Global.UI
 {
     public class Localization : ILocalization, IDataStorageLoadListener
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Global.Publisher;
 
-namespace Global.UI.Service
+namespace Global.UI
 {
     public class LanguageConverter : ILanguageConverter
     {

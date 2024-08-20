@@ -1,5 +1,4 @@
-﻿using Global.Audio.Abstract;
-using Global.Publisher;
+﻿using Global.Publisher;
 using Internal;
 
 namespace Global.Audio

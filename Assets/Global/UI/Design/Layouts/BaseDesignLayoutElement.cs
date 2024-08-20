@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Global.UI.Layouts
+namespace Global.UI
 {
     public abstract class BaseDesignLayoutElement : MonoBehaviour
     {

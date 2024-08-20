@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Itch
 {
     [DisallowMultipleComponent]
     public class ItchCallbacks : MonoBehaviour, IJsErrorCallback

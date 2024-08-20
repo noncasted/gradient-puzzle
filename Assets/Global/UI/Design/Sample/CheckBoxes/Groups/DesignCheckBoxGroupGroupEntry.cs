@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Global.UI.Sample.CheckBoxes.Groups
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignCheckBoxGroupGroupEntry : DesignCheckBoxBehaviour, IDesignCheckBoxGroupEntry

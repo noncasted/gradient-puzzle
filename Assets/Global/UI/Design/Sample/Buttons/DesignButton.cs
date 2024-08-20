@@ -1,5 +1,4 @@
-﻿using Global.UI.Sample.Elements;
-using Internal;
+﻿using Internal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

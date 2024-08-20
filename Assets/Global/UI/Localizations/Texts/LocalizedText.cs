@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Global.UI.Texts
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TMP_Text))]

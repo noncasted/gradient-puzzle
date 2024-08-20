@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Global.UI.Sample.Elements
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignElementColorSetter : MonoBehaviour

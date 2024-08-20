@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Global.UI.Sample.Elements
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignTextColorSetter : MonoBehaviour

@@ -1,6 +1,4 @@
-﻿using Global.UI.Extensions;
-using Global.UI.Layouts;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Global.UI
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class StorageDebugAPI : IStorageAPI
     {

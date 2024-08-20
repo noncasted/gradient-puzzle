@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class LeaderboardsDebugAPI : ILeaderboardsAPI
     {

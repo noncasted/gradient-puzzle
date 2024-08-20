@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class YandexCallbacks : MonoBehaviour
     {

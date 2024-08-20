@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     [DisallowMultipleComponent]
     public class YandexDebugCanvas : MonoBehaviour

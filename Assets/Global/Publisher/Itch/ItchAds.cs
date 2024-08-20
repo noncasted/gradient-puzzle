@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Global.Publisher
+namespace Global.Publisher.Itch
 {
     public class ItchAds : IAds
     {

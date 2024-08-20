@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using Internal;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class YandexInitialization : IScopeBaseSetup
     {

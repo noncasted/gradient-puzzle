@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Global.UI.Sample.Elements
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignElement : MonoBehaviour, IDesignElement

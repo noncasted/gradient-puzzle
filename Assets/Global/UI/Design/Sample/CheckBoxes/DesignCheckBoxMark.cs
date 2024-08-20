@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Global.UI.Sample.CheckBoxes
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignCheckBoxMark : DesignCheckBoxBehaviour

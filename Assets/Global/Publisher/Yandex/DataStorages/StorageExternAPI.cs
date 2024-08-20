@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class StorageExternAPI : IStorageAPI
     {

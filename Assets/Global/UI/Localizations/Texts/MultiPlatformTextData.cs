@@ -4,7 +4,7 @@ using Internal;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Global.UI.Texts
+namespace Global.UI
 {
     [InlineEditor]
     [CreateAssetMenu(fileName = "PlatformLanguageText", menuName = "UI/Localization/PlatformText")]

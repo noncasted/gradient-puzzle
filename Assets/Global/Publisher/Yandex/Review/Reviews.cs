@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class Reviews : IReviews
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Global.UI.Sample.CheckBoxes.Groups
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignCheckBoxGroup : MonoBehaviour, IDesignCheckBoxGroupInterceptor

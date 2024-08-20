@@ -1,10 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
-using Global.Audio.Abstract;
+using Global.Audio;
 using Global.Saves;
 using Global.Systems;
 using Internal;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class YandexAds : IAds, IDataStorageLoadListener
     {

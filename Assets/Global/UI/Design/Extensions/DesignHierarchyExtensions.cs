@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Global.UI.Extensions
+namespace Global.UI
 {
     public static class DesignHierarchyExtensions
     {

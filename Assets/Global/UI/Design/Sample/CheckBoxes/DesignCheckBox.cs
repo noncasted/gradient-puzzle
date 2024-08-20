@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Global.UI.Sample.CheckBoxes
+namespace Global.UI
 {
     [DisallowMultipleComponent]
     public class DesignCheckBox : DesignElementBehaviour, IDesignCheckBox

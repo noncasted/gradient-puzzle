@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
 using Global.Publisher;
-using Global.UI.Service;
 using Internal;
 
 namespace Global.UI

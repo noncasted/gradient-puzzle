@@ -1,6 +1,6 @@
 ﻿using Global.Publisher;
 
-namespace Global.UI.Service
+namespace Global.UI
 {
     public interface ILanguageConverter
     {

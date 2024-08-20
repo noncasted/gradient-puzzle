@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class RewardedHandler
     {

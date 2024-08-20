@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class PurchasesDebugAPI : IPurchasesAPI
     {

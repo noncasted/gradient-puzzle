@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using Internal;
 using Newtonsoft.Json;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class YandexDataStorage : IDataStorage, IScopeBaseSetupAsync
     {

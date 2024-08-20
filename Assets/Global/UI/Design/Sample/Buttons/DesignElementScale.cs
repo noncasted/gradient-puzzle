@@ -1,5 +1,4 @@
 ﻿using System;
-using Global.UI.Sample.Elements;
 using Internal;
 using UnityEngine;
 

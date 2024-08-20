@@ -5,7 +5,7 @@ using Internal;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Itch
 {
     public class ItchDataStorage : IDataStorage, IScopeBaseSetup
     {

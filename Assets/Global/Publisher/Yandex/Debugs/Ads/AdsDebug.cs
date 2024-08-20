@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     [DisallowMultipleComponent]
     public class AdsDebug : MonoBehaviour, IAdsDebug

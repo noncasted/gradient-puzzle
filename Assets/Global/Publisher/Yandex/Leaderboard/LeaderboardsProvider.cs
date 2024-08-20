@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Global.Publisher
+namespace Global.Publisher.Yandex
 {
     public class LeaderboardsProvider : ILeaderboardsProvider
     {
