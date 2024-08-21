@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assets:
     _keys:
+    - Features.GamePlay.LevelConstructorOptions
     - Global.GameLoops.BaseGameLoopFactory
-    - GamePlay.Setup.GamePlayScene
-    - GamePlay.Setup.GamePlayScopeOptions
-    - GamePlay.Setup.GamePlayServicesScene
+    - Features.Common.Setup.GamePlayScene
+    - Features.Common.Setup.GamePlayScopeOptions
+    - Features.Common.Setup.GamePlayServicesScene
     - Global.Audio.GlobalAudioOptions
     - Global.Cameras.GlobalCameraOptions
     - Global.GameServices.ConfigsRegistry
@@ -28,11 +29,12 @@ MonoBehaviour:
     - Global.Setup.GlobalScopeOptions
     - Global.Setup.GlobalServicesScene
     - Global.Systems.GlobalSystemUtilsOptions
-    - Global.UI.Service.LanguageTextDataRegistry
+    - Global.UI.LanguageTextDataRegistry
     - Global.UI.LoadingScreenScene
-    - Global.UI.Texts.LanguageTextData
+    - Global.UI.LanguageTextData
     - Internal.InternalScopeConfig
     _values:
+    - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
     - {fileID: 11400000, guid: 2555befb465da1243b3d8e9d8c20bee5, type: 2}
     - {fileID: 11400000, guid: df9dd13e6357b7947b6c5995137ca6d3, type: 2}
     - {fileID: 11400000, guid: ed7b9377ee72f3d4f890782b9df4014a, type: 2}

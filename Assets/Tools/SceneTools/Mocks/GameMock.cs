@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
-using GamePlay.Common;
-using GamePlay.Loop;
+using Features.Common.Setup;
+using Features.Loop;
 using Internal;
 
 namespace Tools
