@@ -32,7 +32,7 @@ namespace Features.Common.StateMachines
             return result;
         }
 
-        public IStateHandle CreateHandle(IState state, object payload = null)
+        public IStateHandle CreateHandle(IState state)
         {
             _currentLifetime?.Terminate();
             _currentState = state;

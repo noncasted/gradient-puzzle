@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Features.GamePlay.Paints
+namespace Features.GamePlay
 {
     public class PaintFactoryOptions : EnvAsset
     {

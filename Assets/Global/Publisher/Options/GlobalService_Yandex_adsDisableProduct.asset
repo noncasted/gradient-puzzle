@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5baca0fe62d6f23419662c04d12ed902, type: 3}
   m_Name: GlobalService_Yandex_adsDisableProduct
   m_EditorClassIdentifier: 
-  _assetId: 11
+  _assetId: 18
   _paymentMethod: 0
   _id: 
   _shopIcon: {fileID: 0}

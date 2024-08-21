@@ -1,4 +1,4 @@
-﻿namespace Features.GamePlay.Paints.Mover
+﻿namespace Features.GamePlay.Mover
 {
     public interface IPaintMover
     {

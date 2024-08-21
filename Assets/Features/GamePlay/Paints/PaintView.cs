@@ -1,6 +1,6 @@
 ﻿using Internal;
 
-namespace Features.GamePlay.Paints
+namespace Features.GamePlay
 {
     public class PaintView : ScopeEntityView
     {

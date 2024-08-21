@@ -9,6 +9,7 @@ namespace Features.GamePlay
     [DisallowMultipleComponent]
     public class LevelConstructor : MonoBehaviour
     {
+        [SerializeField] private Level _level;
         [SerializeField] private Area _prefab;
         [SerializeField] private Gradient _gradient;
         [SerializeField] private List<Sprite> _sprites;
@@ -69,7 +70,7 @@ namespace Features.GamePlay
                 var center = GetSpriteBounds(area.Image.sprite.texture).center;
                 area.Image.color = GetInterpolatedColor(center, colors);
                 area.transform.SetSiblingIndex(i);
-                
+
                 continue;
 
                 RectInt GetSpriteBounds(Texture2D texture)
@@ -111,7 +112,7 @@ namespace Features.GamePlay
                     {
                         var pointPosition = point.Position / size;
                         var distance = Vector2.Distance(targetPosition, pointPosition);
-                        var weight = 1f/ distance;
+                        var weight = 1f / distance;
 
                         accumulatedColor += point.Color * weight;
                         totalWeight += weight;
@@ -121,8 +122,16 @@ namespace Features.GamePlay
                     return result;
                 }
             }
-            
+
             _colorsTransform.SetAsLastSibling();
+            _level.Construct(orderedAreas.ToArray());
+
+#if UNITY_EDITOR
+            foreach (var area in orderedAreas)
+                UnityEditor.EditorUtility.SetDirty(area);
+
+            UnityEditor.EditorUtility.SetDirty(_level);
+#endif
         }
     }
 }

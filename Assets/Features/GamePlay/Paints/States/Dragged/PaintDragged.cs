@@ -1,4 +1,4 @@
-﻿namespace a
+﻿namespace Features.GamePlay
 {
     public class PaintDragged
     {

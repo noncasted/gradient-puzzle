@@ -6,6 +6,9 @@ namespace Features.Services
     {
         public static IScopeBuilder AddGamePlayServices(this IScopeBuilder builder)
         {
+            builder.Register<LevelsStorage>()
+                .WithAsset<LevelsStorageOptions>()
+                .As<ILevelsStorage>();
 
             return builder;
         }

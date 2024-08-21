@@ -2,6 +2,6 @@
 {
     public interface IPaintSelection
     {
-        
+        IPaintDock CreateDock();
     }
 }

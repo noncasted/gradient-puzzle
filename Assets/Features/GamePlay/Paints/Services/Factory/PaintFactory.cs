@@ -1,30 +1,34 @@
 ﻿using Cysharp.Threading.Tasks;
+using Features.Services;
 using Internal;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Features.GamePlay.Paints
+namespace Features.GamePlay
 {
     public class PaintFactory : IPaintFactory
     {
         public PaintFactory(
+            IObjectFactory<PaintView> objectFactory,
             IEntityScopeLoader entityScopeLoader,
             LifetimeScope parent,
             PaintFactoryOptions options)
         {
+            _objectFactory = objectFactory;
             _entityScopeLoader = entityScopeLoader;
             _parent = parent;
             _options = options;
         }
 
 
+        private readonly IObjectFactory<PaintView> _objectFactory;
         private readonly IEntityScopeLoader _entityScopeLoader;
         private readonly LifetimeScope _parent;
         private readonly PaintFactoryOptions _options;
 
-        public async UniTask<IPaint> Create(IReadOnlyLifetime lifetime, Color color, Transform parent)
+        public async UniTask<IPaint> Create(IReadOnlyLifetime lifetime, Color color)
         {
-            var view = Object.Instantiate(_options.Prefab, parent);
+            var view = _objectFactory.Create(_options.Prefab);
             view.name = "Paint";
             view.transform.localPosition = Vector3.zero;
 
@@ -40,6 +44,9 @@ namespace Features.GamePlay.Paints
                 builder
                     .AddComponents()
                     .AddStates();
+
+                builder.Register<Paint>()
+                    .As<IPaint>();
             }
         }
     }

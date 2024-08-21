@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Features.Services.Objects
+namespace Features.Services
 {
     public abstract class ObjectFactory<T> : MonoBehaviour, ISceneService, IObjectFactory<T> where T : MonoBehaviour
     {

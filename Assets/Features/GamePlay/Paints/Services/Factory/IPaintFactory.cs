@@ -2,10 +2,10 @@
 using Internal;
 using UnityEngine;
 
-namespace Features.GamePlay.Paints
+namespace Features.GamePlay
 {
     public interface IPaintFactory
     {
-        UniTask<IPaint> Create(IReadOnlyLifetime lifetime, Color color, Transform parent);
+        UniTask<IPaint> Create(IReadOnlyLifetime lifetime, Color color);
     }
 }

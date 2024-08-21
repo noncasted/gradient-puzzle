@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using Internal;
+using UnityEngine;
 
 namespace Global.Systems
 {
@@ -78,12 +79,16 @@ namespace Global.Systems
             _currentTime += delta;
 
             var progress = _currentTime / _targetTime;
-            _callback?.Invoke(progress);
 
             if (progress >= 1f)
             {
+                _callback?.Invoke(1f);
                 _completion.TrySetResult();
                 _lifetime.Terminate();
+            }
+            else
+            {
+                _callback?.Invoke(progress);
             }
         }
 

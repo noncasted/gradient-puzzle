@@ -55,6 +55,12 @@ namespace Internal
             registration.WithParameter(asset);
             return registration;
         }
+        
+        public static IEntityRegistration WithEntityLifetime(this IEntityRegistration registration)
+        {
+            registration.WithParameter<IReadOnlyLifetime>(registration.Builder.Lifetime);
+            return registration;
+        }
 
         public static T Get<T>(this IEntityScopeResult result)
         {

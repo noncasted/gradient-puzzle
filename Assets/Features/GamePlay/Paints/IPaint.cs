@@ -1,10 +1,13 @@
 ﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
-namespace Features.GamePlay.Paints
+namespace Features.GamePlay
 {
     public interface IPaint
     {
-        UniTask Spawn();
+        void Construct(Color color);
+        
+        UniTask Spawn(IPaintTarget target);
         UniTask Destroy();
     }
 }

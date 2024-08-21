@@ -7,7 +7,7 @@ namespace Features.Common.StateMachines.Abstract
         IViewableDelegate Exited { get; }
 
         bool IsAvailable(IState state);
-        IStateHandle CreateHandle(IState state, object payload = null);
+        IStateHandle CreateHandle(IState state);
         void Exit(IState state);
     }
 }

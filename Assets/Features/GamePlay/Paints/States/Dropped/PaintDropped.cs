@@ -1,4 +1,4 @@
-﻿namespace Features.GamePlay.Paints
+﻿namespace Features.GamePlay
 {
     public class PaintDropped
     {

@@ -7,27 +7,28 @@ namespace Features.GamePlay
     [DisallowMultipleComponent]
     public class Area : MonoBehaviour, IArea
     {
+        [SerializeField] private bool _isStartingPoint;
         [SerializeField] private MPImage _image;
         [SerializeField] private RectTransform _transform;
+
+        private readonly ViewableProperty<bool> _isTouched = new();
 
         private Color32[] _pixels;
         private Vector2Int _textureSize;
         private Vector2 _rectSize;
         private Vector2 _rectPivot;
-
         private Color _source;
-
-        private readonly ViewableProperty<bool> _isTouched = new();
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public Color Source => _source;
+        public bool IsStartingPoint => _isStartingPoint;
         public MPImage Image => _image;
 
         public void Construct(Color color)
         {
             _source = _image.color;
             _image.color = color;
-            
+
             var texture = _image.sprite.texture;
             _pixels = texture.GetPixels32();
             _textureSize = new Vector2Int(texture.width, texture.height);

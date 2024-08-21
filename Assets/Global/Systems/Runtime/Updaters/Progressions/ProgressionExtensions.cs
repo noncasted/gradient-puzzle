@@ -33,8 +33,6 @@ namespace Global.Systems
             await handle.Process();
         }
         
-        
-
         public static UniTask CurveDeltaProgression(
             this IUpdater updater,
             IReadOnlyLifetime lifetime,

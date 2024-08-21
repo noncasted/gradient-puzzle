@@ -1,6 +1,6 @@
 ﻿using Internal;
 
-namespace Features.GamePlay.Common
+namespace Features.GamePlay
 {
     public interface IPaintTarget
     {

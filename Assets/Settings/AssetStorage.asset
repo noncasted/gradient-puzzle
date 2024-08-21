@@ -15,10 +15,17 @@ MonoBehaviour:
   _assets:
     _keys:
     - Features.GamePlay.LevelConstructorOptions
+    - Features.GamePlay.LevelLoaderOptions
+    - Features.GamePlay.Paints.PaintFactoryOptions
+    - Features.GamePlay.Paints.Spawn.PaintSpawnDefinition
+    - Features.GamePlay.Paints.Spawn.PaintSpawnOptions
+    - Features.GamePlay.PaintSelectionOptions
     - Global.GameLoops.BaseGameLoopFactory
     - Features.Common.Setup.GamePlayScene
     - Features.Common.Setup.GamePlayScopeOptions
     - Features.Common.Setup.GamePlayServicesScene
+    - Features.LevelConfiguration
+    - Features.LevelsStorageOptions
     - Global.Audio.GlobalAudioOptions
     - Global.Cameras.GlobalCameraOptions
     - Global.GameServices.ConfigsRegistry
@@ -35,10 +42,17 @@ MonoBehaviour:
     - Internal.InternalScopeConfig
     _values:
     - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
+    - {fileID: 11400000, guid: 53eb153d10c191142bb75ea98ed08c5c, type: 2}
+    - {fileID: 11400000, guid: c4b33e7c60024d74fb7cf8f5b91a475c, type: 2}
+    - {fileID: 11400000, guid: 916c712f4300f9647996403df54ed583, type: 2}
+    - {fileID: 11400000, guid: b1eee5710c083f14aa333a513a1d5f1c, type: 2}
+    - {fileID: 11400000, guid: ee05f3a9feccb344b93e2126a204a5ab, type: 2}
     - {fileID: 11400000, guid: 2555befb465da1243b3d8e9d8c20bee5, type: 2}
     - {fileID: 11400000, guid: df9dd13e6357b7947b6c5995137ca6d3, type: 2}
     - {fileID: 11400000, guid: ed7b9377ee72f3d4f890782b9df4014a, type: 2}
     - {fileID: 11400000, guid: 006f05fa44c5ca2429051b8363e0db03, type: 2}
+    - {fileID: 11400000, guid: 139de8f0544a3cf40bdbcdb530f45583, type: 2}
+    - {fileID: 11400000, guid: 9e585298b0377044f9003412e42de062, type: 2}
     - {fileID: 11400000, guid: 087c4e37354bce64a96d6019412879a1, type: 2}
     - {fileID: 11400000, guid: 317f15a6b1b4b334bb1e3f4b54bf8dd2, type: 2}
     - {fileID: 11400000, guid: dcdb8e891a7c31f47a8bf0c744d4784d, type: 2}

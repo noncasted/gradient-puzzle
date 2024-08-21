@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-
-namespace Features.GamePlay.Paints.Mover
+﻿namespace Features.GamePlay.Mover
 {
-    public class PaintMover : MonoBehaviour
+    public class PaintMover : IPaintMover
     {
-        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Features.GamePlay;
 using Features.Loop;
 using Features.Services;
 using Internal;
@@ -26,7 +27,10 @@ namespace Features.Common.Setup
             {
                 builder
                     .AddGamePlayLoop()
-                    .AddGamePlayServices();
+                    .AddGamePlayServices()
+                    .AddLevels()
+                    .AddPaintServices()
+                    .AddSelection();
                 
                 return UniTask.WhenAll(builder.AddScene());
             }
@@ -48,7 +52,10 @@ namespace Features.Common.Setup
 
                 builder
                     .AddGamePlayLoop()
-                    .AddGamePlayServices();
+                    .AddGamePlayServices()
+                    .AddLevels()
+                    .AddPaintServices()
+                    .AddSelection();
 
                 return UniTask.CompletedTask;
             }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Features.GamePlay.Common
+namespace Features.GamePlay
 {
     public class PaintTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
