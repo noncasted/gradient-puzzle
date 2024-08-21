@@ -7,7 +7,6 @@ namespace Features.GamePlay
         float Size { get; }
         
         void SetColor(Color color);
-        void SetRadius(float radius);
         void SetSize(float size);
         void ToCircle();
         void ToRect();

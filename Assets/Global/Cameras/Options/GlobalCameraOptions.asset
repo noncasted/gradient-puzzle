@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0dde91fc03746148768ef50e3432260, type: 3}
   m_Name: GlobalCameraOptions
   m_EditorClassIdentifier: 
-  _assetId: 14
+  _assetId: 20
   _prefab: {fileID: 3157061553804735492, guid: 47b513f62aee89d4c9a701df48816b34, type: 3}

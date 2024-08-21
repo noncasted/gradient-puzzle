@@ -9,5 +9,8 @@ namespace Features.GamePlay
         
         UniTask Spawn(IPaintTarget target);
         UniTask Destroy();
+        void Drag(IPaintMoveHandle moveHandle);
+        void Drop(IPaintTarget target);
+        void Return(IPaintTarget target);
     }
 }

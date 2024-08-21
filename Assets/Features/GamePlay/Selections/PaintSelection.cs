@@ -21,7 +21,7 @@ namespace Features.GamePlay
         public IPaintDock CreateDock()
         {
             var dock = _objectFactory.Create(_options.Prefab);
-            dock.Construct(_scaler.Size);
+            dock.Construct(_scaler.DockSize);
             
             return dock;
         }

@@ -16,16 +16,22 @@ MonoBehaviour:
     _keys:
     - Features.GamePlay.LevelConstructorOptions
     - Features.GamePlay.LevelLoaderOptions
-    - Features.GamePlay.Paints.PaintFactoryOptions
-    - Features.GamePlay.Paints.Spawn.PaintSpawnDefinition
-    - Features.GamePlay.Paints.Spawn.PaintSpawnOptions
+    - Features.GamePlay.PaintFactoryOptions
+    - Features.GamePlay.PaintDragDefinition
+    - Features.GamePlay.PaintDragOptions
+    - Features.GamePlay.PaintDropDefinition
+    - Features.GamePlay.PaintDropOptions
+    - Features.GamePlay.Return.PaintReturnDefinition
+    - Features.GamePlay.Return.PaintReturnOptions
+    - Features.GamePlay.PaintSpawnDefinition
+    - Features.GamePlay.PaintSpawnOptions
     - Features.GamePlay.PaintSelectionOptions
     - Global.GameLoops.BaseGameLoopFactory
     - Features.Common.Setup.GamePlayScene
     - Features.Common.Setup.GamePlayScopeOptions
     - Features.Common.Setup.GamePlayServicesScene
-    - Features.LevelConfiguration
-    - Features.LevelsStorageOptions
+    - Features.Services.LevelConfiguration
+    - Features.Services.LevelsStorageOptions
     - Global.Audio.GlobalAudioOptions
     - Global.Cameras.GlobalCameraOptions
     - Global.GameServices.ConfigsRegistry
@@ -44,6 +50,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
     - {fileID: 11400000, guid: 53eb153d10c191142bb75ea98ed08c5c, type: 2}
     - {fileID: 11400000, guid: c4b33e7c60024d74fb7cf8f5b91a475c, type: 2}
+    - {fileID: 11400000, guid: 4c250a5f5b09595458b58a4b28159f0a, type: 2}
+    - {fileID: 11400000, guid: 81c94a846003e9b498d8b7f00c4b1239, type: 2}
+    - {fileID: 11400000, guid: 7162b18c986ff9141b80041dda11e06d, type: 2}
+    - {fileID: 11400000, guid: 71d94e806ae6aac4abd011b6b7c45530, type: 2}
+    - {fileID: 11400000, guid: 5d4e5dd480a322e4c863703b19a29ab0, type: 2}
+    - {fileID: 11400000, guid: e1244852d7a77434598d31103ee9e54e, type: 2}
     - {fileID: 11400000, guid: 916c712f4300f9647996403df54ed583, type: 2}
     - {fileID: 11400000, guid: b1eee5710c083f14aa333a513a1d5f1c, type: 2}
     - {fileID: 11400000, guid: ee05f3a9feccb344b93e2126a204a5ab, type: 2}

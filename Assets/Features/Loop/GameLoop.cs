@@ -18,6 +18,7 @@ namespace Features.Loop
             ILevelLoader levelLoader,
             IPaintFactory paintFactory,
             IPaintSelection selection,
+            IPaintMover mover,
             IPaintSelectionScaler selectionScaler)
         {
             _gameCamera = gameCamera;
@@ -26,6 +27,7 @@ namespace Features.Loop
             _levelLoader = levelLoader;
             _paintFactory = paintFactory;
             _selection = selection;
+            _mover = mover;
             _selectionScaler = selectionScaler;
         }
 
@@ -37,6 +39,7 @@ namespace Features.Loop
         private readonly ILevelLoader _levelLoader;
         private readonly IPaintFactory _paintFactory;
         private readonly IPaintSelection _selection;
+        private readonly IPaintMover _mover;
         private readonly IPaintSelectionScaler _selectionScaler;
 
         public async UniTask Process(IReadOnlyLifetime lifetime)
@@ -50,11 +53,14 @@ namespace Features.Loop
             var colorToArea = new Dictionary<Color, IArea>();
             var paintToColor = new Dictionary<IPaint, Color>();
             var paintToDock = new Dictionary<IPaint, IPaintDock>();
+            var target = new List<IPaintTarget>();
+            var docks = new List<IPaintDock>();
 
             foreach (var area in level.Areas)
             {
                 colors.Add(area.Source);
                 colorToArea.Add(area.Source, area);
+                target.Add(area);
             }
 
             _selectionScaler.Scale(colors.Count);
@@ -75,6 +81,8 @@ namespace Features.Loop
                 var color = paintToColor[paint];
                 paint.Construct(color);
                 var dock = _selection.CreateDock();
+                docks.Add(dock);
+                target.Add(dock);
                 paintToDock.Add(paint, dock);
             }
 
@@ -82,9 +90,21 @@ namespace Features.Loop
 
             foreach (var paint in paints)
             {
-                paint.Spawn(paintToDock[paint]);
+                var dock = paintToDock[paint];
+                dock.SetPaint(paint);
+                paint.Spawn(dock);
                 await UniTask.Delay(TimeSpan.FromSeconds(PointSpawnDelay));
             }
+            
+            _selectionScaler.Disable();
+
+            await UniTask.Yield();
+            
+            foreach (var dock in docks)
+                dock.UpdateTransform(_selectionScaler.AreaSize);
+
+            level.Setup(lifetime);
+            _mover.Start(lifetime, target);
         }
     }
 }

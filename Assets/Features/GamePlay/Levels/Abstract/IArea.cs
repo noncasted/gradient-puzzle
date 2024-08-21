@@ -7,7 +7,7 @@ namespace Features.GamePlay
         Color Source { get; }
         bool IsStartingPoint { get; }
 
-        void Construct(Color color);
+        void Setup(Color color);
         void CheckTouch(Vector2 cursorPosition);
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e23860e4d44adcbf5134d8eb7fc8ef, type: 3}
   m_Name: GlobalServicesOptions
   m_EditorClassIdentifier: 
-  _assetId: 20
+  _assetId: 26
   _scopePrefab: {fileID: 4425232438733536047, guid: 6dff990b64ff40b4980ef90789bf70a4, type: 3}
   _servicesScene: {fileID: 11400000, guid: 974b052432fbdba498b4e519fbee2214, type: 2}

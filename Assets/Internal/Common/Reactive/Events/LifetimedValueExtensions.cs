@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 
 namespace Internal
 {
@@ -69,6 +70,27 @@ namespace Internal
                     return;
 
                 listener?.Invoke();
+            }
+        }
+        
+        public static UniTask WaitFalse(this ILifetimedValue<bool> property, IReadOnlyLifetime lifetime)
+        {
+            var completion = new UniTaskCompletionSource();
+            lifetime.Listen(() => completion.TrySetCanceled());
+            
+            property.Advise(lifetime, (_, value) => OnChange(value));
+
+            return completion.Task;
+
+            void OnChange(bool value)
+            {
+                if (value == false)
+                {
+                    completion.TrySetResult();
+                    return;
+                }
+
+                throw new Exception();
             }
         }
     }

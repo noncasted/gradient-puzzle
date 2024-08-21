@@ -1,5 +1,4 @@
-﻿using Features.GamePlay.Mover;
-using Internal;
+﻿using Internal;
 
 namespace Features.GamePlay
 {

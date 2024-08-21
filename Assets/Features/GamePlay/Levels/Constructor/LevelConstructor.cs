@@ -70,7 +70,7 @@ namespace Features.GamePlay
                 var center = GetSpriteBounds(area.Image.sprite.texture).center;
                 area.Image.color = GetInterpolatedColor(center, colors);
                 area.transform.SetSiblingIndex(i);
-
+                area.Construct(center);
                 continue;
 
                 RectInt GetSpriteBounds(Texture2D texture)

@@ -1,7 +1,7 @@
 ﻿using Internal;
 using UnityEngine;
 
-namespace Features.Services.Cameras
+namespace Features.Services
 {
     [DisallowMultipleComponent]
     public class GameCamera : MonoBehaviour, IGameCamera, ISceneService

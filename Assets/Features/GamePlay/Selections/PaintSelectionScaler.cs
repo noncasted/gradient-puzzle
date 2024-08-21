@@ -9,24 +9,31 @@ namespace Features.GamePlay
     public class PaintSelectionScaler : MonoBehaviour, IPaintSelectionScaler, ISceneService
     {
         [SerializeField] private GridLayoutGroup _grid;
-
+        [SerializeField] private RectTransform _transform;
         [SerializeField] private PaintSelectionScaleDictionary _scale;
 
-        private float _size;
+        private float _dockSize;
 
-        public float Size => _size;
-
-        public void Scale(int colorsAmount)
-        {
-            var size = _scale[colorsAmount];
-            _grid.cellSize = new Vector2(size, size);
-            _size = size;
-        }
+        public float DockSize => _dockSize;
+        public int AreaSize => (int)_transform.sizeDelta.x;
 
         public void Create(IScopeBuilder builder)
         {
             builder.RegisterComponent(this)
                 .As<IPaintSelectionScaler>();
+        }
+        
+        public void Scale(int colorsAmount)
+        {
+            _grid.enabled = true;
+            var size = _scale[colorsAmount];
+            _grid.cellSize = new Vector2(size, size);
+            _dockSize = size;
+        }
+        
+        public void Disable()
+        {
+            _grid.enabled = false;
         }
     }
     

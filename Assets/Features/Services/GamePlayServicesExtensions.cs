@@ -1,4 +1,5 @@
-﻿using Internal;
+﻿using Features.Services.Inputs;
+using Internal;
 
 namespace Features.Services
 {
@@ -10,6 +11,10 @@ namespace Features.Services
                 .WithAsset<LevelsStorageOptions>()
                 .As<ILevelsStorage>();
 
+            builder.Register<GameInput>()
+                .As<IGameInput>()
+                .As<IScopeSetup>();
+            
             return builder;
         }
     }

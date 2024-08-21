@@ -23,6 +23,14 @@ namespace NaughtyAttributes
             Max = max;
             Color = color;
         }
+        
+        public CurveRangeAttribute(float height)
+        {
+            Min = Vector2.zero;
+            Max = new Vector2(1f, height);
+            Color = EColor.Clear;
+        }
+
 
         public CurveRangeAttribute(EColor color)
             : this(Vector2.zero, Vector2.one, color)

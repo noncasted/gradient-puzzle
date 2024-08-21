@@ -27,14 +27,37 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             ""name"": ""GamePlay"",
             ""id"": ""98d3b2ff-9a15-42b1-bc36-b64f77d5f962"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab2d6f4f-7ed9-454c-a344-04c111dfc0e7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4ae914bd-8f88-4e2c-819c-12e4bf0adbd4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // GamePlay
         m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
+        m_GamePlay_Action = m_GamePlay.FindAction("Action", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -101,10 +124,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // GamePlay
     private readonly InputActionMap m_GamePlay;
     private List<IGamePlayActions> m_GamePlayActionsCallbackInterfaces = new List<IGamePlayActions>();
+    private readonly InputAction m_GamePlay_Action;
     public struct GamePlayActions
     {
         private @Controls m_Wrapper;
         public GamePlayActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_GamePlay_Action;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -114,10 +139,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GamePlayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GamePlayActionsCallbackInterfaces.Add(instance);
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
         }
 
         private void UnregisterCallbacks(IGamePlayActions instance)
         {
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
         }
 
         public void RemoveCallbacks(IGamePlayActions instance)
@@ -137,5 +168,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public GamePlayActions @GamePlay => new GamePlayActions(this);
     public interface IGamePlayActions
     {
+        void OnAction(InputAction.CallbackContext context);
     }
 }

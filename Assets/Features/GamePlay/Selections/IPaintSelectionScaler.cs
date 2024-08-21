@@ -2,8 +2,10 @@
 {
     public interface IPaintSelectionScaler
     {
-        float Size { get; }
+        float DockSize { get; }
+        int AreaSize { get; }
         
         void Scale(int colorsAmount);
+        void Disable();
     }
 }

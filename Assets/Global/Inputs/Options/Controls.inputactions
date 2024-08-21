@@ -4,8 +4,30 @@
         {
             "name": "GamePlay",
             "id": "98d3b2ff-9a15-42b1-bc36-b64f77d5f962",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Action",
+                    "type": "Button",
+                    "id": "ab2d6f4f-7ed9-454c-a344-04c111dfc0e7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4ae914bd-8f88-4e2c-819c-12e4bf0adbd4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

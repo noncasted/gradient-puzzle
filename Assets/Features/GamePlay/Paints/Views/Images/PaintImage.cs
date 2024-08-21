@@ -1,5 +1,4 @@
-﻿using Global.UI;
-using Internal;
+﻿using Internal;
 using MPUIKIT;
 using UnityEngine;
 
@@ -24,13 +23,6 @@ namespace Features.GamePlay
             _image.color = color;
         }
 
-        public void SetRadius(float radius)
-        {
-            var circle = _image.Circle;
-            circle.Radius = radius;
-            _image.Circle = circle;
-        }
-
         public void SetSize(float size)
         {
             _transform.sizeDelta = new Vector2(size, size);
@@ -39,13 +31,11 @@ namespace Features.GamePlay
         public void ToCircle()
         {
             _image.DrawShape = DrawShape.Circle;
-            _transform.SetAnchor(AnchorPresets.StretchAll);
         }
 
         public void ToRect()
         {
             _image.DrawShape = DrawShape.Rectangle;
-            _transform.SetAnchor(AnchorPresets.MiddleCenter);
         }
     }
 }

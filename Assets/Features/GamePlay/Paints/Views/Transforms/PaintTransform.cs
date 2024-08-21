@@ -8,6 +8,8 @@ namespace Features.GamePlay
     {
         [SerializeField] private RectTransform _transform;
 
+        public Vector2 Position => _transform.anchoredPosition;
+
         public void Register(IEntityBuilder builder)
         {
             builder.RegisterComponent(this)

@@ -2,7 +2,7 @@
 
 namespace Features.GamePlay
 {
-    public class PaintDraggedDefinition : StateDefinition
+    public class PaintReturnDefinition : StateDefinition
     {
         
     }

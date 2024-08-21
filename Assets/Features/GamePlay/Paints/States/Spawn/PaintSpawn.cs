@@ -34,7 +34,7 @@ namespace Features.GamePlay
 
         public async UniTask Process(IPaintTarget target)
         {
-            var state = _stateMachine.CreateHandle(this);
+            var handle = _stateMachine.CreateHandle(this);
 
             switch (target)
             {
@@ -43,9 +43,10 @@ namespace Features.GamePlay
                     _transform.AttachTo(dock.Transform);
                     _transform.SetPosition(Vector2.zero);
                     var dockSize = dock.Size;
+                    _image.SetSize(_options.StartDockSize);
                     _image.ToRect();
 
-                    await _updater.CurveProgression(state.Lifetime, _options.DockScaleCurve, progress =>
+                    await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve, progress =>
                     {
                         _image.SetSize(dockSize * progress);
                     });

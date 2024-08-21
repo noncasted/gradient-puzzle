@@ -19,8 +19,8 @@ namespace Global.Systems
         public static UniTask RunUpdateAction(
             this IUpdater updater,
             IReadOnlyLifetime lifetime,
-            Action<float> callback,
-            Func<bool> predicate)
+            Func<bool> predicate,
+            Action<float> callback)
         {
             var action = new UpdatableAction(lifetime, updater, callback, predicate);
             return action.Process();

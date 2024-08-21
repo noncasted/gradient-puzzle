@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Features
+namespace Features.Services
 {
     public interface IObjectFactory<T> where T : MonoBehaviour
     {

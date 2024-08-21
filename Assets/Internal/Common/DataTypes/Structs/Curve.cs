@@ -44,6 +44,8 @@ namespace Internal
         private readonly Curve _curve;
 
         private float _progress;
+        
+        public bool IsFinished => _progress >= 1f;
 
         public float Step(float delta)
         {
