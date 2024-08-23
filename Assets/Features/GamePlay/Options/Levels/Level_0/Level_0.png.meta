@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ce9400064c41cfa4fbc511692469067f
+guid: 6c9aa8002a4bbb940af263285bf729c7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1464808452502113722
-    second: Level_0008_8_0
+      213: -8537233666184300166
+    second: Level_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -53,7 +53,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 1
-    textureCompression: 2
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Level_0008_8_0
+      name: Level_0_0
       rect:
         serializedVersion: 2
-        x: 290
-        y: 1067
-        width: 1098
-        height: 536
+        x: 130
+        y: 83
+        width: 1797
+        height: 1845
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: abdc063d68b045410800000000000000
-      internalID: 1464808452502113722
+      spriteID: a79349a7637a58980800000000000000
+      internalID: -8537233666184300166
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Level_0008_8_0: 1464808452502113722
+      Level_0_0: -8537233666184300166
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

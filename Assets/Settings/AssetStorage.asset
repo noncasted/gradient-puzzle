@@ -21,8 +21,8 @@ MonoBehaviour:
     - Features.GamePlay.PaintDragOptions
     - Features.GamePlay.PaintDropDefinition
     - Features.GamePlay.PaintDropOptions
-    - Features.GamePlay.Return.PaintReturnDefinition
-    - Features.GamePlay.Return.PaintReturnOptions
+    - Features.GamePlay.PaintReturnDefinition
+    - Features.GamePlay.PaintReturnOptions
     - Features.GamePlay.PaintSpawnDefinition
     - Features.GamePlay.PaintSpawnOptions
     - Features.GamePlay.PaintSelectionOptions

@@ -16,6 +16,7 @@ namespace Features.GamePlay
         private IGameInput _input;
 
         public IReadOnlyList<IArea> Areas => _areas;
+        public IReadOnlyList<Area> AreasInternal => _areas;
 
         [Inject]
         private void Construct(IUpdater updater, IGameInput input)

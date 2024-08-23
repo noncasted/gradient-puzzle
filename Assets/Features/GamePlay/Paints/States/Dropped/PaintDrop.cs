@@ -40,7 +40,7 @@ namespace Features.GamePlay
             Process(handle.Lifetime, target).Forget();
         }
 
-        public async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
+        private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
             switch (target)
             {

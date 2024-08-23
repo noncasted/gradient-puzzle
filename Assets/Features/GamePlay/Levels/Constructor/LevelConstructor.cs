@@ -9,118 +9,82 @@ namespace Features.GamePlay
     [DisallowMultipleComponent]
     public class LevelConstructor : MonoBehaviour
     {
+        [SerializeField] private int _simplifyIterations = 1;
+        [SerializeField] private float _distanceThreshold = 1f;
+        [SerializeField] private int _erosionPixels;
+        [SerializeField] private byte _colorEpsilon = 10;
         [SerializeField] private Level _level;
         [SerializeField] private Area _prefab;
-        [SerializeField] private Gradient _gradient;
-        [SerializeField] private List<Sprite> _sprites;
+        [SerializeField] private Sprite _source;
         [SerializeField] private RectTransform _colorsTransform;
         [SerializeField] private RectTransform _selfTransform;
 
-        [SerializeField] private float _endIncrement;
+        [Button]
+        private void UpdateColor()
+        {
+            var colorPoints = GetComponentsInChildren<LevelConstructorColorPoint>(true);
+            var colors = colorPoints.Select(t => new LevelColorData(t.Color, t.Position)).ToArray();
+
+            foreach (var area in _level.AreasInternal)
+            {
+                var color = AreaShapeUtils.GetInterpolatedColor(area.Data.Center, _selfTransform.rect.x, colors);
+                color.a = 1f;
+
+                var data = new AreaData(area.Data.Points.ToArray(), area.Data.Center, color);
+                area.Construct(data);
+            }
+            
+            
+#if UNITY_EDITOR
+            foreach (var area in _level.AreasInternal)
+            {
+                UnityEditor.EditorUtility.SetDirty(area);
+                UnityEditor.EditorUtility.SetDirty(area.Renderer);
+            }
+
+            UnityEditor.EditorUtility.SetDirty(_level);
+#endif
+        }
 
         [Button]
         public void Construct()
         {
-            var areas = GetComponentsInChildren<Area>(true);
-            var colors = GetComponentsInChildren<LevelConstructorColorPoint>();
+            Clear();
 
-            foreach (var color in colors)
-                color.Construct(_sprites.First().texture);
+            var colorPoints = GetComponentsInChildren<LevelConstructorColorPoint>(true);
+            var colors = colorPoints.Select(t => new LevelColorData(t.Color, t.Position)).ToArray();
 
-            foreach (var area in areas)
-                DestroyImmediate(area.gameObject);
+            var spawnedAreas = new List<Area>();
 
-            var spawnedAreas = new List<(Area, int)>();
+            var extractor = new AreasExtractor(_source.texture);
 
-            for (var i = 0; i < _sprites.Count; i++)
+            var options = new AreaExtractOptions(
+                _selfTransform.rect.size,
+                _colorEpsilon,
+                _simplifyIterations,
+                _distanceThreshold,
+                _erosionPixels,
+                colors);
+
+            var areaDatas = extractor.Extract(options);
+
+            foreach (var data in areaDatas)
             {
-                var sprite = _sprites[i];
                 var area = Instantiate(_prefab, transform);
-                area.Image.sprite = sprite;
-                var lowestPixel = GetLowestPixel();
-                spawnedAreas.Add((area, lowestPixel));
+                area.transform.localPosition = Vector2.zero;
+                spawnedAreas.Add(area);
 
-                int GetLowestPixel()
-                {
-                    var texture = area.Image.sprite.texture;
-                    var pixels = texture.GetPixels32();
-                    var textureSize = new Vector2Int(texture.width, texture.height);
-
-                    for (var y = 0; y < textureSize.y; y++)
-                    {
-                        for (var x = 0; x < textureSize.x; x++)
-                        {
-                            var index = y * textureSize.x + x;
-
-                            if (pixels[index].a > 0)
-                                return y;
-                        }
-                    }
-
-                    throw new Exception();
-                }
+                area.Renderer.SetPoints(data.Points);
+                area.Construct(data);
             }
 
-            var orderedAreas = spawnedAreas.OrderByDescending(t => t.Item2).Select(t => t.Item1).ToList();
+            var orderedAreas = spawnedAreas.OrderByDescending(t => t.Position.y).ToList();
 
             for (var i = 0; i < orderedAreas.Count; i++)
             {
                 var area = orderedAreas[i];
                 area.name = $"Area_{i}";
-                var center = GetSpriteBounds(area.Image.sprite.texture).center;
-                area.Image.color = GetInterpolatedColor(center, colors);
                 area.transform.SetSiblingIndex(i);
-                area.Construct(center);
-                continue;
-
-                RectInt GetSpriteBounds(Texture2D texture)
-                {
-                    var pixels = texture.GetPixels32();
-                    var textureSize = new Vector2Int(texture.width, texture.height);
-
-                    int minX = textureSize.x, minY = textureSize.y;
-                    int maxX = 0, maxY = 0;
-
-                    for (var y = 0; y < textureSize.y; y++)
-                    {
-                        for (var x = 0; x < textureSize.x; x++)
-                        {
-                            var index = y * textureSize.x + x;
-
-                            if (pixels[index].a > 0)
-                            {
-                                // Update bounds
-                                if (x < minX) minX = x;
-                                if (x > maxX) maxX = x;
-                                if (y < minY) minY = y;
-                                if (y > maxY) maxY = y;
-                            }
-                        }
-                    }
-
-                    return new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
-                }
-
-                Color GetInterpolatedColor(Vector2 targetPosition, IReadOnlyList<LevelConstructorColorPoint> points)
-                {
-                    var accumulatedColor = Color.black;
-                    var totalWeight = 0f;
-                    var size = _selfTransform.rect.size;
-                    targetPosition = targetPosition / size;
-
-                    foreach (var point in points)
-                    {
-                        var pointPosition = point.Position / size;
-                        var distance = Vector2.Distance(targetPosition, pointPosition);
-                        var weight = 1f / distance;
-
-                        accumulatedColor += point.Color * weight;
-                        totalWeight += weight;
-                    }
-
-                    var result = accumulatedColor / totalWeight;
-                    return result;
-                }
             }
 
             _colorsTransform.SetAsLastSibling();
@@ -128,10 +92,21 @@ namespace Features.GamePlay
 
 #if UNITY_EDITOR
             foreach (var area in orderedAreas)
+            {
                 UnityEditor.EditorUtility.SetDirty(area);
+                UnityEditor.EditorUtility.SetDirty(area.Renderer);
+            }
 
             UnityEditor.EditorUtility.SetDirty(_level);
 #endif
+        }
+
+        private void Clear()
+        {
+            var areas = GetComponentsInChildren<Area>(true);
+
+            foreach (var area in areas)
+                DestroyImmediate(area.gameObject);
         }
     }
 }
