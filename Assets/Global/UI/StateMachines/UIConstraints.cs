@@ -26,5 +26,6 @@ namespace Global.UI
         public IReadOnlyDictionary<InputConstraints, bool> Input { get; }
         
         public static UIConstraints Empty => new UIConstraints();
+        public static UIConstraints Game => new UIConstraints();
     }
 }

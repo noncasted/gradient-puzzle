@@ -11,6 +11,8 @@ namespace Features.Services
 
         private readonly IReadOnlyList<LevelConfiguration> _levels;
 
+        public int Count => _levels.Count;
+
         public ILevelConfiguration Get(int levelIndex)
         {
             return _levels[levelIndex];

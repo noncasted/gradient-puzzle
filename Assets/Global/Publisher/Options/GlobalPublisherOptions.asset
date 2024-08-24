@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c9d52c0fcf4a80bd47bf4f46bccc4f, type: 3}
   m_Name: GlobalPublisherOptions
   m_EditorClassIdentifier: 
-  _assetId: 23
+  _assetId: 32
   _itchCallbacksPrefab: {fileID: 2268424486547412797, guid: 3d9d23b65258c78429a3914671514e35, type: 3}
   _yandexCallbacksPrefab: {fileID: 3703616330694887832, guid: 93bdad8db7790a846a2666d7b712f300, type: 3}
   _yandexProductsRegistry: {fileID: 11400000, guid: 3d1766ae94dc26f4abb90e25730d1eb7, type: 2}

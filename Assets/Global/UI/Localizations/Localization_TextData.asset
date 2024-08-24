@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7db780603046eeb5cbce6ce88df18b, type: 3}
   m_Name: Localization_TextData
   m_EditorClassIdentifier: 
-  _assetId: 29
+  _assetId: 38
   _objects:
   - {fileID: -4950500684654618542, guid: f8e4b157751dd7b46a356f1d22acd2aa, type: 2}
   - {fileID: 11400000, guid: 8144c5c656ba14a4b88bcc6ad58af919, type: 2}

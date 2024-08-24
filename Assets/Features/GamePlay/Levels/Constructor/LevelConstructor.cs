@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -33,7 +32,6 @@ namespace Features.GamePlay
                 var data = new AreaData(area.Data.Points.ToArray(), area.Data.Center, color);
                 area.Construct(data);
             }
-            
             
 #if UNITY_EDITOR
             foreach (var area in _level.AreasInternal)

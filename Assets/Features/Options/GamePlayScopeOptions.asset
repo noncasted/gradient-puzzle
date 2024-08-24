@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f670c0ef3049478cac7873bde1f17d, type: 3}
   m_Name: GamePlayScopeOptions
   m_EditorClassIdentifier: 
-  _assetId: 15
+  _assetId: 17
   _scopePrefab: {fileID: 343505865454404755, guid: bc15edbcef6c88f40a1bc3cf2757541c, type: 3}
   _servicesScene: {fileID: 11400000, guid: 006f05fa44c5ca2429051b8363e0db03, type: 2}

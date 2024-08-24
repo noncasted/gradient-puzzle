@@ -12,5 +12,6 @@ namespace Features.GamePlay
         void Drag(IPaintMoveHandle moveHandle);
         void Drop(IPaintTarget target);
         void Return(IPaintTarget target);
+        void Anchor(IPaintTarget target);
     }
 }

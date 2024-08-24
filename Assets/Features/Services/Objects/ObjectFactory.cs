@@ -20,5 +20,11 @@ namespace Features.Services
             instance.name = $"{prefab.name}_{_counter}";
             return instance;
         }
+
+        public void DestroyAll()
+        {
+            foreach (Transform child in transform)
+                Destroy(child.gameObject);
+        }
     }
 }

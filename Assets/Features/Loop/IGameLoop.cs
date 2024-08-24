@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Internal;
 
-namespace Features.Loop
+namespace Features
 {
     public interface IGameLoop
     {

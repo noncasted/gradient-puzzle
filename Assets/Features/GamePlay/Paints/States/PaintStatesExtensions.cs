@@ -26,6 +26,11 @@ namespace Features.GamePlay
                 .WithAsset<PaintReturnOptions>()
                 .As<IPaintReturn>();
             
+            builder.Register<PaintAnchoring>()
+                .WithAsset<PaintAnchoringDefinition>()
+                .WithAsset<PaintAnchoringOptions>()
+                .As<IPaintAnchoring>();
+            
             return builder;
         }
     }

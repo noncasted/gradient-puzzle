@@ -164,16 +164,13 @@ namespace Features.GamePlay
             {
                 var point = contour.Last();
 
-                try
-                {
-                    var neighbour = GetNeighbour(point);
-                    contour.Add(neighbour);
-                    passed.Add(neighbour);
-                }
-                catch
-                {
+                var neighbour = GetNeighbour(point);
+                
+                if (neighbour == outline.First())
                     break;
-                }
+                
+                contour.Add(neighbour);
+                passed.Add(neighbour);
             }
 
             return contour.Select(t => new Vector2(t.x, t.y)).ToList();
@@ -337,7 +334,10 @@ namespace Features.GamePlay
                 }
 
                 foreach (var remove in toRemove)
+                {
+                    Debug.Log($"Remove in valiadtion: {remove}");
                     points.Remove(remove);
+                }
 
                 return count == 0;
             }
@@ -349,7 +349,7 @@ namespace Features.GamePlay
                     var checkPoint = point + direction;
 
                     if (checkPoint.x < 0 || checkPoint.x >= size.x || checkPoint.y < 0 || checkPoint.y >= size.y)
-                        continue;
+                        return true;
 
                     if (source[checkPoint.y, checkPoint.x] == false)
                         return true;

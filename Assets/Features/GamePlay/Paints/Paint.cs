@@ -5,25 +5,28 @@ namespace Features.GamePlay
 {
     public class Paint : IPaint
     {
-        private readonly IPaintImage _image;
-        private readonly IPaintSpawn _spawn;
-        private readonly IPaintDrag _drag;
-        private readonly IPaintDrop _drop;
-        private readonly IPaintReturn _return;
-
         public Paint(
             IPaintImage image,
             IPaintSpawn spawn,
             IPaintDrag drag,
             IPaintDrop drop,
-            IPaintReturn @return)
+            IPaintReturn @return,
+            IPaintAnchoring anchoring)
         {
             _image = image;
             _spawn = spawn;
             _drag = drag;
             _drop = drop;
             _return = @return;
+            _anchoring = anchoring;
         }
+
+        private readonly IPaintImage _image;
+        private readonly IPaintSpawn _spawn;
+        private readonly IPaintDrag _drag;
+        private readonly IPaintDrop _drop;
+        private readonly IPaintReturn _return;
+        private readonly IPaintAnchoring _anchoring;
 
         public void Construct(Color color)
         {
@@ -49,7 +52,12 @@ namespace Features.GamePlay
         {
             _return.Enter(target);
         }
-        
+
+        public void Anchor(IPaintTarget target)
+        {
+            _anchoring.Enter(target);
+        }
+
         public async UniTask Destroy()
         {
         }

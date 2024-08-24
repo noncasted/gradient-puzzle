@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
 using Features.GamePlay;
-using Features.Loop;
 using Features.Services;
 using Internal;
 using UnityEngine;

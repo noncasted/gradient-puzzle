@@ -1,7 +1,7 @@
 ﻿using Global.GameLoops;
 using Internal;
 
-namespace Features.Loop
+namespace Features
 {
     public class GamePlayLoaderFactory : BaseGameLoopFactory
     {

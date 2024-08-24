@@ -6,7 +6,7 @@ using Global.UI;
 using Internal;
 using VContainer.Unity;
 
-namespace Features.Loop
+namespace Features
 {
     public class GamePlayLoader : IScopeLoadedAsync
     {

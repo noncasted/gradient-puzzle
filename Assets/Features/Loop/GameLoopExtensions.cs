@@ -1,6 +1,6 @@
 ﻿using Internal;
 
-namespace Features.Loop
+namespace Features
 {
     public static class GameLoopExtensions
     {

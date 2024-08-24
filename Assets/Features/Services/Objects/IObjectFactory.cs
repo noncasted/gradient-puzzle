@@ -5,6 +5,7 @@ namespace Features.Services
     public interface IObjectFactory<T> where T : MonoBehaviour
     {
         T Create(T prefab, Vector2 position, float angle);
+        void DestroyAll();
     }
 
     public static class ObjectFactoryExtensions

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815ad614d11f493a9a9998e7750c0300, type: 3}
   m_Name: GameLoopFactory
   m_EditorClassIdentifier: 
-  _assetId: 13
+  _assetId: 15

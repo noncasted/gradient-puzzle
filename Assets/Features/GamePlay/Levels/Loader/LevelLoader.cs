@@ -18,6 +18,7 @@ namespace Features.GamePlay
 
         public ILevel Load(ILevelConfiguration configuration)
         {
+            _objectFactory.DestroyAll();
             var level = _objectFactory.Create(configuration.Prefab);
 
             _injector.Inject(level);

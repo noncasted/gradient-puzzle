@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44a49bc5c0a43bab665248748d08e33, type: 3}
   m_Name: ConfigsRegistry
   m_EditorClassIdentifier: 
-  _assetId: 21
+  _assetId: 30
   _objects: []

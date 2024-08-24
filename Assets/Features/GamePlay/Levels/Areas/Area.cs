@@ -7,7 +7,7 @@ namespace Features.GamePlay
     [DisallowMultipleComponent]
     public class Area : MonoBehaviour, IArea
     {
-        [SerializeField] private bool _isStartingPoint;
+        [SerializeField] private bool _isAnchor;
         [SerializeField] private RectTransform _transform;
         [SerializeField] private AreaRenderer _renderer;
         [SerializeField] private AreaData _data;
@@ -20,7 +20,7 @@ namespace Features.GamePlay
         public IPaint Paint => _paint;
         public Vector2 Position => _data.Center;
         public RectTransform Transform => _transform;
-        public bool IsStartingPoint => _isStartingPoint;
+        public bool IsAnchor => _isAnchor;
 
         public AreaData Data => _data;
         public Color Source => _data.Color;
@@ -40,7 +40,6 @@ namespace Features.GamePlay
         public void CheckTouch(Vector2 cursorPosition)
         {
             var isInside = _data.IsInside(cursorPosition);
-            Debug.Log(isInside);
             _isTouched.Set(isInside);
         }
 

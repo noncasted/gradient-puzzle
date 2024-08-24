@@ -18,6 +18,11 @@ namespace Features.GamePlay
         private readonly IPaintSelectionScaler _scaler;
         private readonly PaintSelectionOptions _options;
 
+        public void Clear()
+        {
+            _objectFactory.DestroyAll();
+        }
+
         public IPaintDock CreateDock()
         {
             var dock = _objectFactory.Create(_options.Prefab);

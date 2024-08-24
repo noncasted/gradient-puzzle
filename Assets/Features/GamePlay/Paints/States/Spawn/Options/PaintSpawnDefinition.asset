@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803308c327ce4802bf5958e7a246cccc, type: 3}
   m_Name: PaintSpawnDefinition
   m_EditorClassIdentifier: 
-  _assetId: 10
+  _assetId: 12
   _transitions: []

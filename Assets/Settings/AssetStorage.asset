@@ -17,6 +17,8 @@ MonoBehaviour:
     - Features.GamePlay.LevelConstructorOptions
     - Features.GamePlay.LevelLoaderOptions
     - Features.GamePlay.PaintFactoryOptions
+    - Features.GamePlay.Anchoring.PaintAnchoringDefinition
+    - Features.GamePlay.Anchoring.PaintAnchoringOptions
     - Features.GamePlay.PaintDragDefinition
     - Features.GamePlay.PaintDragOptions
     - Features.GamePlay.PaintDropDefinition
@@ -50,6 +52,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
     - {fileID: 11400000, guid: 53eb153d10c191142bb75ea98ed08c5c, type: 2}
     - {fileID: 11400000, guid: c4b33e7c60024d74fb7cf8f5b91a475c, type: 2}
+    - {fileID: 11400000, guid: 197697ec1c20cae4da8eec31cf927447, type: 2}
+    - {fileID: 11400000, guid: 871e6a892017e6d46b29a785c966910a, type: 2}
     - {fileID: 11400000, guid: 4c250a5f5b09595458b58a4b28159f0a, type: 2}
     - {fileID: 11400000, guid: 81c94a846003e9b498d8b7f00c4b1239, type: 2}
     - {fileID: 11400000, guid: 7162b18c986ff9141b80041dda11e06d, type: 2}
@@ -63,7 +67,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: df9dd13e6357b7947b6c5995137ca6d3, type: 2}
     - {fileID: 11400000, guid: ed7b9377ee72f3d4f890782b9df4014a, type: 2}
     - {fileID: 11400000, guid: 006f05fa44c5ca2429051b8363e0db03, type: 2}
-    - {fileID: 11400000, guid: 139de8f0544a3cf40bdbcdb530f45583, type: 2}
+    - {fileID: 11400000, guid: 58c2d2aa85049444e9638766d1d5ec05, type: 2}
     - {fileID: 11400000, guid: 9e585298b0377044f9003412e42de062, type: 2}
     - {fileID: 11400000, guid: 087c4e37354bce64a96d6019412879a1, type: 2}
     - {fileID: 11400000, guid: 317f15a6b1b4b334bb1e3f4b54bf8dd2, type: 2}
