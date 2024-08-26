@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c1513a5ca34e5b92c622b8f238359b, type: 3}
   m_Name: GlobalInputConfig
   m_EditorClassIdentifier: 
-  _assetId: 31
+  _assetId: 32
   _eventSystemPrefab: {fileID: 3385359037037522653, guid: 6ef01c0edfb93f94aad6228a9d99c958, type: 3}

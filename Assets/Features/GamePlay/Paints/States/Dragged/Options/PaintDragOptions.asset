@@ -16,7 +16,7 @@ MonoBehaviour:
   _moveSpeed: 30
   _dragSize: 30
   _dragSizeCurve:
-    _time: 0.2
+    _time: 1
     _curve:
       serializedVersion: 2
       m_Curve:

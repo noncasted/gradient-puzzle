@@ -27,7 +27,7 @@ namespace Features.Services.Inputs
 
         public IViewableProperty<bool> Action => _action;
         public Vector2 CursorPosition => _cursorPosition;
-        
+
         public void OnSetup(IReadOnlyLifetime lifetime)
         {
             _updater.Add(lifetime, this);
@@ -37,6 +37,11 @@ namespace Features.Services.Inputs
         public void OnUpdate(float delta)
         {
             _cursorPosition = _positionConverter.ScreenToLocal(Mouse.current.position.ReadValue());
+        }
+        
+        public Vector2 GetInputInRect(RectTransform rect)
+        {
+            return _positionConverter.ScreenToLocal(Mouse.current.position.ReadValue());
         }
     }
 }

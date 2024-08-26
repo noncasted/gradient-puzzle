@@ -25,5 +25,16 @@ namespace Features.Services.Inputs
             
             return localPosition;
         }
+
+        public Vector2 ScreenToLocal(RectTransform rect, Vector2 screenPosition)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rect,
+                screenPosition,
+                _camera,
+                out var localPosition);
+            
+            return localPosition;
+        }
     }
 }

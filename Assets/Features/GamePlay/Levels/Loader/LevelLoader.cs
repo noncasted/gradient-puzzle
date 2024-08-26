@@ -1,20 +1,27 @@
 ﻿using Features.Services;
+using Features.Services.RenderOptions;
 using Internal;
 
 namespace Features.GamePlay
 {
     public class LevelLoader : ILevelLoader
     {
-        public LevelLoader(IObjectFactory<Level> objectFactory, LevelLoaderOptions options, IViewInjector injector)
+        public LevelLoader(
+            IObjectFactory<Level> objectFactory,
+            LevelLoaderOptions options,
+            IViewInjector injector,
+            IMaskRenderOptions maskRenderOptions)
         {
             _objectFactory = objectFactory;
             _options = options;
             _injector = injector;
+            _maskRenderOptions = maskRenderOptions;
         }
-        
+
         private readonly IObjectFactory<Level> _objectFactory;
         private readonly LevelLoaderOptions _options;
         private readonly IViewInjector _injector;
+        private readonly IMaskRenderOptions _maskRenderOptions;
 
         public ILevel Load(ILevelConfiguration configuration)
         {
@@ -22,10 +29,15 @@ namespace Features.GamePlay
             var level = _objectFactory.Create(configuration.Prefab);
 
             _injector.Inject(level);
-            
-            foreach (var area in level.Areas)
-                area.Setup(_options.AreasGradient.Evaluate(RandomExtensions.RandomOne()));
-            
+
+            for (var i = 0; i < level.Areas.Count; i++)
+            {
+                var color = _options.AreasGradient.Evaluate(RandomExtensions.RandomOne());
+                var maskData = _maskRenderOptions.Get(i);
+                
+                level.Areas[i].Setup(color, maskData);
+            }
+
             return level;
         }
     }

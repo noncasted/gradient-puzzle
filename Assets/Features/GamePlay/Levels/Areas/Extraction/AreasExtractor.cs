@@ -37,7 +37,7 @@ namespace Features.GamePlay
 
             var normalizedPoints = AreaShapeUtils.NormalizePointsToRect(contour, options.RectSize, textureSize);
             var center = AreaShapeUtils.GetCenter(normalizedPoints);
-            var color = AreaShapeUtils.GetInterpolatedColor(center, options.RectSize.x, options.LevelColors);
+            var color = AreaDataExtensions.GetInterpolatedColor(center, options.RectSize.x, options.LevelColors);
 
             return new AreaData(normalizedPoints.ToArray(), center, color);
         }

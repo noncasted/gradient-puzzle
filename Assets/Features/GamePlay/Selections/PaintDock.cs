@@ -1,4 +1,5 @@
 ﻿using System;
+using Features.Services.RenderOptions;
 using Global.UI;
 using Internal;
 using UnityEngine;
@@ -9,7 +10,8 @@ namespace Features.GamePlay
     [DisallowMultipleComponent]
     public class PaintDock : MonoBehaviour, IPaintDock, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private RectTransform _transform;
+        [SerializeField] private RectTransform _selfTransform;
+        [SerializeField] private RectTransform _paintRoot;
         
         private readonly ViewableProperty<bool> _isTouched = new(false);
         
@@ -18,14 +20,15 @@ namespace Features.GamePlay
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IPaint Paint => _paint;
-        public Vector2 Position => _transform.anchoredPosition;
-        public RectTransform Transform => _transform;
+        public Vector2 Position => _selfTransform.anchoredPosition;
+        public RectTransform Transform => _paintRoot;
+        public RenderMaskData MaskData => null;
         public float Size => _size;
         
         public void UpdateTransform(int areaSize)
         {
             var halfSize = areaSize / 2;
-            _transform.SetAnchor(AnchorPresets.MiddleCenter, -halfSize, halfSize);
+            _selfTransform.SetAnchor(AnchorPresets.MiddleCenter, -halfSize, halfSize);
         }
 
         public void Construct(float size)

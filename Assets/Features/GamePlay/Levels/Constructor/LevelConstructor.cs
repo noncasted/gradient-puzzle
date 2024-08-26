@@ -26,13 +26,13 @@ namespace Features.GamePlay
 
             foreach (var area in _level.AreasInternal)
             {
-                var color = AreaShapeUtils.GetInterpolatedColor(area.Data.Center, _selfTransform.rect.x, colors);
+                var color = AreaDataExtensions.GetInterpolatedColor(area.Data.Center, _selfTransform.rect.x, colors);
                 color.a = 1f;
 
                 var data = new AreaData(area.Data.Points.ToArray(), area.Data.Center, color);
                 area.Construct(data);
             }
-            
+
 #if UNITY_EDITOR
             foreach (var area in _level.AreasInternal)
             {

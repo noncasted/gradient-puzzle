@@ -1,19 +1,22 @@
 ﻿using Internal;
-using MPUIKIT;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Features.GamePlay
 {
     [DisallowMultipleComponent]
     public class PaintImage : MonoBehaviour, IPaintImage, IEntityComponent
     {
-        [SerializeField] private MPImage _image;
+        [SerializeField] private Image _image;
         [SerializeField] private RectTransform _transform;
+        
+        private Material _defaultMaterial;
 
         public float Size => _transform.rect.size.x;
 
         public void Register(IEntityBuilder builder)
         {
+            _defaultMaterial = _image.material;
             builder.RegisterComponent(this)
                 .As<IPaintImage>();
         }
@@ -28,14 +31,14 @@ namespace Features.GamePlay
             _transform.sizeDelta = new Vector2(size, size);
         }
 
-        public void ToCircle()
+        public void SetMaterial(Material material)
         {
-            _image.DrawShape = DrawShape.Circle;
+            _image.material = material;
         }
 
-        public void ToRect()
+        public void ResetMaterial()
         {
-            _image.DrawShape = DrawShape.Rectangle;
+            _image.material = _defaultMaterial;
         }
     }
 }

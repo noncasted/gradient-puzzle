@@ -46,7 +46,6 @@ namespace Features.GamePlay
 
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
-            _image.ToCircle();
             _transform.AttachTo(_moveArea.Transform);
 
             await ScaleDown();

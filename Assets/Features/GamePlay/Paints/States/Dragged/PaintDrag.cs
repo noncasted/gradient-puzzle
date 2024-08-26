@@ -48,20 +48,11 @@ namespace Features.GamePlay
 
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintMoveHandle handle)
         {
-            _image.ToCircle();
+            await ScaleDown();
+            _image.ResetMaterial();
+            _transform.AttachTo(_moveArea.Transform);
 
-            if (handle.Source is IPaintDock)
-            {
-                _transform.AttachTo(_moveArea.Transform);
-                await ScaleDown();
-            }
-            else
-            {
-                await ScaleDown();
-                _transform.AttachTo(_moveArea.Transform);
-            }
-            
-            await _updater.RunUpdateAction(lifetime, Move);
+            await _updater.RunUpdateAction(lifetime, delta => Move(delta, _input.CursorPosition));
 
             async UniTask ScaleDown()
             {
@@ -74,15 +65,14 @@ namespace Features.GamePlay
                     var size = Mathf.Lerp(startSize, _options.DragSize, factor);
                     _image.SetSize(size);
 
-                    Move(delta);
+                    Move(delta, _input.GetInputInRect(handle.Source.Transform) - handle.Source.Position);
                 });
             }
 
-            void Move(float delta)
+            void Move(float delta, Vector2 targetPosition)
             {
-                var targetPosition = _input.CursorPosition;
                 var currentPosition = _transform.Position;
-                
+
                 var move = _options.MoveSpeed * delta;
                 var position = Vector2.Lerp(currentPosition, targetPosition, move);
 

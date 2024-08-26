@@ -44,11 +44,10 @@ namespace Features.GamePlay
                     _transform.SetPosition(Vector2.zero);
                     var dockSize = dock.Size;
                     _image.SetSize(_options.StartDockSize);
-                    _image.ToRect();
 
                     await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve, progress =>
                     {
-                        _image.SetSize(dockSize * progress);
+                        _image.SetSize(dockSize * 2 * progress);
                     });
 
                     break;

@@ -49,17 +49,17 @@ namespace Features.GamePlay
                     _transform.AttachTo(dock.Transform);
                     _transform.SetPosition(Vector2.zero);
                     var dockSize = dock.Size;
-                    _image.ToRect();
+                    _image.ResetMaterial();
 
                     await _updater.CurveProgression(lifetime, _options.DockScaleCurve,
-                        progress => { _image.SetSize(dockSize * progress); });
-
+                        progress => { _image.SetSize(dockSize * 2 * progress); });
+                    
                     break;
                 }
                 case IArea area:
                 {
                     _transform.AttachTo(area.Transform);
-                    _image.ToCircle();
+                    _image.SetMaterial(area.MaskData.Content);
 
                     await _updater.CurveProgression(lifetime, _options.AreaScaleCurve,
                         progress => { _image.SetSize(PaintExtensions.MaxRadius * progress); });

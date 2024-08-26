@@ -21,6 +21,7 @@ EditorBuildSettings:
     path: Assets/Global/UI/Options/UI_LoadingScreen.unity
     guid: 81db3772e20060e4fa843bd53ffd6f6b
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 782405ad1c0e77042ac61621d41c8e54, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 6f6196e8185c2504aa75f549d2406208, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: f157979029c46694e8f5a734f718af86, type: 3}
   m_UseUCBPForAssetBundles: 0

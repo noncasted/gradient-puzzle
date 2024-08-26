@@ -37,7 +37,6 @@ namespace Features.GamePlay
             _epsilon = epsilon;
         }
         
-        
         private readonly Color32 _value;
         private readonly byte _epsilon;
         

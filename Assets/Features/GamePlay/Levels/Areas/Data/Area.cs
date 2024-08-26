@@ -1,4 +1,5 @@
 ﻿using System;
+using Features.Services.RenderOptions;
 using Internal;
 using UnityEngine;
 
@@ -15,12 +16,14 @@ namespace Features.GamePlay
         private readonly ViewableProperty<bool> _isTouched = new();
 
         private IPaint _paint;
+        private RenderMaskData _maskData;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IPaint Paint => _paint;
         public Vector2 Position => _data.Center;
         public RectTransform Transform => _transform;
         public bool IsAnchor => _isAnchor;
+        public RenderMaskData MaskData => _maskData;
 
         public AreaData Data => _data;
         public Color Source => _data.Color;
@@ -32,13 +35,18 @@ namespace Features.GamePlay
             _renderer.color = data.Color;
         }
 
-        public void Setup(Color color)
+        public void Setup(Color color, RenderMaskData maskData)
         {
+            _maskData = maskData;
             _renderer.color = color;
+            _renderer.material = maskData.Area;
         }
 
         public void CheckTouch(Vector2 cursorPosition)
         {
+            if (_isAnchor == true)
+                return;
+
             var isInside = _data.IsInside(cursorPosition);
             _isTouched.Set(isInside);
         }

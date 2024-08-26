@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4217557648626649537}
   - component: {fileID: 964910438841306370}
   - component: {fileID: 260259539305873055}
-  - component: {fileID: 1381143534037937921}
   m_Layer: 5
   m_Name: Area
   m_TagString: Untagged
@@ -59,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce83394f314f4905ab19f0d89f3180b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isStartingPoint: 0
+  _isAnchor: 0
   _transform: {fileID: 2731452419824307189}
   _renderer: {fileID: 260259539305873055}
   _data:
@@ -86,17 +85,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  _points: []
---- !u!114 &1381143534037937921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7389006238985134148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
+  _data:
+    _vertices: []
+    _triangles: 

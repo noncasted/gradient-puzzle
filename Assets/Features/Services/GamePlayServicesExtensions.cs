@@ -1,4 +1,5 @@
 ﻿using Features.Services.Inputs;
+using Features.Services.RenderOptions;
 using Internal;
 
 namespace Features.Services
@@ -14,6 +15,9 @@ namespace Features.Services
             builder.Register<GameInput>()
                 .As<IGameInput>()
                 .As<IScopeSetup>();
+
+            builder.RegisterAsset<MaskRenderOptions>()
+                .As<IMaskRenderOptions>();
             
             return builder;
         }

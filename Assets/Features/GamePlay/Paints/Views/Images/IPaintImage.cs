@@ -8,7 +8,7 @@ namespace Features.GamePlay
         
         void SetColor(Color color);
         void SetSize(float size);
-        void ToCircle();
-        void ToRect();
+        void SetMaterial(Material material);
+        void ResetMaterial();
     }
 }

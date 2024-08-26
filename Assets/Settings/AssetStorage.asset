@@ -17,8 +17,8 @@ MonoBehaviour:
     - Features.GamePlay.LevelConstructorOptions
     - Features.GamePlay.LevelLoaderOptions
     - Features.GamePlay.PaintFactoryOptions
-    - Features.GamePlay.Anchoring.PaintAnchoringDefinition
-    - Features.GamePlay.Anchoring.PaintAnchoringOptions
+    - Features.GamePlay.PaintAnchoringDefinition
+    - Features.GamePlay.PaintAnchoringOptions
     - Features.GamePlay.PaintDragDefinition
     - Features.GamePlay.PaintDragOptions
     - Features.GamePlay.PaintDropDefinition
@@ -34,6 +34,7 @@ MonoBehaviour:
     - Features.Common.Setup.GamePlayServicesScene
     - Features.Services.LevelConfiguration
     - Features.Services.LevelsStorageOptions
+    - Features.Services.RenderOptions.MaskRenderOptions
     - Global.Audio.GlobalAudioOptions
     - Global.Cameras.GlobalCameraOptions
     - Global.GameServices.ConfigsRegistry
@@ -69,6 +70,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 006f05fa44c5ca2429051b8363e0db03, type: 2}
     - {fileID: 11400000, guid: 58c2d2aa85049444e9638766d1d5ec05, type: 2}
     - {fileID: 11400000, guid: 9e585298b0377044f9003412e42de062, type: 2}
+    - {fileID: 11400000, guid: 67e17e6c716ada144ac0ff3f561e9514, type: 2}
     - {fileID: 11400000, guid: 087c4e37354bce64a96d6019412879a1, type: 2}
     - {fileID: 11400000, guid: 317f15a6b1b4b334bb1e3f4b54bf8dd2, type: 2}
     - {fileID: 11400000, guid: dcdb8e891a7c31f47a8bf0c744d4784d, type: 2}
