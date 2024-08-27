@@ -27,11 +27,11 @@ namespace Features.GamePlay
 
         private void Awake()
         {
-            var orderedAreas = _areas.OrderByDescending(t => t.Position.y).ToList();
+            _areas = _areas.OrderByDescending(t => t.Position.y).ToArray();
 
-            for (var i = 0; i < orderedAreas.Count; i++)
+            for (var i = 0; i < _areas.Length; i++)
             {
-                var area = orderedAreas[i];
+                var area = _areas[i];
                 area.transform.parent = transform;
                 area.transform.SetSiblingIndex(i);
             }

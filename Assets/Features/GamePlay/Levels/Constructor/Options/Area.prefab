@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce83394f314f4905ab19f0d89f3180b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _options: {fileID: 11400000, guid: c7bd128b0821dc148a9516cf03a5fdd6, type: 2}
   _isAnchor: 0
   _transform: {fileID: 2731452419824307189}
   _renderer: {fileID: 1947493757046551786}

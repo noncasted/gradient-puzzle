@@ -13,6 +13,7 @@ namespace Features.GamePlay
         private Material _defaultMaterial;
 
         public float Size => _transform.rect.size.x;
+        public Color Color => _image.color;
 
         public void Register(IEntityBuilder builder)
         {

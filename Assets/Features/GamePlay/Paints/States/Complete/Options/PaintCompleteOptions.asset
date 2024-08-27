@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c38269265c324080843ec989ac8d6312, type: 3}
+  m_Name: PaintCompleteOptions
+  m_EditorClassIdentifier: 
+  _assetId: 11
+  _completionCurve:
+    _time: 0.5
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 4.2022915
+        outSlope: 4.2022915
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.018244015
+      - serializedVersion: 3
+        time: 0.50467455
+        value: 1
+        inSlope: 0.013276199
+        outSlope: 0.013276199
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.16896947
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -3.4618466
+        outSlope: -3.4618466
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.043329477
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  _completionColorAdjustment: 100

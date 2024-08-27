@@ -97,6 +97,7 @@ namespace Features.GamePlay
                 var center = area.Position;
                 var color = AreaDataExtensions.GetInterpolatedColor(center, size, colors);
                 area.Renderer.SetColor(color);
+                area.Renderer.SetDirty();
             }
         }
     }

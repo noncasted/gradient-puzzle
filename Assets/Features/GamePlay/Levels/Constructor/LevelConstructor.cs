@@ -52,7 +52,7 @@ namespace Features.GamePlay
 
             foreach (var extracted in areaDatas)
             {
-                var area = PrefabUtility.InstantiatePrefab(_prefab, transform) as Area;
+                var area = (PrefabUtility.InstantiatePrefab(_prefab, transform) as Area)!;
                 area.transform.localPosition = Vector2.zero;
                 spawnedAreas.Add(area);
 
@@ -67,7 +67,6 @@ namespace Features.GamePlay
                 }
 
                 area.Construct(datas);
-#endif
             }
 
             var orderedAreas = spawnedAreas.OrderByDescending(t => t.Position.y).ToList();
@@ -96,7 +95,6 @@ namespace Features.GamePlay
 
             _level.Construct(orderedAreas.ToArray());
 
-#if UNITY_EDITOR
             foreach (var area in orderedAreas)
             {
                 EditorUtility.SetDirty(area);
@@ -104,6 +102,25 @@ namespace Features.GamePlay
             }
 
             EditorUtility.SetDirty(_level);
+            
+            Texture2D GetSource()
+            {
+                var stage = PrefabStageUtility.GetPrefabStage(gameObject);
+                var folderPath = System.IO.Path.GetDirectoryName(stage.assetPath);
+
+                var textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
+
+                foreach (var textureGuid in textureGuids)
+                {
+                    var texturePath = AssetDatabase.GUIDToAssetPath(textureGuid);
+                    var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+
+                    if (texture.name == name)
+                        return texture;
+                }
+
+                throw new Exception($"Texture with name {name} not found in folder {folderPath}");
+            }
 #endif
         }
 
@@ -117,25 +134,6 @@ namespace Features.GamePlay
 
             foreach (var color in colors)
                 DestroyImmediate(color.gameObject);
-        }
-
-        private Texture2D GetSource()
-        {
-            var stage = PrefabStageUtility.GetPrefabStage(gameObject);
-            var folderPath = System.IO.Path.GetDirectoryName(stage.assetPath);
-
-            var textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
-
-            foreach (var textureGuid in textureGuids)
-            {
-                var texturePath = AssetDatabase.GUIDToAssetPath(textureGuid);
-                var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
-
-                if (texture.name == name)
-                    return texture;
-            }
-
-            throw new Exception($"Texture with name {name} not found in folder {folderPath}");
         }
     }
 }

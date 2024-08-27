@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Features.Completion;
 using Features.Services;
 using Global.UI;
 using Internal;
@@ -19,6 +20,7 @@ namespace Features
         private IUIStateMachine _stateMachine;
         private ISettingsUI _settingsUI;
         private ILevelSelectionUI _levelSelectionUI;
+        private ICompletionUI _completion;
 
         public IUIConstraints Constraints => new UIConstraints();
 
@@ -29,8 +31,10 @@ namespace Features
         private void Construct(
             IUIStateMachine stateMachine,
             ISettingsUI settings,
-            ILevelSelectionUI levelSelection)
+            ILevelSelectionUI levelSelection,
+            ICompletionUI completion)
         {
+            _completion = completion;
             _stateMachine = stateMachine;
             _levelSelectionUI = levelSelection;
             _settingsUI = settings;

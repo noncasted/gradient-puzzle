@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e2b4cc1ec040fcb96569d70cc01611, type: 3}
   m_Name: PaintFactoryOptions
   m_EditorClassIdentifier: 
-  _assetId: 4
+  _assetId: 7
   _prefab: {fileID: 2747764827180150308, guid: 71f9505201618f048b4123bc264f0e8b, type: 3}

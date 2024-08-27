@@ -11,7 +11,8 @@ namespace Features.GamePlay
             IPaintDrag drag,
             IPaintDrop drop,
             IPaintReturn @return,
-            IPaintAnchoring anchoring)
+            IPaintAnchoring anchoring,
+            IPaintComplete complete)
         {
             _image = image;
             _spawn = spawn;
@@ -19,6 +20,7 @@ namespace Features.GamePlay
             _drop = drop;
             _return = @return;
             _anchoring = anchoring;
+            _complete = complete;
         }
 
         private readonly IPaintImage _image;
@@ -27,16 +29,22 @@ namespace Features.GamePlay
         private readonly IPaintDrop _drop;
         private readonly IPaintReturn _return;
         private readonly IPaintAnchoring _anchoring;
+        private readonly IPaintComplete _complete;
+
+        private Color _color;
+
+        public Color Color => _color;
 
         public void Construct(Color color)
         {
+            _color = color;
             _image.SetColor(color);
         }
 
         public UniTask Spawn(IPaintTarget target)
         {
             return _spawn.Process(target);
-        } 
+        }
 
         public void Drag(IPaintMoveHandle moveHandle)
         {
@@ -56,6 +64,11 @@ namespace Features.GamePlay
         public void Anchor(IPaintTarget target)
         {
             _anchoring.Enter(target);
+        }
+
+        public UniTask Complete()
+        {
+            return _complete.Process();
         }
 
         public async UniTask Destroy()

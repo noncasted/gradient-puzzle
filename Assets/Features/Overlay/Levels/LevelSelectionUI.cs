@@ -38,7 +38,7 @@ namespace Features
 
         public void OnSetup(IReadOnlyLifetime lifetime)
         {
-            for (var i = 0; i < _levelsStorage.Count; i++)
+            for (var i = 0; i < _levelsStorage.Count(); i++)
             {
                 var entry = Instantiate(_prefab, _scaler.transform);
                 entry.Construct(i + 1);
@@ -50,7 +50,7 @@ namespace Features
                 });
             }
 
-            _scaler.Rescale(_levelsStorage.Count);
+            _scaler.Rescale(_levelsStorage.Count());
         }
 
         public UniTask<LevelSelectionResult> Process(IUIStateHandle handle)
@@ -71,6 +71,10 @@ namespace Features
                 _selected = new UniTaskCompletionSource<int>();
                 handle.InnerLifetime.Listen(() => _selected.TrySetResult(-1));
                 var level = await _selected.Task;
+                
+                if (level == -1)
+                    return;
+                
                 completion.TrySetResult(new LevelSelectionResult(_levelsStorage.Get(level)));
             }
 

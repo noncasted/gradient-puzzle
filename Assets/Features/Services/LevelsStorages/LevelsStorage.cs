@@ -6,16 +6,9 @@ namespace Features.Services
     {
         public LevelsStorage(LevelsStorageOptions options)
         {
-            _levels = options.Objects;
+            Configurations = options.Objects;
         }
 
-        private readonly IReadOnlyList<LevelConfiguration> _levels;
-
-        public int Count => _levels.Count;
-
-        public ILevelConfiguration Get(int levelIndex)
-        {
-            return _levels[levelIndex];
-        }
+        public IReadOnlyList<ILevelConfiguration> Configurations { get; }
     }
 }

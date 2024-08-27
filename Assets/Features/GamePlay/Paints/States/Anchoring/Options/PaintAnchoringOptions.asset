@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af3972cc5c6430c8251db8a76b7f608, type: 3}
   m_Name: PaintAnchoringOptions
   m_EditorClassIdentifier: 
-  _assetId: 6
+  _assetId: 9
   _moveSpeed: 8
   _dragSize: 15
   _dragSizeCurve:

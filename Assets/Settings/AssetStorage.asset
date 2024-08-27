@@ -17,9 +17,12 @@ MonoBehaviour:
     - Features.GamePlay.AreaColorGroupOptions
     - Features.GamePlay.LevelConstructorOptions
     - Features.GamePlay.LevelLoaderOptions
+    - Features.Services.LevelConfiguration
     - Features.GamePlay.PaintFactoryOptions
     - Features.GamePlay.PaintAnchoringDefinition
     - Features.GamePlay.PaintAnchoringOptions
+    - Features.GamePlay.Complete.PaintCompleteDefinition
+    - Features.GamePlay.Complete.PaintCompleteOptions
     - Features.GamePlay.PaintDragDefinition
     - Features.GamePlay.PaintDragOptions
     - Features.GamePlay.PaintDropDefinition
@@ -29,11 +32,11 @@ MonoBehaviour:
     - Features.GamePlay.PaintSpawnDefinition
     - Features.GamePlay.PaintSpawnOptions
     - Features.GamePlay.PaintSelectionOptions
+    - Features.GameLoopCheats
     - Global.GameLoops.BaseGameLoopFactory
     - Features.Common.Setup.GamePlayScene
     - Features.Common.Setup.GamePlayScopeOptions
     - Features.Common.Setup.GamePlayServicesScene
-    - Features.Services.LevelConfiguration
     - Features.Services.LevelsStorageOptions
     - Features.Services.RenderOptions.MaskRenderOptions
     - Global.Audio.GlobalAudioOptions
@@ -54,9 +57,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c9c7fca70885e7541856610601254dc1, type: 2}
     - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
     - {fileID: 11400000, guid: 53eb153d10c191142bb75ea98ed08c5c, type: 2}
+    - {fileID: 11400000, guid: 58c2d2aa85049444e9638766d1d5ec05, type: 2}
     - {fileID: 11400000, guid: c4b33e7c60024d74fb7cf8f5b91a475c, type: 2}
     - {fileID: 11400000, guid: 197697ec1c20cae4da8eec31cf927447, type: 2}
     - {fileID: 11400000, guid: 871e6a892017e6d46b29a785c966910a, type: 2}
+    - {fileID: 11400000, guid: 748e2c6c9dae578488f5f9c6a28d83c0, type: 2}
+    - {fileID: 11400000, guid: fc3d8887d6c607e4b9897268948174ba, type: 2}
     - {fileID: 11400000, guid: 4c250a5f5b09595458b58a4b28159f0a, type: 2}
     - {fileID: 11400000, guid: 81c94a846003e9b498d8b7f00c4b1239, type: 2}
     - {fileID: 11400000, guid: 7162b18c986ff9141b80041dda11e06d, type: 2}
@@ -66,11 +72,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 916c712f4300f9647996403df54ed583, type: 2}
     - {fileID: 11400000, guid: b1eee5710c083f14aa333a513a1d5f1c, type: 2}
     - {fileID: 11400000, guid: ee05f3a9feccb344b93e2126a204a5ab, type: 2}
+    - {fileID: 11400000, guid: d23c09174836f704382c62bc047a8ccd, type: 2}
     - {fileID: 11400000, guid: 2555befb465da1243b3d8e9d8c20bee5, type: 2}
     - {fileID: 11400000, guid: df9dd13e6357b7947b6c5995137ca6d3, type: 2}
     - {fileID: 11400000, guid: ed7b9377ee72f3d4f890782b9df4014a, type: 2}
     - {fileID: 11400000, guid: 006f05fa44c5ca2429051b8363e0db03, type: 2}
-    - {fileID: 11400000, guid: 58c2d2aa85049444e9638766d1d5ec05, type: 2}
     - {fileID: 11400000, guid: 9e585298b0377044f9003412e42de062, type: 2}
     - {fileID: 11400000, guid: 67e17e6c716ada144ac0ff3f561e9514, type: 2}
     - {fileID: 11400000, guid: 087c4e37354bce64a96d6019412879a1, type: 2}

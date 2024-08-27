@@ -46,9 +46,9 @@ namespace Features.GamePlay
 
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
-            _transform.AttachTo(_moveArea.Transform);
-
             await ScaleDown();
+            
+            _transform.AttachTo(_moveArea.Transform);
 
             var shouldMove = true;
             await _updater.RunUpdateAction(lifetime, () => shouldMove, Move);

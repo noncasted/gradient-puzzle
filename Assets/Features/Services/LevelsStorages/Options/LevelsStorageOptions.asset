@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a983c7a154944459f06689e2cfed959, type: 3}
   m_Name: LevelsStorageOptions
   m_EditorClassIdentifier: 
-  _assetId: 28
+  _assetId: 31
   _objects:
   - {fileID: 11400000, guid: 139de8f0544a3cf40bdbcdb530f45583, type: 2}
   - {fileID: 11400000, guid: 427673ff2a8d577468d811ca94d4ca94, type: 2}

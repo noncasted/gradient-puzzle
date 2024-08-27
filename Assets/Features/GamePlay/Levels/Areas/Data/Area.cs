@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Features.Services.RenderOptions;
+using Global.Systems;
 using Internal;
 using UnityEngine;
 
@@ -16,12 +18,14 @@ namespace Features.GamePlay
         [SerializeField] private Vector2 _center;
 
         private readonly ViewableProperty<bool> _isTouched = new();
+        private readonly ViewableProperty<bool> _isCompleted = new();
 
         private Color _color;
         private IPaint _paint;
         private RenderMaskData _maskData;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
+        public IViewableProperty<bool> IsCompleted => _isCompleted;
         public IPaint Paint => _paint;
         public Vector2 Position => _center;
         public RectTransform Transform => _transform;
@@ -72,6 +76,11 @@ namespace Features.GamePlay
         public void SetPaint(IPaint paint)
         {
             _paint = paint;
+
+            if (_paint.Color == _color)
+                _isCompleted.Set(true);
+            else
+                _isCompleted.Set(false);
         }
 
         public void RemovePaint(IPaint paint)
@@ -80,6 +89,7 @@ namespace Features.GamePlay
                 throw new Exception();
 
             _paint = null;
+            _isCompleted.Set(false);
         }
     }
 }

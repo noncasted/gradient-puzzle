@@ -63,6 +63,7 @@ namespace Features.GamePlay
 
                     await _updater.CurveProgression(lifetime, _options.AreaScaleCurve,
                         progress => { _image.SetSize(PaintExtensions.MaxRadius * progress); });
+                    
                     break;
                 }
                 default:

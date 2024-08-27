@@ -1,4 +1,7 @@
-﻿using Features.Services.RenderOptions;
+﻿using Cysharp.Threading.Tasks;
+using Features.Services.RenderOptions;
+using Global.Systems;
+using Internal;
 using UnityEngine;
 
 namespace Features.GamePlay
@@ -7,6 +10,7 @@ namespace Features.GamePlay
     {
         Color Source { get; }
         bool IsAnchor { get; }
+        IViewableProperty<bool> IsCompleted { get; }
 
         void Setup(Color color, RenderMaskData maskData);
     }
