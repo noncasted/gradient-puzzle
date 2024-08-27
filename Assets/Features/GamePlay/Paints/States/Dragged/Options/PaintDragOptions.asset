@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e98a8088164a77b77a52e9d7b990ee, type: 3}
   m_Name: PaintDragOptions
   m_EditorClassIdentifier: 
-  _assetId: 7
+  _assetId: 8
   _moveSpeed: 30
   _dragSize: 30
   _dragSizeCurve:
-    _time: 1
+    _time: 0.2
     _curve:
       serializedVersion: 2
       m_Curve:

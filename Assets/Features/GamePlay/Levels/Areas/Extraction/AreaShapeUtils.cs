@@ -31,46 +31,18 @@ namespace Features.GamePlay
             new(1, -1),
         };
 
-        public static Vector2 GetCenter(List<Vector2> points)
+        public static void NormalizePointsToRect(List<Vector2> points, Vector2 rectSize, Vector2 textureSize)
         {
-            if (points == null || points.Count == 0)
-                return Vector2.zero;
-
-            var minX = float.MaxValue;
-            var maxX = float.MinValue;
-            var minY = float.MaxValue;
-            var maxY = float.MinValue;
-
-            foreach (var point in points)
+            for (var index = 0; index < points.Count; index++)
             {
-                if (point.x < minX) minX = point.x;
-                if (point.x > maxX) maxX = point.x;
-                if (point.y < minY) minY = point.y;
-                if (point.y > maxY) maxY = point.y;
-            }
-
-            var centerX = minX + (maxX - minX) / 2f;
-            var centerY = minY + (maxY - minY) / 2f;
-
-            return new Vector2(centerX, centerY);
-        }
-
-        public static List<Vector2> NormalizePointsToRect(List<Vector2> points, Vector2 rectSize, Vector2 textureSize)
-        {
-            var normalizedPoints = new List<Vector2>();
-
-            foreach (var point in points)
-            {
+                var point = points[index];
                 var normalized = point / textureSize * rectSize;
                 normalized -= rectSize / 2f;
-
-                normalizedPoints.Add(normalized);
+                points[index] = normalized;
             }
-
-            return normalizedPoints;
         }
 
-        public static List<Vector2> SimplifyContour(List<Vector2> points, float minDistance)
+        public static void SimplifyContour(List<Vector2> points, float minDistance)
         {
             for (var i = 0; i < points.Count - 1; i++)
             {
@@ -85,11 +57,9 @@ namespace Features.GamePlay
                     i--;
                 }
             }
-
-            return points;
         }
 
-        public static List<Vector2> ExtractContour(
+        public static List<List<Vector2>> ExtractContours(
             IReadOnlyList<Color32> pixels,
             Vector2Int size,
             int erosionPixels,
@@ -102,40 +72,75 @@ namespace Features.GamePlay
             var outline = GetOutlinePoints(rawArea);
             outline = ValidatePoints(rawArea, outline);
 
-            var contour = new List<Vector2Int>() { outline.First() };
-            var passed = new HashSet<Vector2Int>() { outline.First() };
+            var contours = new List<List<Vector2>>();
 
-            for (var i = 0; i < outline.Count - 1; i++)
+            while (outline.Count > 3)
             {
-                var point = contour.Last();
+                var contour = GetContour();
 
-                var neighbour = GetNeighbour(point);
+                if (contour.Count < 3)
+                    continue;
 
-                if (neighbour == outline.First())
-                    break;
-
-                contour.Add(neighbour);
-                passed.Add(neighbour);
+                contours.Add(contour);
             }
 
-            return contour.Select(t => new Vector2(t.x, t.y)).ToList();
+            return contours;
 
-            Vector2Int GetNeighbour(Vector2Int point)
+            List<Vector2> GetContour()
             {
-                foreach (var direction in ContourDirections)
+                var contour = new List<Vector2Int>() { outline.First() };
+                var passed = new HashSet<Vector2Int>() { outline.First() };
+
+                var first = contour.First();
+
+                while (true)
                 {
-                    var checkPoint = point + direction;
+                    var point = contour.Last();
 
-                    if (outline.Contains(checkPoint) == false)
-                        continue;
+                    var neighbour = GetNeighbour(point);
 
-                    if (passed.Contains(checkPoint) == true)
-                        continue;
+                    if (neighbour == first)
+                        break;
 
-                    return checkPoint;
+                    contour.Add(neighbour);
+                    passed.Add(neighbour);
+                    outline.Remove(neighbour);
+                    
+                    continue;
+
+                    Vector2Int GetNeighbour(Vector2Int from)
+                    {
+                        var passedFirst = false;
+                        
+                        foreach (var direction in ContourDirections)
+                        {
+                            var checkPoint = from + direction;
+
+                            if (checkPoint == first)
+                            {
+                                passedFirst = true;
+                                continue;
+                            }
+                            
+                            if (outline.Contains(checkPoint) == false)
+                                continue;
+
+                            if (passed.Contains(checkPoint) == true)
+                                continue;
+
+                            return checkPoint;
+                        }
+
+                        if (passedFirst == true)
+                            return first;
+                        
+                        throw new Exception();
+                    }
                 }
 
-                throw new Exception();
+                outline.Remove(first);
+
+                return contour.Select(t => new Vector2(t.x, t.y)).ToList();
             }
         }
 

@@ -9,6 +9,5 @@ namespace Features.GamePlay
         bool IsAnchor { get; }
 
         void Setup(Color color, RenderMaskData maskData);
-        void CheckTouch(Vector2 cursorPosition);
     }
 }

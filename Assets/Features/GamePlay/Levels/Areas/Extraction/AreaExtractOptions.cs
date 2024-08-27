@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Features.GamePlay
 {
@@ -10,15 +9,13 @@ namespace Features.GamePlay
             byte colorEpsilon,
             int simplifyIterations,
             float distanceThreshold,
-            int erosionPixels,
-            IReadOnlyList<LevelColorData> levelColors)
+            int erosionPixels)
         {
             RectSize = rectSize;
             ColorEpsilon = colorEpsilon;
             SimplifyIterations = simplifyIterations;
             DistanceThreshold = distanceThreshold;
             ErosionPixels = erosionPixels;
-            LevelColors = levelColors;
         }
 
         public Vector2 RectSize { get; }
@@ -26,7 +23,6 @@ namespace Features.GamePlay
         public int SimplifyIterations { get; }
         public float DistanceThreshold { get; }
         public int ErosionPixels { get; }
-        public IReadOnlyList<LevelColorData> LevelColors { get; }
     }
 
     public readonly struct AreaExtractedColor

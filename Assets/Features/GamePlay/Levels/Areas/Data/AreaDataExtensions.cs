@@ -58,10 +58,44 @@ namespace Features.GamePlay
             var result = accumulatedColor / totalWeight;
             return result;
         }
-        
+
         private static bool IsBetween(this float x, float a, float b)
         {
             return (x - a) * (x - b) < 0;
+        }
+
+        public static Vector2 GetCenter(IReadOnlyList<Vector2> points)
+        {
+            if (points == null || points.Count == 0)
+                return Vector2.zero;
+
+            var minX = float.MaxValue;
+            var maxX = float.MinValue;
+            var minY = float.MaxValue;
+            var maxY = float.MinValue;
+
+            foreach (var point in points)
+            {
+                if (point.x < minX) minX = point.x;
+                if (point.x > maxX) maxX = point.x;
+                if (point.y < minY) minY = point.y;
+                if (point.y > maxY) maxY = point.y;
+            }
+
+            var centerX = minX + (maxX - minX) / 2f;
+            var centerY = minY + (maxY - minY) / 2f;
+
+            return new Vector2(centerX, centerY);
+        }
+
+        public static Vector2 GetCenter(IReadOnlyList<AreaData> datas)
+        {
+            var centers = new List<Vector2>();
+
+            foreach (var data in datas)
+                centers.Add(data.Center);
+            
+            return GetCenter(centers);
         }
     }
 }

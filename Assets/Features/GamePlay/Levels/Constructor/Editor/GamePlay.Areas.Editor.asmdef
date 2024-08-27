@@ -1,0 +1,32 @@
+{
+    "name": "GamePlay.Areas.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4c25c05f410a3a447a75c3b0909152ef",
+        "GUID:01f60cffe1f34ab2a431167c2fa3d728",
+        "GUID:f039cb8c565843dba6da5b3c1ccde7d6",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:5b70f83da6937434491f26e0fd0cd099",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:6ab62fa3a26a4114ba44fa891b5fa123",
+        "GUID:de4e6084e6d474788bb8c799d6b461ec"
+        
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

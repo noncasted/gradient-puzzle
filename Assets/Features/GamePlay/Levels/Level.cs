@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Features.Services.Inputs;
 using Global.Systems;
 using Internal;
@@ -12,13 +12,11 @@ namespace Features.GamePlay
     public class Level : MonoBehaviour, ILevel
     {
         [SerializeField] private Area[] _areas;
-        [SerializeField] private GameObject _colors;
 
         private IUpdater _updater;
         private IGameInput _input;
 
         public IReadOnlyList<IArea> Areas => _areas;
-        public IReadOnlyList<Area> AreasInternal => _areas;
 
         [Inject]
         private void Construct(IUpdater updater, IGameInput input)
@@ -27,19 +25,25 @@ namespace Features.GamePlay
             _updater = updater;
         }
 
+        private void Awake()
+        {
+            var orderedAreas = _areas.OrderByDescending(t => t.Position.y).ToList();
+
+            for (var i = 0; i < orderedAreas.Count; i++)
+            {
+                var area = orderedAreas[i];
+                area.transform.parent = transform;
+                area.transform.SetSiblingIndex(i);
+            }
+        }
+
         public void Construct(Area[] areas)
         {
             _areas = areas;
         }
 
-        private void Awake()
-        {
-            _colors.SetActive(false);
-        }
-
         public void Setup(IReadOnlyLifetime lifetime)
         {
-            
             _updater.RunUpdateAction(lifetime, _ =>
             {
                 foreach (var area in _areas)

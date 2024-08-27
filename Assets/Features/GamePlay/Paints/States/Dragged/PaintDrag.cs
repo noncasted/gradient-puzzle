@@ -65,7 +65,7 @@ namespace Features.GamePlay
                     var size = Mathf.Lerp(startSize, _options.DragSize, factor);
                     _image.SetSize(size);
 
-                    Move(delta, _input.GetInputInRect(handle.Source.Transform) - handle.Source.Position);
+                    Move(delta, _input.GetInputInRect(handle.Source.Transform) - handle.Source.Transform.anchoredPosition);
                 });
             }
 

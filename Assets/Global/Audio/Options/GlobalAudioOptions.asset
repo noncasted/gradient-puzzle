@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98bbdaee86643318593e7c57a337985, type: 3}
   m_Name: GlobalAudioOptions
   m_EditorClassIdentifier: 
-  _assetId: 29
+  _assetId: 30
   _listener: {fileID: 96677895864821523, guid: fd121abeff7b29b4598cc412a2593557, type: 3}
   _player: {fileID: 2906261100337011328, guid: 6d1d667342742be49a9bb648b51c2e5c, type: 3}

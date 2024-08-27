@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assets:
     _keys:
+    - Features.GamePlay.AreaColorGroupOptions
     - Features.GamePlay.LevelConstructorOptions
     - Features.GamePlay.LevelLoaderOptions
     - Features.GamePlay.PaintFactoryOptions
@@ -50,6 +51,7 @@ MonoBehaviour:
     - Global.UI.LanguageTextData
     - Internal.InternalScopeConfig
     _values:
+    - {fileID: 11400000, guid: c9c7fca70885e7541856610601254dc1, type: 2}
     - {fileID: 11400000, guid: 53b5250e8986c364fb2e184504edd8fd, type: 2}
     - {fileID: 11400000, guid: 53eb153d10c191142bb75ea98ed08c5c, type: 2}
     - {fileID: 11400000, guid: c4b33e7c60024d74fb7cf8f5b91a475c, type: 2}

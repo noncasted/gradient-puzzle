@@ -878,17 +878,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _services:
-  - {fileID: 1551741100}
-  - {fileID: 931319916}
-  - {fileID: 508627000}
-  - {fileID: 883709684}
-  - {fileID: 1814905108}
-  - {fileID: 883709683}
   - {fileID: 1551741099}
   - {fileID: 173979951}
-  - {fileID: 1121238893}
-  - {fileID: 1079693734}
+  - {fileID: 508627000}
   - {fileID: 2048732618}
+  - {fileID: 931319916}
+  - {fileID: 1814905108}
+  - {fileID: 883709684}
+  - {fileID: 1551741100}
+  - {fileID: 1121238893}
+  - {fileID: 883709683}
+  - {fileID: 1079693734}
 --- !u!114 &549143449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2378,7 +2378,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000009528119}
+  m_AnchoredPosition: {x: 0, y: 0.0003850384}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1674439400

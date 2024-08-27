@@ -134,6 +134,8 @@ namespace Features
 
             var anchors = level.Areas.Where(t => t.IsAnchor);
 
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
             foreach (var anchor in anchors)
             {
                 var paint = colorToPaint[anchor.Source];

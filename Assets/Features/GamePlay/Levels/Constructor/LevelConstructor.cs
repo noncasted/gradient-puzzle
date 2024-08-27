@@ -1,79 +1,73 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+using UnityEditor;
+#endif
+
 namespace Features.GamePlay
 {
     [DisallowMultipleComponent]
+    [RequireComponent(typeof(RectTransform))]
     public class LevelConstructor : MonoBehaviour
     {
-        [SerializeField] private int _simplifyIterations = 1;
-        [SerializeField] private float _distanceThreshold = 1f;
-        [SerializeField] private int _erosionPixels;
-        [SerializeField] private byte _colorEpsilon = 10;
+        [FoldoutGroup("Options")] [SerializeField]
+        private int _simplifyIterations = 1;
+
+        [FoldoutGroup("Options")] [SerializeField]
+        private float _distanceThreshold = 1f;
+
+        [FoldoutGroup("Options")] [SerializeField]
+        private int _erosionPixels;
+
+        [FoldoutGroup("Options")] [SerializeField]
+        private byte _colorEpsilon = 10;
+
         [SerializeField] private Level _level;
         [SerializeField] private Area _prefab;
-        [SerializeField] private Sprite _source;
-        [SerializeField] private RectTransform _colorsTransform;
-        [SerializeField] private RectTransform _selfTransform;
-
-        [Button]
-        private void UpdateColor()
-        {
-            var colorPoints = GetComponentsInChildren<LevelConstructorColorPoint>(true);
-            var colors = colorPoints.Select(t => new LevelColorData(t.Color, t.Position)).ToArray();
-
-            foreach (var area in _level.AreasInternal)
-            {
-                var color = AreaDataExtensions.GetInterpolatedColor(area.Data.Center, _selfTransform.rect.x, colors);
-                color.a = 1f;
-
-                var data = new AreaData(area.Data.Points.ToArray(), area.Data.Center, color);
-                area.Construct(data);
-            }
-
-#if UNITY_EDITOR
-            foreach (var area in _level.AreasInternal)
-            {
-                UnityEditor.EditorUtility.SetDirty(area);
-                UnityEditor.EditorUtility.SetDirty(area.Renderer);
-            }
-
-            UnityEditor.EditorUtility.SetDirty(_level);
-#endif
-        }
 
         [Button]
         public void Construct()
         {
+#if UNITY_EDITOR
             Clear();
+            var size = GetComponent<RectTransform>().rect.size;
 
-            var colorPoints = GetComponentsInChildren<LevelConstructorColorPoint>(true);
-            var colors = colorPoints.Select(t => new LevelColorData(t.Color, t.Position)).ToArray();
-
-            var spawnedAreas = new List<Area>();
-
-            var extractor = new AreasExtractor(_source.texture);
+            var source = GetSource();
+            var extractor = new AreasExtractor(source);
 
             var options = new AreaExtractOptions(
-                _selfTransform.rect.size,
+                size,
                 _colorEpsilon,
                 _simplifyIterations,
                 _distanceThreshold,
-                _erosionPixels,
-                colors);
+                _erosionPixels);
 
             var areaDatas = extractor.Extract(options);
+            var spawnedAreas = new List<Area>();
 
-            foreach (var data in areaDatas)
+            foreach (var extracted in areaDatas)
             {
-                var area = Instantiate(_prefab, transform);
+                var area = PrefabUtility.InstantiatePrefab(_prefab, transform) as Area;
                 area.transform.localPosition = Vector2.zero;
                 spawnedAreas.Add(area);
 
-                area.Renderer.SetPoints(data.Points);
-                area.Construct(data);
+                var datas = new List<AreaData>();
+
+                foreach (var contour in extracted.Contours)
+                {
+                    var center = AreaDataExtensions.GetCenter(contour);
+
+                    var data = new AreaData(contour.ToArray(), center);
+                    datas.Add(data);
+                }
+
+                area.Construct(datas);
+#endif
             }
 
             var orderedAreas = spawnedAreas.OrderByDescending(t => t.Position.y).ToList();
@@ -85,26 +79,63 @@ namespace Features.GamePlay
                 area.transform.SetSiblingIndex(i);
             }
 
-            _colorsTransform.SetAsLastSibling();
+            var colors = new List<LevelColorData>()
+            {
+                new(Color.white, Vector2.zero),
+                new(Color.black, new Vector2(1080, 1080)),
+                new(Color.red, new Vector2(0, 1080)),
+                new(Color.blue, new Vector2(1080, 0))
+            };
+            
+            foreach (var area in orderedAreas)
+            {
+                var center = area.Position;
+                var color = AreaDataExtensions.GetInterpolatedColor(center, size.x, colors);
+                area.Renderer.SetColor(color);
+            }
+
             _level.Construct(orderedAreas.ToArray());
 
 #if UNITY_EDITOR
             foreach (var area in orderedAreas)
             {
-                UnityEditor.EditorUtility.SetDirty(area);
-                UnityEditor.EditorUtility.SetDirty(area.Renderer);
+                EditorUtility.SetDirty(area);
+                EditorUtility.SetDirty(area.Renderer);
             }
 
-            UnityEditor.EditorUtility.SetDirty(_level);
+            EditorUtility.SetDirty(_level);
 #endif
         }
 
         private void Clear()
         {
             var areas = GetComponentsInChildren<Area>(true);
+            var colors = GetComponentsInChildren<AreaColorGroup>(true);
 
             foreach (var area in areas)
                 DestroyImmediate(area.gameObject);
+
+            foreach (var color in colors)
+                DestroyImmediate(color.gameObject);
+        }
+
+        private Texture2D GetSource()
+        {
+            var stage = PrefabStageUtility.GetPrefabStage(gameObject);
+            var folderPath = System.IO.Path.GetDirectoryName(stage.assetPath);
+
+            var textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
+
+            foreach (var textureGuid in textureGuids)
+            {
+                var texturePath = AssetDatabase.GUIDToAssetPath(textureGuid);
+                var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+
+                if (texture.name == name)
+                    return texture;
+            }
+
+            throw new Exception($"Texture with name {name} not found in folder {folderPath}");
         }
     }
 }

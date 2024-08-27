@@ -1,8 +1,6 @@
 <linker>
 
-    <assembly fullname="Features.Common" preserve="all" />
-    <assembly fullname="GamePlay" preserve="all" />
-    <assembly fullname="Loop" preserve="all" />
-    <assembly fullname="Menu" preserve="all" />
+    <assembly fullname="Features" preserve="all" />
+    <assembly fullname="GamePlay.Areas.Editor" preserve="all" />
 
 </linker>

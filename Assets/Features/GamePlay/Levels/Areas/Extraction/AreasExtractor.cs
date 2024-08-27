@@ -12,10 +12,10 @@ namespace Features.GamePlay
 
         private readonly Texture2D _texture;
 
-        public IReadOnlyList<AreaData> Extract(AreaExtractOptions options)
+        public IReadOnlyList<ExtractedArea> Extract(AreaExtractOptions options)
         {
             var colors = _texture.GetColors(options.ColorEpsilon);
-            var areas = new List<AreaData>();
+            var areas = new List<ExtractedArea>();
 
             foreach (var color in colors)
             {
@@ -26,20 +26,21 @@ namespace Features.GamePlay
             return areas;
         }
 
-        private AreaData ExtractColoredArea(AreaExtractOptions options, AreaExtractedColor sourceColor)
+        private ExtractedArea ExtractColoredArea(AreaExtractOptions options, AreaExtractedColor sourceColor)
         {
             var pixels = _texture.GetPixels32();
             var textureSize = new Vector2Int(_texture.width, _texture.height);
-            var contour = AreaShapeUtils.ExtractContour(pixels, textureSize, options.ErosionPixels, sourceColor);
+            var contours = AreaShapeUtils.ExtractContours(pixels, textureSize, options.ErosionPixels, sourceColor);
 
-            for (var i = 1; i <= options.SimplifyIterations; i++)
-                contour = AreaShapeUtils.SimplifyContour(contour, options.DistanceThreshold * i);
+            foreach (var contour in contours)
+            {
+                for (var i = 1; i <= options.SimplifyIterations; i++)
+                    AreaShapeUtils.SimplifyContour(contour, options.DistanceThreshold * i);
 
-            var normalizedPoints = AreaShapeUtils.NormalizePointsToRect(contour, options.RectSize, textureSize);
-            var center = AreaShapeUtils.GetCenter(normalizedPoints);
-            var color = AreaDataExtensions.GetInterpolatedColor(center, options.RectSize.x, options.LevelColors);
+                AreaShapeUtils.NormalizePointsToRect(contour, options.RectSize, textureSize);
+            }
 
-            return new AreaData(normalizedPoints.ToArray(), center, color);
+            return new ExtractedArea(contours);
         }
     }
 }

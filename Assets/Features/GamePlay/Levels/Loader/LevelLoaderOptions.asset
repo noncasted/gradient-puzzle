@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb1aac02438413c86e6d642958406bd, type: 3}
   m_Name: LevelLoaderOptions
   m_EditorClassIdentifier: 
-  _assetId: 2
+  _assetId: 3
   _areasGradient:
     serializedVersion: 2
     key0: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}

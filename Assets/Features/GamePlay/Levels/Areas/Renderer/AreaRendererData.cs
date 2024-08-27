@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Shapes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +11,9 @@ namespace Features.GamePlay
     {
         [SerializeField] private List<Vector2> _vertices;
         [SerializeField] private List<int> _triangles;
-        
-         public List<Vector2> Vertices => _vertices;
-         public List<int> Triangles => _triangles;
+
+        public List<Vector2> Vertices => _vertices;
+        public List<int> Triangles => _triangles;
 
         public AreaRendererData(List<Vector2> vertices, List<int> triangles)
         {
@@ -25,9 +24,23 @@ namespace Features.GamePlay
 
     public static class AreaRendererExtensions
     {
+        public static float PolygonSignedArea(IReadOnlyList<Vector2> pts)
+        {
+            int count = pts.Count;
+            float sum = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                Vector2 a = pts[i];
+                Vector2 b = pts[(i + 1) % count];
+                sum += (b.x - a.x) * (b.y + a.y);
+            }
+
+            return sum;
+        }
+
         public static AreaRendererData GetAreaRenderData(this IReadOnlyList<Vector2> path, Color color)
         {
-            var isClockwise = ShapesMath.PolygonSignedArea(path) > 0;
+            var isClockwise = PolygonSignedArea(path) > 0;
 
             var clockwiseSign = isClockwise ? 1f : -1f;
             var pointCount = path.Count;
@@ -132,7 +145,7 @@ namespace Features.GamePlay
         public static void Render(this AreaRendererData data, ref VertexHelper vertexHelper, Color color)
         {
             var vertices = new List<UIVertex>(data.Vertices.Count);
-            
+
             for (var i = 0; i < data.Vertices.Count; i++)
             {
                 var v = UIVertex.simpleVert;
