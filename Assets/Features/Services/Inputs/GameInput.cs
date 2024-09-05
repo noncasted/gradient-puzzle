@@ -1,4 +1,5 @@
-﻿using Global.Inputs;
+﻿using Features.GamePlay;
+using Global.Inputs;
 using Global.Systems;
 using Internal;
 using UnityEngine;
@@ -10,23 +11,28 @@ namespace Features.Services.Inputs
     {
         public GameInput(
             IUpdater updater,
+            IPaintMoveArea moveArea,
             IGamePlayInputPositionConverter positionConverter,
             Controls.GamePlayActions actions)
         {
             _updater = updater;
+            _moveArea = moveArea;
             _positionConverter = positionConverter;
             _actions = actions;
         }
 
         private readonly ViewableProperty<bool> _action = new(false);
         private readonly IUpdater _updater;
+        private readonly IPaintMoveArea _moveArea;
         private readonly IGamePlayInputPositionConverter _positionConverter;
         private readonly Controls.GamePlayActions _actions;
 
         private Vector2 _cursorPosition;
+        private Vector2 _worldPosition;
 
         public IViewableProperty<bool> Action => _action;
         public Vector2 CursorPosition => _cursorPosition;
+        public Vector2 WorldPosition => _worldPosition;
 
         public void OnSetup(IReadOnlyLifetime lifetime)
         {
@@ -36,7 +42,9 @@ namespace Features.Services.Inputs
 
         public void OnUpdate(float delta)
         {
-            _cursorPosition = _positionConverter.ScreenToLocal(Mouse.current.position.ReadValue());
+            var screenPosition = Mouse.current.position.ReadValue();
+            _cursorPosition = _positionConverter.ScreenToLocal(screenPosition);
+            _worldPosition = _positionConverter.ScreenToWorld(screenPosition);
         }
         
         public Vector2 GetInputInRect(RectTransform rect)

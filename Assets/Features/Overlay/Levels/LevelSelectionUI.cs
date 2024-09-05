@@ -8,7 +8,7 @@ using VContainer;
 namespace Features
 {
     [DisallowMultipleComponent]
-    public class LevelSelectionUI : MonoBehaviour, ILevelSelectionUI, IScopeSetup, ISceneService
+    public class LevelSelectionUI : MonoBehaviour, ILevelSelectionUI, IScopeSetupCompletion, ISceneService
     {
         [SerializeField] private LevelSelectionEntry _prefab;
         [SerializeField] private LevelSelectionScaler _scaler;
@@ -31,23 +31,20 @@ namespace Features
         {
             builder.RegisterComponent(this)
                 .As<ILevelSelectionUI>()
-                .As<IScopeSetup>();
+                .As<IScopeSetupCompletion>();
 
             gameObject.SetActive(false);
         }
-
-        public void OnSetup(IReadOnlyLifetime lifetime)
+        
+        public void OnSetupCompletion(IReadOnlyLifetime lifetime)
         {
             for (var i = 0; i < _levelsStorage.Count(); i++)
             {
                 var entry = Instantiate(_prefab, _scaler.transform);
-                entry.Construct(i + 1);
+                entry.Construct(lifetime, _levelsStorage.Configurations[i]);
                 var index = i;
 
-                entry.Clicked.Advise(lifetime, () =>
-                {
-                    _selected.TrySetResult(index);
-                });
+                entry.Clicked.Advise(lifetime, () => { _selected.TrySetResult(index); });
             }
 
             _scaler.Rescale(_levelsStorage.Count());
@@ -71,10 +68,10 @@ namespace Features
                 _selected = new UniTaskCompletionSource<int>();
                 handle.InnerLifetime.Listen(() => _selected.TrySetResult(-1));
                 var level = await _selected.Task;
-                
+
                 if (level == -1)
                     return;
-                
+
                 completion.TrySetResult(new LevelSelectionResult(_levelsStorage.Get(level)));
             }
 

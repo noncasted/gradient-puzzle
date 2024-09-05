@@ -2,6 +2,6 @@
 {
     public interface IPaintDrag
     {
-        void Enter(IPaintMoveHandle handle);
+        void Enter();
     }
 }

@@ -11,6 +11,7 @@ namespace Features.GamePlay
         public PaintSpawn(
             IUpdater updater,
             IStateMachine stateMachine,
+            IPaintInterceptor interceptor,
             IPaintTransform transform,
             IPaintImage image,
             PaintSpawnOptions options,
@@ -18,6 +19,7 @@ namespace Features.GamePlay
         {
             _updater = updater;
             _stateMachine = stateMachine;
+            _interceptor = interceptor;
             _transform = transform;
             _image = image;
             _options = options;
@@ -26,6 +28,7 @@ namespace Features.GamePlay
 
         private readonly IUpdater _updater;
         private readonly IStateMachine _stateMachine;
+        private readonly IPaintInterceptor _interceptor;
         private readonly IPaintTransform _transform;
         private readonly IPaintImage _image;
         private readonly PaintSpawnOptions _options;
@@ -34,6 +37,7 @@ namespace Features.GamePlay
 
         public async UniTask Process(IPaintTarget target)
         {
+            _interceptor.Attach(target);
             var handle = _stateMachine.CreateHandle(this);
 
             switch (target)
@@ -41,7 +45,7 @@ namespace Features.GamePlay
                 case IPaintDock dock:
                 {
                     _transform.AttachTo(dock.Transform);
-                    _transform.SetPosition(Vector2.zero);
+                    _transform.SetRectPosition(Vector2.zero);
                     var dockSize = dock.Size;
                     _image.SetSize(_options.StartDockSize);
 

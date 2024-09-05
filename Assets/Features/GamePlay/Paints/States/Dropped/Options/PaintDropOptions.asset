@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3cf272ef08441e9cc1b0a0180a9350, type: 3}
   m_Name: PaintDropOptions
   m_EditorClassIdentifier: 
-  _assetId: 15
+  _assetId: 14
   _dockScaleCurve:
     serializedVersion: 2
     m_Curve:

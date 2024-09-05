@@ -1,7 +1,9 @@
-﻿namespace Features.GamePlay
+﻿using Cysharp.Threading.Tasks;
+
+namespace Features.GamePlay
 {
     public interface IPaintAnchoring
     {
-        void Enter(IPaintTarget target);
+        UniTask Enter(IPaintTarget target);
     }
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941767b204d74cb78cdde64f3476bad0, type: 3}
   m_Name: Level_5
   m_EditorClassIdentifier: 
-  _assetId: 28
+  _assetId: 26
   _prefab: {fileID: 0}

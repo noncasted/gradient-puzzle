@@ -11,6 +11,14 @@ namespace Features.GamePlay
             builder.Register<StateMachine>()
                 .As<IStateMachine>()
                 .As<IScopeSetup>();
+
+            builder.Register<PaintInterceptor>()
+                .As<IPaintInterceptor>()
+                .AsSelf();
+
+            builder.Register<PaintMover>()
+                .WithAsset<PaintMoverOptions>()
+                .As<IPaintMover>();
             
             return builder;
         }

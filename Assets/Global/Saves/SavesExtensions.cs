@@ -15,11 +15,7 @@ namespace Global.Saves
                 new ScoreSaveSerializer(),
                 new TutorialSaveSerializer(),
                 new PurchasesSaveSerializer(),
-                new UpgradesSaveSerializer(),
                 new VolumeSaveSerializer(),
-                new WalletSaveSerializer(),
-                new EnemiesProgressionSaveSerializer(),
-                new PlayerWeaponsSaveSerializer()
             };
         }
     }

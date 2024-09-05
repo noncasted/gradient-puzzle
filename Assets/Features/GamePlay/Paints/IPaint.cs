@@ -10,11 +10,10 @@ namespace Features.GamePlay
         void Construct(Color color);
         
         UniTask Spawn(IPaintTarget target);
-        UniTask Destroy();
-        void Drag(IPaintMoveHandle moveHandle);
-        void Drop(IPaintTarget target);
-        void Return(IPaintTarget target);
-        void Anchor(IPaintTarget target);
+        void Drag();
+        UniTask Anchor(IPaintTarget target);
         UniTask Complete();
+        UniTask Destroy();
+
     }
 }

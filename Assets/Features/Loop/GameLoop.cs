@@ -24,7 +24,7 @@ namespace Features
             ILevelLoader levelLoader,
             IPaintFactory paintFactory,
             IPaintSelection selection,
-            IPaintMover mover,
+            IPaintDragStarter dragStarter,
             IPaintSelectionScaler selectionScaler,
             ICompletionUI completionUI,
             IUpdater updater,
@@ -38,7 +38,7 @@ namespace Features
             _levelLoader = levelLoader;
             _paintFactory = paintFactory;
             _selection = selection;
-            _mover = mover;
+            _dragStarter = dragStarter;
             _selectionScaler = selectionScaler;
             _completionUI = completionUI;
             _updater = updater;
@@ -55,7 +55,7 @@ namespace Features
         private readonly ILevelLoader _levelLoader;
         private readonly IPaintFactory _paintFactory;
         private readonly IPaintSelection _selection;
-        private readonly IPaintMover _mover;
+        private readonly IPaintDragStarter _dragStarter;
         private readonly IPaintSelectionScaler _selectionScaler;
         private readonly ICompletionUI _completionUI;
         private readonly IUpdater _updater;
@@ -138,7 +138,6 @@ namespace Features
             foreach (var paint in paints)
             {
                 var dock = paintToDock[paint];
-                dock.SetPaint(paint);
                 paint.Spawn(dock);
                 await UniTask.Delay(TimeSpan.FromSeconds(PointSpawnDelay));
             }
@@ -150,8 +149,6 @@ namespace Features
             foreach (var anchor in anchors)
             {
                 var paint = colorToPaint[anchor.Source];
-                paintToDock[paint].RemovePaint(paint);
-                anchor.SetPaint(paint);
                 paint.Anchor(anchor);
             }
 
@@ -165,27 +162,20 @@ namespace Features
             var levelLifetime = lifetime.Child();
 
             level.Setup(levelLifetime);
-            _mover.Start(levelLifetime, target);
+            _dragStarter.Start(levelLifetime, target);
             _overlay.ShowReset();
 
-            _cheats.Complete.Advise(levelLifetime, async () =>
+            _cheats.Complete.Advise(lifetime, async () =>
             {
-                foreach (var area in level.Areas)
-                    area.RemovePaint(area.Paint);
+                var tasks = new List<UniTask>();
 
                 foreach (var paint in paints)
                 {
                     var paintTarget = colorToArea[paint.Color];
-                    paint.Anchor(paintTarget);
+                    tasks.Add(paint.Anchor(paintTarget));
                 }
-                
-                await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
 
-                foreach (var paint in paints)
-                {
-                    var paintTarget = colorToArea[paint.Color];
-                    paintTarget.SetPaint(paint);
-                }
+                await UniTask.WhenAll(tasks);
             });
 
             var completionAwaiter = new GameCompletionAwaiter(level.Areas, lifetime);
@@ -197,14 +187,17 @@ namespace Features
             var completionTasks = new List<UniTask>();
 
             var completionOrderedAreas = level.Areas.OrderBy(t => t.Position.y);
-            
+
             foreach (var area in completionOrderedAreas)
             {
-                completionTasks.Add(area.Paint.Complete());
+                completionTasks.Add(area.GetPaint().Complete());
                 await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
             }
 
             await UniTask.WhenAll(completionTasks);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+
+            _levelsStorage.OnLevelPassed(configuration);
 
             await _stateMachine.ProcessChild(_overlay, _completionUI);
 

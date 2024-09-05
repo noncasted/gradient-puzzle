@@ -8,7 +8,8 @@ namespace Features.GamePlay
     {
         [SerializeField] private RectTransform _transform;
 
-        public Vector2 Position => _transform.anchoredPosition;
+        public Vector2 RectPosition => _transform.anchoredPosition;
+        public Vector2 WorldPosition => _transform.position;
 
         public void Register(IEntityBuilder builder)
         {
@@ -26,9 +27,14 @@ namespace Features.GamePlay
             _transform.localRotation = Quaternion.Euler(0, 0, angle);
         }
 
-        public void SetPosition(Vector2 position)
+        public void SetRectPosition(Vector2 position)
         {
             _transform.anchoredPosition = position;
+        }
+
+        public void SetWorldPosition(Vector2 position)
+        {
+            _transform.position = new Vector3(position.x, position.y, _transform.position.z);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEditor;
@@ -106,7 +106,7 @@ namespace Features.GamePlay
             Texture2D GetSource()
             {
                 var stage = PrefabStageUtility.GetPrefabStage(gameObject);
-                var folderPath = System.IO.Path.GetDirectoryName(stage.assetPath);
+                var folderPath = Path.GetDirectoryName(stage.assetPath);
 
                 var textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
 

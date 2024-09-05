@@ -1,82 +1,69 @@
 ﻿using Cysharp.Threading.Tasks;
 using Features.Common.StateMachines.Abstract;
 using Features.Services.Inputs;
-using Global.Systems;
 using Internal;
-using UnityEngine;
 
 namespace Features.GamePlay
 {
     public class PaintDrag : IPaintDrag, IState
     {
         public PaintDrag(
-            IUpdater updater,
+            IPaintMover mover,
+            IPaintDragStarter dragStarter,
             IGameInput input,
             IStateMachine stateMachine,
-            IPaintImage image,
-            IPaintTransform transform,
-            IPaintMoveArea moveArea,
-            PaintDragOptions options,
+            IPaintInterceptor interceptor,
+            IPaintDrop drop,
+            IPaintReturn @return,
             PaintDragDefinition definition)
         {
             Definition = definition;
-            _updater = updater;
+            _mover = mover;
+            _dragStarter = dragStarter;
             _input = input;
+            _drop = drop;
+            _return = @return;
             _stateMachine = stateMachine;
-            _image = image;
-            _transform = transform;
-            _moveArea = moveArea;
-            _options = options;
+            _interceptor = interceptor;
         }
 
-        private readonly IUpdater _updater;
+        private readonly IPaintMover _mover;
+        private readonly IPaintDragStarter _dragStarter;
         private readonly IGameInput _input;
+        private readonly IPaintDrop _drop;
+        private readonly IPaintReturn _return;
         private readonly IStateMachine _stateMachine;
-        private readonly IPaintImage _image;
-        private readonly IPaintTransform _transform;
-        private readonly IPaintMoveArea _moveArea;
-        private readonly PaintDragOptions _options;
+        private readonly IPaintInterceptor _interceptor;
 
         public IStateDefinition Definition { get; }
 
-        public void Enter(IPaintMoveHandle handle)
+        public void Enter()
         {
-            var stateHandle = _stateMachine.CreateHandle(this);
-            var lifetime = stateHandle.Lifetime.Intersect(handle.Lifetime);
-            Process(lifetime, handle).Forget();
+            var handle = _stateMachine.CreateHandle(this);
+            Process(handle.Lifetime).Forget();
         }
 
-        private async UniTask Process(IReadOnlyLifetime lifetime, IPaintMoveHandle handle)
+        private async UniTask Process(IReadOnlyLifetime lifetime)
         {
-            await ScaleDown();
-            _image.ResetMaterial();
-            _transform.AttachTo(_moveArea.Transform);
+            var start = _interceptor.Current;
+            start.PaintHandle.Lock();
+            _interceptor.Detach();
 
-            await _updater.RunUpdateAction(lifetime, delta => Move(delta, _input.CursorPosition));
+            _mover.FollowCursor(lifetime, start).Forget();
 
-            async UniTask ScaleDown()
+            await _input.Action.WaitFalse(lifetime);
+            start.PaintHandle.Unlock();
+
+            var selected = _dragStarter.Selected;
+
+            if (selected == null || selected.GetPaint() != null)
             {
-                var curve = _options.DragSizeCurve.CreateInstance();
-                var startSize = _image.Size;
-
-                await _updater.RunUpdateAction(lifetime, () => !curve.IsFinished, delta =>
-                {
-                    var factor = curve.Step(delta);
-                    var size = Mathf.Lerp(startSize, _options.DragSize, factor);
-                    _image.SetSize(size);
-
-                    Move(delta, _input.GetInputInRect(handle.Source.Transform) - handle.Source.Transform.anchoredPosition);
-                });
+                _return.Enter(start);
             }
-
-            void Move(float delta, Vector2 targetPosition)
+            else
             {
-                var currentPosition = _transform.Position;
-
-                var move = _options.MoveSpeed * delta;
-                var position = Vector2.Lerp(currentPosition, targetPosition, move);
-
-                _transform.SetPosition(position);
+                _interceptor.Attach(selected);
+                _drop.Enter(selected);
             }
         }
     }

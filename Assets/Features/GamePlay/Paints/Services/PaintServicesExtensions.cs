@@ -11,8 +11,8 @@ namespace Features.GamePlay
                 .WithParameter(builder.Scope)
                 .As<IPaintFactory>();
 
-            builder.Register<PaintMover>()
-                .As<IPaintMover>();
+            builder.Register<PaintDragStarter>()
+                .As<IPaintDragStarter>();
 
             return builder;
         }

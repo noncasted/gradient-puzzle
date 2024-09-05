@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using Features.Common.StateMachines.Abstract;
 using Global.Systems;
-using Internal;
 using UnityEngine;
 
 namespace Features.GamePlay
@@ -33,25 +32,20 @@ namespace Features.GamePlay
 
         public IStateDefinition Definition { get; }
 
-        public void Enter(IPaintTarget target)
+        public async UniTask Enter(IPaintTarget target)
         {
             var handle = _stateMachine.CreateHandle(this);
-
-            Process(handle.Lifetime, target).Forget();
-        }
-
-        private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
-        {
+            
             switch (target)
             {
                 case IPaintDock dock:
                 {
                     _transform.AttachTo(dock.Transform);
-                    _transform.SetPosition(Vector2.zero);
+                    _transform.SetRectPosition(Vector2.zero);
                     var dockSize = dock.Size;
                     _image.ResetMaterial();
 
-                    await _updater.CurveProgression(lifetime, _options.DockScaleCurve,
+                    await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
                         progress => { _image.SetSize(dockSize * 2 * progress); });
                     
                     break;
@@ -61,7 +55,7 @@ namespace Features.GamePlay
                     _transform.AttachTo(area.Transform);
                     _image.SetMaterial(area.MaskData.Content);
 
-                    await _updater.CurveProgression(lifetime, _options.AreaScaleCurve,
+                    await _updater.CurveProgression(handle.Lifetime, _options.AreaScaleCurve,
                         progress => { _image.SetSize(PaintExtensions.MaxRadius * progress); });
                     
                     break;

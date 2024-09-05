@@ -20,6 +20,12 @@ namespace Features.GamePlay
             _vertices = vertices;
             _triangles = triangles;
         }
+        
+        public AreaRendererData()
+        {
+            _vertices = new List<Vector2>();
+            _triangles = new List<int>();
+        }
     }
 
     public static class AreaRendererExtensions
@@ -46,7 +52,7 @@ namespace Features.GamePlay
             var pointCount = path.Count;
 
             if (pointCount < 2)
-                throw new Exception();
+                return new AreaRendererData();
 
             var triangleCount = pointCount - 2;
             var triangleIndexCount = triangleCount * 3;
@@ -125,18 +131,9 @@ namespace Features.GamePlay
                         "Invalid polygon triangulation - no convex edges found. Your polygon is likely self-intersecting.\n";
                     s += "Failed point set:\n";
                     s += string.Join("\n", pointsLeft.Select(p => $"[{p.VertexIndex}]: {p.ReflexState}"));
-                    throw new Exception(s);
+                    Debug.LogError(s);
+                    return new AreaRendererData();
                 }
-            }
-
-            var vertices = new List<UIVertex>(pointCount);
-
-            for (var i = 0; i < pointCount; i++)
-            {
-                var v = UIVertex.simpleVert;
-                v.color = color;
-                v.position = path[i];
-                vertices.Add(v);
             }
 
             return new AreaRendererData(path.ToList(), meshTriangles.ToList());

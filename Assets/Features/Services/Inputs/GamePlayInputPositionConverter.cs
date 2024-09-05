@@ -22,8 +22,19 @@ namespace Features.Services.Inputs
                 screenPosition,
                 _camera,
                 out var localPosition);
-            
+
             return localPosition;
+        }
+
+        public Vector2 ScreenToWorld(Vector2 screenPosition)
+        {
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                _area,
+                screenPosition,
+                _camera,
+                out var worldPosition);
+            
+            return worldPosition;
         }
 
         public Vector2 ScreenToLocal(RectTransform rect, Vector2 screenPosition)
@@ -33,7 +44,7 @@ namespace Features.Services.Inputs
                 screenPosition,
                 _camera,
                 out var localPosition);
-            
+
             return localPosition;
         }
     }

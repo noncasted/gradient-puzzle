@@ -6,8 +6,7 @@ namespace Global.Saves
     [Serializable]
     public class LevelsSave
     {
-        public int Selected { get; set; }
-        public int Unlocked { get; set; }
+        public int Unlocked { get; set; } = 1;
     }
 
     public class LevelsSaveSerializer : StorageEntrySerializer<LevelsSave>

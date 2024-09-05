@@ -10,7 +10,8 @@ namespace Features.Services
         {
             builder.Register<LevelsStorage>()
                 .WithAsset<LevelsStorageOptions>()
-                .As<ILevelsStorage>();
+                .As<ILevelsStorage>()
+                .As<IScopeSetupAsync>();
 
             builder.Register<GameInput>()
                 .As<IGameInput>()

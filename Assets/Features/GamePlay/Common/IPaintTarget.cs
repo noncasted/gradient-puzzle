@@ -7,12 +7,20 @@ namespace Features.GamePlay
     public interface IPaintTarget
     {
         IViewableProperty<bool> IsTouched { get; }
-        IPaint Paint { get; }
         Vector2 Position { get; }
         RectTransform Transform { get; }
+        RectTransform CenterTransform { get; }
         RenderMaskData MaskData { get; }
-
-        void SetPaint(IPaint paint);
-        void RemovePaint(IPaint paint);
+        IPaintHandle PaintHandle { get; }
+        
+        bool IsInside(Vector2 position);
+    }
+    
+    public static class PaintTargetExtensions
+    {
+        public static IPaint GetPaint(this IPaintTarget target)
+        {
+            return target.PaintHandle.Paint.Value;
+        }
     }
 }

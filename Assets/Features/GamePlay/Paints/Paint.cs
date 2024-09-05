@@ -7,6 +7,7 @@ namespace Features.GamePlay
     {
         public Paint(
             IPaintImage image,
+            PaintInterceptor interceptor,
             IPaintSpawn spawn,
             IPaintDrag drag,
             IPaintDrop drop,
@@ -15,6 +16,7 @@ namespace Features.GamePlay
             IPaintComplete complete)
         {
             _image = image;
+            _interceptor = interceptor;
             _spawn = spawn;
             _drag = drag;
             _drop = drop;
@@ -24,6 +26,7 @@ namespace Features.GamePlay
         }
 
         private readonly IPaintImage _image;
+        private readonly PaintInterceptor _interceptor;
         private readonly IPaintSpawn _spawn;
         private readonly IPaintDrag _drag;
         private readonly IPaintDrop _drop;
@@ -39,6 +42,7 @@ namespace Features.GamePlay
         {
             _color = color;
             _image.SetColor(color);
+            _interceptor.Construct(this);
         }
 
         public UniTask Spawn(IPaintTarget target)
@@ -46,9 +50,9 @@ namespace Features.GamePlay
             return _spawn.Process(target);
         }
 
-        public void Drag(IPaintMoveHandle moveHandle)
+        public void Drag()
         {
-            _drag.Enter(moveHandle);
+            _drag.Enter();
         }
 
         public void Drop(IPaintTarget target)
@@ -61,9 +65,9 @@ namespace Features.GamePlay
             _return.Enter(target);
         }
 
-        public void Anchor(IPaintTarget target)
+        public UniTask Anchor(IPaintTarget target)
         {
-            _anchoring.Enter(target);
+            return _anchoring.Enter(target);
         }
 
         public UniTask Complete()

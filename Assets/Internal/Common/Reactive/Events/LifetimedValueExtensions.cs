@@ -72,12 +72,15 @@ namespace Internal
                 listener?.Invoke();
             }
         }
-        
+
         public static UniTask WaitFalse(this ILifetimedValue<bool> property, IReadOnlyLifetime lifetime)
         {
+            if (property.Value == false)
+                return UniTask.CompletedTask;
+
             var completion = new UniTaskCompletionSource();
             lifetime.Listen(() => completion.TrySetCanceled());
-            
+
             property.Advise(lifetime, (_, value) => OnChange(value));
 
             return completion.Task;

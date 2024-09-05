@@ -1,5 +1,4 @@
-﻿using System;
-using Features.Services.RenderOptions;
+﻿using Features.Services.RenderOptions;
 using Global.UI;
 using Internal;
 using UnityEngine;
@@ -12,19 +11,20 @@ namespace Features.GamePlay
     {
         [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _paintRoot;
-        
+
         private readonly ViewableProperty<bool> _isTouched = new(false);
-        
+
         private float _size;
-        private IPaint _paint;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
-        public IPaint Paint => _paint;
         public Vector2 Position => _selfTransform.anchoredPosition;
         public RectTransform Transform => _paintRoot;
+        public RectTransform CenterTransform => _paintRoot;
         public RenderMaskData MaskData => null;
+        public IPaintHandle PaintHandle { get; } = new PaintHandle();
+
         public float Size => _size;
-        
+
         public void UpdateTransform(int areaSize)
         {
             var halfSize = areaSize / 2;
@@ -35,7 +35,13 @@ namespace Features.GamePlay
         {
             _size = size;
         }
-        
+
+        public bool IsInside(Vector2 position)
+        {
+            var rect = _selfTransform.rect;
+            return rect.Contains(position);
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             _isTouched.Set(true);
@@ -44,19 +50,6 @@ namespace Features.GamePlay
         public void OnPointerExit(PointerEventData eventData)
         {
             _isTouched.Set(false);
-        }
-        
-        public void SetPaint(IPaint paint)
-        {
-            _paint = paint;
-        }
-
-        public void RemovePaint(IPaint paint)
-        {
-            if (_paint != paint)
-                throw new Exception();
-            
-            _paint = null;
         }
     }
 }

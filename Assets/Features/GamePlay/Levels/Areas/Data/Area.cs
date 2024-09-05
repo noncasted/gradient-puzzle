@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Features.Services.RenderOptions;
-using Global.Systems;
 using Internal;
 using UnityEngine;
 
@@ -16,21 +13,22 @@ namespace Features.GamePlay
         [SerializeField] private AreaCompoundRenderer _renderer;
         [SerializeField] private List<AreaData> _datas;
         [SerializeField] private Vector2 _center;
+        [SerializeField] private RectTransform _centerTransform = new();
 
         private readonly ViewableProperty<bool> _isTouched = new();
         private readonly ViewableProperty<bool> _isCompleted = new();
 
         private Color _color;
-        private IPaint _paint;
         private RenderMaskData _maskData;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IViewableProperty<bool> IsCompleted => _isCompleted;
-        public IPaint Paint => _paint;
         public Vector2 Position => _center;
         public RectTransform Transform => _transform;
+        public RectTransform CenterTransform => _centerTransform;
         public bool IsAnchor => _isAnchor;
         public RenderMaskData MaskData => _maskData;
+        public IPaintHandle PaintHandle { get; } = new PaintHandle();
         public Color Source => _color;
         public AreaCompoundRenderer Renderer => _renderer;
         public IReadOnlyList<AreaData> Datas => _datas;
@@ -44,10 +42,29 @@ namespace Features.GamePlay
 
         public void Setup(Color color, RenderMaskData maskData)
         {
+            _centerTransform.anchoredPosition = _center;
+            _centerTransform.SetAsLastSibling();
             _color = _renderer.Color;
             _maskData = maskData;
             _renderer.SetMaterial(maskData.Area);
             _renderer.SetColor(color);
+
+            var lifetime = this.GetObjectLifetime();
+            PaintHandle.Paint.Advise(lifetime, paint =>
+            {
+                if (paint == null)
+                {
+                    _isCompleted.Set(false);
+                    return;
+                }
+
+                _isCompleted.Set(paint.Color == _color);
+            });
+        }
+
+        public bool IsInside(Vector2 position)
+        {
+            return CheckInside(position);
         }
 
         public void CheckTouch(Vector2 cursorPosition)
@@ -55,41 +72,22 @@ namespace Features.GamePlay
             if (_isAnchor == true)
                 return;
 
-            _isTouched.Set(CheckInside());
+            _isTouched.Set(CheckInside(cursorPosition));
 
             return;
+        }
 
-            bool CheckInside()
+        private bool CheckInside(Vector2 position)
+        {
+            foreach (var data in _datas)
             {
-                foreach (var data in _datas)
-                {
-                    if (data.IsInside(cursorPosition) == false)
-                        continue;
+                if (data.IsInside(position) == false)
+                    continue;
 
-                    return true;
-                }
-
-                return false;
+                return true;
             }
-        }
 
-        public void SetPaint(IPaint paint)
-        {
-            _paint = paint;
-
-            if (_paint.Color == _color)
-                _isCompleted.Set(true);
-            else
-                _isCompleted.Set(false);
-        }
-
-        public void RemovePaint(IPaint paint)
-        {
-            if (_paint != paint)
-                throw new Exception();
-
-            _paint = null;
-            _isCompleted.Set(false);
+            return false;
         }
     }
 }

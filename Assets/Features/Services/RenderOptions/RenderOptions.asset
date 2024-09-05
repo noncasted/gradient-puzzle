@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f242e3cf5183490a85f58472bb0dafdb, type: 3}
   m_Name: RenderOptions
   m_EditorClassIdentifier: 
-  _assetId: 32
+  _assetId: 30
   _datas:
   - _area: {fileID: 2100000, guid: 7fc1e6d49c774bf49a0c4b94a6191ff9, type: 2}
     _content: {fileID: 2100000, guid: 16bc097877624bf47877bb94765df518, type: 2}

@@ -13,7 +13,6 @@ namespace Features.GamePlay
 
             builder.Register<PaintDrag>()
                 .WithAsset<PaintDragDefinition>()
-                .WithAsset<PaintDragOptions>()
                 .As<IPaintDrag>();
 
             builder.Register<PaintDrop>()
@@ -23,12 +22,10 @@ namespace Features.GamePlay
 
             builder.Register<PaintReturn>()
                 .WithAsset<PaintReturnDefinition>()
-                .WithAsset<PaintReturnOptions>()
                 .As<IPaintReturn>();
 
             builder.Register<PaintAnchoring>()
                 .WithAsset<PaintAnchoringDefinition>()
-                .WithAsset<PaintAnchoringOptions>()
                 .As<IPaintAnchoring>();
 
             builder.Register<PaintComplete>()

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0746dea19f24aec82a20ea842ac2e94, type: 3}
   m_Name: GlobalSystemUtilsOptions
   m_EditorClassIdentifier: 
-  _assetId: 42
+  _assetId: 40
   _updaterPrefab: {fileID: 6826459381751982909, guid: 18c76b3b9f68bdd4789e310391350e21, type: 3}

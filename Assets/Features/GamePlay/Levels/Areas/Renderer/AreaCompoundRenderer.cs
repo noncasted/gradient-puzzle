@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -54,7 +53,7 @@ namespace Features.GamePlay
         {
 #if UNITY_EDITOR
             foreach (var areaRenderer in _renderers)
-                UnityEditor.EditorUtility.SetDirty(areaRenderer);
+                EditorUtility.SetDirty(areaRenderer);
 #endif
         }
     }

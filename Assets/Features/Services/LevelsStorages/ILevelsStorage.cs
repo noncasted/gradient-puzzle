@@ -6,6 +6,8 @@ namespace Features.Services
     public interface ILevelsStorage
     {
         IReadOnlyList<ILevelConfiguration> Configurations { get; }
+
+        void OnLevelPassed(ILevelConfiguration configuration);
     }
 
     public static class LevelsStorageExtensions
