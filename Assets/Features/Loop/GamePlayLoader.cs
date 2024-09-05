@@ -4,6 +4,7 @@ using Global.Cameras;
 using Global.Systems;
 using Global.UI;
 using Internal;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Features
@@ -37,6 +38,7 @@ namespace Features
 
         public async UniTask OnLoadedAsync(IReadOnlyLifetime lifetime)
         {
+            Debug.Log($"On game play load started");
             Process(lifetime).Forget();
         }
 

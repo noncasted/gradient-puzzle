@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c38269265c324080843ec989ac8d6312, type: 3}
   m_Name: PaintCompleteOptions
   m_EditorClassIdentifier: 
-  _assetId: 11
+  _assetId: 13
   _completionCurve:
     _time: 0.5
     _curve:

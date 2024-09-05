@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552caf74954a457bb5383a4260af2ea0, type: 3}
   m_Name: PaintCompleteDefinition
   m_EditorClassIdentifier: 
-  _assetId: 10
+  _assetId: 12
   _transitions: []

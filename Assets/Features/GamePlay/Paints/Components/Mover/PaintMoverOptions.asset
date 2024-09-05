@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa7b73a47fc4801806d4b0692327a17, type: 3}
   m_Name: PaintMoverOptions
   m_EditorClassIdentifier: 
-  _assetId: 7
+  _assetId: 9
   _moveSpeed: 10
   _moveSize: 25
   _dockScaleCurve:

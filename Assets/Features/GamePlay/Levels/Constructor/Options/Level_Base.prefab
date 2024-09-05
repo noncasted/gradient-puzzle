@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8513242371590261950}
   - component: {fileID: 46058290364245910}
-  - component: {fileID: 7402545425102957158}
   m_Layer: 5
   m_Name: Level_Base
   m_TagString: Untagged
@@ -50,24 +49,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _areas: []
---- !u!114 &7402545425102957158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7635438577106029839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4dd0f3102e64f4e8fa4d2c15956bd3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _simplifyIterations: 2
-  _distanceThreshold: 5
-  _erosionPixels: 5
-  _colorEpsilon: 10
-  _level: {fileID: 46058290364245910}
-  _prefab: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}
-  _source: {fileID: 0}
-  _colorsTransform: {fileID: 0}
-  _selfTransform: {fileID: 0}

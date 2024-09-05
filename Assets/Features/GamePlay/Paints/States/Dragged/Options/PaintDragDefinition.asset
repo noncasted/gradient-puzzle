@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40109a53ef7044a99c3a4ede045264b2, type: 3}
   m_Name: PaintDragDefinition
   m_EditorClassIdentifier: 
-  _assetId: 12
+  _assetId: 14
   _transitions: []

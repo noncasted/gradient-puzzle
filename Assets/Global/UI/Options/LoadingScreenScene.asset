@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b374c493f19405987886d13d40c2a85, type: 3}
   m_Name: LoadingScreenScene
   m_EditorClassIdentifier: 
-  _assetId: 42
+  _assetId: 39
   _scene:
     m_SceneAsset: {fileID: 102900000, guid: 81db3772e20060e4fa843bd53ffd6f6b, type: 3}
     m_SceneName: UI_LoadingScreen

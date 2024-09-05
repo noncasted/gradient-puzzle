@@ -30,8 +30,8 @@ namespace Features.Services
 
             for (var i = 0; i < _configurations.Count; i++)
             {
-                if (i >= _save.Unlocked)
-                    break;
+                // if (i >= _save.Unlocked)
+                //     break;
 
                 var configuration = _configurations[i];
                 configuration.OnUnlocked();

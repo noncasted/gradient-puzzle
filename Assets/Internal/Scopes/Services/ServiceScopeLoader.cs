@@ -26,13 +26,18 @@ namespace Internal
         {
             var profiler = new ProfilingScope("ServiceScopeLoader");
 
+            profiler.Step("Start");
             var sceneLoader = new ServiceScopeSceneLoader(_sceneLoader);
-            var builder = await CreateBuilder(sceneLoader, data);
+            profiler.Step("Scene loader created");
+
+            var builder = await CreateBuilder(sceneLoader, data, profiler);
 
             await construct.Invoke(builder);
-            await BuildContainer(builder, parent);
+            profiler.Step("Construct callback invoked");
+            await BuildContainer(builder, parent, profiler);
 
             var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
+            profiler.Step("Run event loop construct");
             await eventLoop.RunConstruct(builder.Lifetime);
 
             var loadResult = new ScopeLoadResult(
@@ -51,9 +56,9 @@ namespace Internal
             var profiler = new ProfilingScope("ServiceScopeLoader");
 
             var sceneLoader = new ServiceScopeSceneLoader(_sceneLoader);
-            var builder = await CreateBuilder(sceneLoader, config.GetData(_assets));
+            var builder = await CreateBuilder(sceneLoader, config.GetData(_assets), profiler);
             await config.Construct(builder);
-            await BuildContainer(builder, parent);
+            await BuildContainer(builder, parent, profiler);
 
             var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
             await eventLoop.RunConstruct(builder.Lifetime);
@@ -71,33 +76,42 @@ namespace Internal
 
         private async UniTask<ScopeBuilder> CreateBuilder(
             ISceneLoader sceneLoader,
-            ServiceScopeData scopeData)
+            ServiceScopeData scopeData, 
+            ProfilingScope profiler)
         {
+            profiler.Step("CreateBuilder started");
             var servicesScene = await sceneLoader.Load(scopeData.ServicesScene);
+            profiler.Step("Scene services loaded");
             var binder = new ServiceScopeBinder(servicesScene.Scene);
             var scope = Object.Instantiate(scopeData.ScopePrefab);
+            profiler.Step("Scope instantiated");
             binder.MoveToModules(scope.gameObject);
             var lifetime = new Lifetime();
             var services = new ServiceCollection();
 
+            profiler.Step("CreateBuilder completed");
             return new ScopeBuilder(services, _assets, sceneLoader, binder, scope, lifetime, scopeData.IsMock);
         }
 
         private async UniTask BuildContainer(
             ScopeBuilder builder,
-            LifetimeScope parent)
+            LifetimeScope parent,
+            ProfilingScope profiler)
         {
             var scope = builder.Scope;
-
+            profiler.Step("BuildContainer started");
             using (LifetimeScope.EnqueueParent(parent))
             {
                 using (LifetimeScope.Enqueue(Register))
                 {
-                    await UniTask.RunOnThreadPool(() => scope.Build());
+                    profiler.Step("BuildContainer scope.Build");
+                    scope.Build();
                 }
             }
 
+            profiler.Step("Container built");
             builder.ServicesInternal.Resolve(scope.Container);
+            profiler.Step("BuildContainer completed");
             return;
 
             void Register(IContainerBuilder container)

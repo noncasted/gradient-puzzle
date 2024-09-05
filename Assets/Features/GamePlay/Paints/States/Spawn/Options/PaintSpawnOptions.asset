@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c01323926746dd9a62117b2b19819b, type: 3}
   m_Name: PaintSpawnOptions
   m_EditorClassIdentifier: 
-  _assetId: 17
+  _assetId: 19
   _startDockSize: 10
   _dockScaleTime: 0.5
   _dockScaleCurve:

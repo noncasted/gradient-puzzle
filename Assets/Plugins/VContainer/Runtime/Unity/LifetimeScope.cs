@@ -47,14 +47,11 @@ namespace VContainer.Unity
             }
         }
 
-        [SerializeField]
-        public ParentReference parentReference;
+        [SerializeField] public ParentReference parentReference;
 
-        [SerializeField]
-        public bool autoRun = true;
+        [SerializeField] public bool autoRun = true;
 
-        [SerializeField]
-        protected List<GameObject> autoInjectGameObjects;
+        [SerializeField] protected List<GameObject> autoInjectGameObjects;
 
         string scopeName;
 
@@ -71,6 +68,7 @@ namespace VContainer.Unity
             {
                 newScope.localExtraInstallers.Add(installer);
             }
+
             gameObject.SetActive(true);
             return newScope;
         }
@@ -109,6 +107,7 @@ namespace VContainer.Unity
                 if (found != null)
                     return found;
             }
+
             return null;
         }
 
@@ -135,6 +134,7 @@ namespace VContainer.Unity
             {
                 scopeName = $"{name} ({gameObject.GetInstanceID()})";
             }
+
             try
             {
                 Parent = GetRuntimeParent();
@@ -143,12 +143,13 @@ namespace VContainer.Unity
                     Build();
                 }
             }
-            catch (VContainerParentTypeReferenceNotFound) when(!IsRoot)
+            catch (VContainerParentTypeReferenceNotFound) when (!IsRoot)
             {
                 if (WaitingList.Contains(this))
                 {
                     throw;
                 }
+
                 EnqueueAwake(this);
             }
         }
@@ -158,7 +159,9 @@ namespace VContainer.Unity
             DisposeCore();
         }
 
-        protected virtual void Configure(IContainerBuilder builder) { }
+        protected virtual void Configure(IContainerBuilder builder)
+        {
+        }
 
         public void Dispose()
         {
@@ -182,36 +185,74 @@ namespace VContainer.Unity
 
         public void Build()
         {
+            var profiler = new ProfilingScope("Container");
+            profiler.Step("Build started");
+
             if (Parent == null)
                 Parent = GetRuntimeParent();
 
+            profiler.Step("Parent found");
+
             if (Parent != null)
             {
-                if (VContainerSettings.Instance != null && Parent.IsRoot)
+                profiler.Step("On parent found");
+                try
                 {
-                    if (Parent.Container == null)
-                        Parent.Build();
-                }
+                    if (VContainerSettings.Instance != null && Parent.IsRoot)
+                    {
+                        profiler.Step("Build root");
+                        if (Parent.Container == null)
+                            Parent.Build();
+                    }
 
-                // ReSharper disable once PossibleNullReferenceException
-                Parent.Container.CreateScope(builder =>
+                    profiler.Step("Create scope");
+                    // ReSharper disable once PossibleNullReferenceException
+                    Parent.Container.CreateScope(builder =>
+                    {
+                        profiler.Step("CreateScope started");
+                        builder.RegisterBuildCallback(SetContainer);
+                        builder.ApplicationOrigin = this;
+                        builder.Diagnostics = VContainerSettings.DiagnosticsEnabled
+                            ? DiagnositcsContext.GetCollector(scopeName)
+                            : null;
+                        InstallTo(builder);
+                        profiler.Step("CreateScope completed");
+                    });
+
+                    profiler.Step("Scope created");
+                }
+                catch (Exception e)
                 {
-                    builder.RegisterBuildCallback(SetContainer);
-                    builder.ApplicationOrigin = this;
-                    builder.Diagnostics = VContainerSettings.DiagnosticsEnabled ? DiagnositcsContext.GetCollector(scopeName) : null;
-                    InstallTo(builder);
-                });
+                    profiler.Step("Build failed");
+                    profiler.Dispose();
+                    Debug.LogException(e);
+                    throw;
+                }
             }
             else
             {
-                var builder = new ContainerBuilder
+                try
                 {
-                    ApplicationOrigin = this,
-                    Diagnostics = VContainerSettings.DiagnosticsEnabled ? DiagnositcsContext.GetCollector(scopeName) : null,
-                };
-                builder.RegisterBuildCallback(SetContainer);
-                InstallTo(builder);
-                builder.Build();
+                    profiler.Step("On parent not found");
+
+                    var builder = new ContainerBuilder
+                    {
+                        ApplicationOrigin = this,
+                        Diagnostics = VContainerSettings.DiagnosticsEnabled
+                            ? DiagnositcsContext.GetCollector(scopeName)
+                            : null,
+                    };
+                    builder.RegisterBuildCallback(SetContainer);
+                    InstallTo(builder);
+                    builder.Build();
+                }
+                catch (Exception e)
+                {
+                    profiler.Step("Build failed");
+                    profiler.Dispose();
+                    Debug.LogException(e);
+                    throw;
+                }
             }
 
             AwakeWaitingChildren(this);
@@ -236,11 +277,13 @@ namespace VContainer.Unity
             {
                 childGameObject.transform.SetParent(transform, false);
             }
+
             var child = childGameObject.AddComponent<TScope>();
             if (installer != null)
             {
                 child.localExtraInstallers.Add(installer);
             }
+
             child.parentReference.Object = this;
             childGameObject.SetActive(true);
             return child;
@@ -264,17 +307,20 @@ namespace VContainer.Unity
             {
                 prefab.gameObject.SetActive(false);
             }
+
             var child = Instantiate(prefab, transform, false);
             if (installer != null)
             {
                 child.localExtraInstallers.Add(installer);
             }
+
             child.parentReference.Object = this;
             if (wasActive)
             {
                 prefab.gameObject.SetActive(true);
                 child.gameObject.SetActive(true);
             }
+
             return child;
         }
 
@@ -290,6 +336,7 @@ namespace VContainer.Unity
             {
                 installer.Install(builder);
             }
+
             localExtraInstallers.Clear();
 
             lock (SyncRoot)
@@ -319,6 +366,7 @@ namespace VContainer.Unity
                 {
                     return found;
                 }
+
                 throw new VContainerParentTypeReferenceNotFound(
                     parentReference.Type,
                     $"{name} could not found parent reference of type : {parentReference.Type}");

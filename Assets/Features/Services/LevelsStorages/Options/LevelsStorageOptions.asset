@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a983c7a154944459f06689e2cfed959, type: 3}
   m_Name: LevelsStorageOptions
   m_EditorClassIdentifier: 
-  _assetId: 29
+  _assetId: 26
   _objects:
-  - {fileID: 11400000, guid: 139de8f0544a3cf40bdbcdb530f45583, type: 2}
   - {fileID: 11400000, guid: 427673ff2a8d577468d811ca94d4ca94, type: 2}
   - {fileID: 11400000, guid: 54cb7ce8560dd15418fc5f064fc673ae, type: 2}
-  - {fileID: 11400000, guid: 3dc448043bee98e4497d3adef779436c, type: 2}
-  - {fileID: 11400000, guid: ead9f454178e71d498494f6db40cc5bc, type: 2}
-  - {fileID: 11400000, guid: 0f1d895888691e24d976dcaa0820a875, type: 2}
-  - {fileID: 11400000, guid: f1a05806b6e00444f88a75f04c8899bf, type: 2}
-  - {fileID: 11400000, guid: 58c2d2aa85049444e9638766d1d5ec05, type: 2}
+  - {fileID: 11400000, guid: c902eb376fbd93543a33cb94c4617904, type: 2}
+  - {fileID: 11400000, guid: 139de8f0544a3cf40bdbcdb530f45583, type: 2}
+  - {fileID: 11400000, guid: 74a35509f2cfb78438bad038d8b876a6, type: 2}

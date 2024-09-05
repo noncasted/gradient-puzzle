@@ -9,6 +9,7 @@ using Global.Publisher;
 using Global.Systems;
 using Global.UI;
 using Internal;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Global.Setup
@@ -17,11 +18,14 @@ namespace Global.Setup
     {
         public static UniTask<IServiceScopeLoadResult> LoadGlobal(this IServiceScopeLoader loader, LifetimeScope parent)
         {
+            Debug.Log($"Load global");
             var options = loader.Assets.GetAsset<GlobalScopeOptions>();
             return loader.Load(parent, options.Default, Construct);
 
             UniTask Construct(IScopeBuilder builder)
             {
+                Debug.Log($"Construct globl services");
+
                 builder
                     .AddAudio()
                     .AddCamera()

@@ -14,16 +14,21 @@ namespace Features.Common.Setup
             this IServiceScopeLoader loader,
             LifetimeScope parent)
         {
+            Debug.Log("Process game play load");
             var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
             var scopeLoadResult = await loader.Load(parent, options.Default, Construct);
+            Debug.Log("Game scope loaded");
             await scopeLoadResult.EventLoop.RunLoaded(scopeLoadResult.Lifetime);
 
+            Debug.Log("Game event loop executed");
             var loop = scopeLoadResult.Scope.Container.Resolve<IGameLoop>();
             await loop.Process(scopeLoadResult.Lifetime);
             return scopeLoadResult;
 
             UniTask Construct(IScopeBuilder builder)
             {
+                Debug.Log("Construct game play services");
+
                 builder
                     .AddGamePlayLoop()
                     .AddGamePlayServices()
@@ -31,7 +36,7 @@ namespace Features.Common.Setup
                     .AddPaintServices()
                     .AddSelection();
                 
-                return UniTask.WhenAll(builder.AddScene());
+                return builder.AddScene();
             }
         }
 

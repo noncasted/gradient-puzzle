@@ -67,6 +67,7 @@ namespace Features
 
         public UniTask Process(IReadOnlyLifetime lifetime)
         {
+            Debug.Log($"Start game loop");
             _parentLifetime = lifetime;
             _cameraProvider.SetCamera(_gameCamera.Camera);
 
@@ -187,6 +188,7 @@ namespace Features
             var completionTasks = new List<UniTask>();
 
             var completionOrderedAreas = level.Areas.OrderBy(t => t.Position.y);
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
 
             foreach (var area in completionOrderedAreas)
             {
@@ -195,7 +197,7 @@ namespace Features
             }
 
             await UniTask.WhenAll(completionTasks);
-            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
             _levelsStorage.OnLevelPassed(configuration);
 

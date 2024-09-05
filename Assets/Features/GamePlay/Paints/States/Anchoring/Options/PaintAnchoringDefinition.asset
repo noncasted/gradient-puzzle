@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15b0dbaec7e472986eba609905f8725, type: 3}
   m_Name: PaintAnchoringDefinition
   m_EditorClassIdentifier: 
-  _assetId: 9
+  _assetId: 11
   _transitions: []
