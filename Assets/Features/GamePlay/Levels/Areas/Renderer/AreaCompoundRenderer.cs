@@ -15,6 +15,7 @@ namespace Features.GamePlay
         [SerializeField] private Color _color;
 
         public Color Color => _color;
+        public IReadOnlyList<AreaRenderer> Renderers => _renderers;
 
         public void Construct(IReadOnlyList<AreaData> datas)
         {
@@ -37,7 +38,10 @@ namespace Features.GamePlay
         public void SetMaterial(Material material)
         {
             foreach (var areaRenderer in _renderers)
+            {
                 areaRenderer.material = material;
+                areaRenderer.Outline.maskable = material;
+            }
         }
 
         public void SetColor(Color color)

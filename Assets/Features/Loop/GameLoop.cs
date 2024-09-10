@@ -150,6 +150,7 @@ namespace Features
             foreach (var anchor in anchors)
             {
                 var paint = colorToPaint[anchor.Source];
+                anchor.PaintHandle.Set(paint);
                 paint.Anchor(anchor);
             }
 

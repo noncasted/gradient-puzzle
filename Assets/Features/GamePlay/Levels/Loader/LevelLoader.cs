@@ -29,13 +29,14 @@ namespace Features.GamePlay
             var level = _objectFactory.Create(configuration.Prefab);
 
             _injector.Inject(level);
+            var parent = level.transform;
 
             for (var i = 0; i < level.Areas.Count; i++)
             {
                 var color = _options.AreasGradient.Evaluate(RandomExtensions.RandomOne());
                 var maskData = _maskRenderOptions.Get(i);
                 
-                level.Areas[i].Setup(color, maskData);
+                level.Areas[i].Setup(color, maskData, parent);
             }
 
             return level;

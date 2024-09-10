@@ -40,7 +40,7 @@ namespace Features.GamePlay
             _center = AreaDataExtensions.GetCenter(datas);
         }
 
-        public void Setup(Color color, RenderMaskData maskData)
+        public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
         {
             _centerTransform.anchoredPosition = _center;
             _centerTransform.SetAsLastSibling();
@@ -50,13 +50,26 @@ namespace Features.GamePlay
             _renderer.SetColor(color);
 
             var lifetime = this.GetObjectLifetime();
+
+            foreach (var areaRenderer in _renderer.Renderers)
+            {
+                areaRenderer.Outline.transform.parent = outlineParent;
+                areaRenderer.Outline.transform.SetAsLastSibling();
+            }
+
             PaintHandle.Paint.Advise(lifetime, paint =>
             {
                 if (paint == null)
                 {
+                    foreach (var areaRenderer in _renderer.Renderers)
+                        areaRenderer.Outline.Enable();
+
                     _isCompleted.Set(false);
                     return;
                 }
+
+                foreach (var areaRenderer in _renderer.Renderers)
+                    areaRenderer.Outline.Disable();
 
                 _isCompleted.Set(paint.Color == _color);
             });
@@ -73,8 +86,6 @@ namespace Features.GamePlay
                 return;
 
             _isTouched.Set(CheckInside(cursorPosition));
-
-            return;
         }
 
         private bool CheckInside(Vector2 position)

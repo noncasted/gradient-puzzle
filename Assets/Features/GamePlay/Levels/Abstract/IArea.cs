@@ -10,6 +10,6 @@ namespace Features.GamePlay
         bool IsAnchor { get; }
         IViewableProperty<bool> IsCompleted { get; }
 
-        void Setup(Color color, RenderMaskData maskData);
+        void Setup(Color color, RenderMaskData maskData, Transform outlineParent);
     }
 }
