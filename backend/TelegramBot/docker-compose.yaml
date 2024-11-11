@@ -6,3 +6,11 @@ services:
     build:
       context: .
       dockerfile: Gateway/Dockerfile
+    secrets:
+      - secrets_json
+    volumes:
+      - ./Gateway/secrets.json:/Gateway/secrets.json
+
+secrets:
+  secrets_json:
+    external: true
