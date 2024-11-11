@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 
 namespace GamePlay.Levels

@@ -2,14 +2,25 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/client/[Ll]ibrary/
-/client/[Tt]emp/
-/client/[Oo]bj/
-/client/[Bb]uild/
-/client/[Bb]uilds/
-/client/[Ll]ogs/
-/client/[Uu]ser[Ss]ettings/
-
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Ll]og/
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /client/[Mm]emoryCaptures/
@@ -69,4 +80,5 @@ crashlytics-build.properties
 
 # Temporary auto-generated Android Assets
 /client/[Aa]ssets/[Ss]treamingAssets/aa.meta
-/client/[Aa]ssets/[Ss]treamingAssets/aa/*
+/client/[Aa]ssets/[Ss]treamingAssets/aa/
+/backend/TelegramBot/Gateway/secrets.json

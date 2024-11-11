@@ -55,7 +55,6 @@ namespace Internal
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-#endif
 
             IReadOnlyList<EnvAsset> GetAssets()
             {
@@ -84,6 +83,7 @@ namespace Internal
 
                 return maxIndex;
             }
+#endif
         }
 
 #if UNITY_EDITOR
