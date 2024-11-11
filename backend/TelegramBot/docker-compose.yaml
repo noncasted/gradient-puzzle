@@ -6,7 +6,5 @@ services:
     build:
       context: .
       dockerfile: Gateway/Dockerfile
-    secrets:
-      - secrets_json
     environment:
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
