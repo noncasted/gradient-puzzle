@@ -8,9 +8,5 @@ services:
       dockerfile: Gateway/Dockerfile
     secrets:
       - secrets_json
-    volumes:
-      - ./Gateway/secrets.json:/Gateway/secrets.json
-
-secrets:
-  secrets_json:
-    external: true
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}

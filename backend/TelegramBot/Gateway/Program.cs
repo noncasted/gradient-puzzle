@@ -8,8 +8,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<BuildApi>();
 builder.Services.AddHostedService(sp => sp.GetRequiredService<BuildApi>());
 
-builder.Configuration.AddJsonFile("secrets.json");
-builder.Services.Configure<SecretsOptions>(builder.Configuration.GetSection("Secrets"));
+if (builder.Environment.IsDevelopment() == true)
+{
+    builder.Configuration.AddJsonFile("secrets.json");
+    var options = builder.Configuration.GetSection("Secrets").Get<SecretsOptions>();
+    builder.Services.AddSingleton(options!);
+}
+else
+{
+    var token = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN")!;
+    var options = new SecretsOptions()
+    {
+        Token = token
+    };
+    builder.Services.AddSingleton(options);
+}
 
 var app = builder.Build();
 

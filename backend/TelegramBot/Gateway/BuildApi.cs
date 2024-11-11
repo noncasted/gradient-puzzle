@@ -9,9 +9,9 @@ namespace Gateway;
 
 public class BuildApi : IHostedService, IUpdateHandler
 {
-    public BuildApi(IOptions<SecretsOptions> options)
+    public BuildApi(SecretsOptions options)
     {
-        _bot = new TelegramBotClient(options.Value.Token);
+        _bot = new TelegramBotClient(options.Token);
     }
 
     private const string _gameShortName = "gradient";
