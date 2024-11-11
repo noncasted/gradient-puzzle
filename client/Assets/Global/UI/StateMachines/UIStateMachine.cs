@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using Global.Inputs;
+using Internal;
 
 namespace Global.UI
 {
     public class UIStateMachine : IUIStateMachine
     {
-        public UIStateMachine(IInputConstraintsStorage constraintsStorage)
+        public UIStateMachine(IInputConstraintsStorage constraintsStorage, IReadOnlyLifetime lifetime)
         {
             _constraintsStorage = constraintsStorage;
 
-            var state = new BaseUIState();
+            var state = new BaseUIState(lifetime);
             Base = state;
 
             _handles = new Dictionary<IUIState, IInternalUIStateHandle>()

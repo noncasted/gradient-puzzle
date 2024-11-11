@@ -19,8 +19,6 @@ namespace Overlay
         {
             _text.text = configuration.Index.ToString();
             
-            lifetime.Listen(() => Debug.Log("Terminated"));
-
             configuration.IsUnlocked.View(lifetime, isUnlocked =>
             {
                 if (isUnlocked == true)

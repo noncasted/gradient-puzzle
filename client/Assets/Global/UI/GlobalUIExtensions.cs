@@ -25,6 +25,7 @@ namespace Global.UI
                 .As<ILanguageConverter>();
             
             builder.Register<UIStateMachine>()
+                .WithScopeLifetime()
                 .As<IUIStateMachine>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Global.GameLoops;
 using Global.Setup;
 using Global.UI;
 using Internal;
@@ -10,31 +11,29 @@ namespace Tools
     [DisallowMultipleComponent]
     public abstract class MockBase : MonoBehaviour
     {
-        private IServiceScopeLoadResult _serviceScopeLoadResult;
-        private IServiceScopeLoadResult _childScopeLoadResult;
+        private ILoadedScope _internalScope;
 
         public abstract UniTaskVoid Process();
 
-        protected async UniTask<IServiceScopeLoadResult> BootstrapGlobal()
+        protected async UniTask<ILoadedScope> BootstrapGlobal()
         {
             var internalConfig = AssetsExtensions.Environment.GetAsset<InternalScopeConfig>();
             var internalScopeLoader = new InternalScopeLoader(internalConfig);
-            var internalScope = await internalScopeLoader.Load();
-            var scopeLoader = internalScope.Container.Resolve<IServiceScopeLoader>();
+            _internalScope = internalScopeLoader.Load();
+            var scopeLoader = _internalScope.Container.Container.Resolve<IServiceScopeLoader>();
             
-            var scopeLoadResult = await scopeLoader.LoadGlobalMock(internalScope);
-            await scopeLoadResult.EventLoop.RunLoaded(scopeLoadResult.Lifetime);
-            
-            _serviceScopeLoadResult = scopeLoadResult;
-            _serviceScopeLoadResult.Scope.Container.Resolve<ILoadingScreen>().HideGameLoading();
+            var globalScope = await scopeLoader.LoadGlobal(_internalScope);
+            globalScope.Container.Container.Resolve<ILoadingScreen>().HideGameLoading();
 
-            return _serviceScopeLoadResult;
+            var gamePlayLoader = globalScope.Get<IGamePlayLoader>();
+            await gamePlayLoader.Initialize(globalScope);
+            
+            return globalScope;
         }
 
         private void OnApplicationQuit()
         {
-            _childScopeLoadResult?.Lifetime.Terminate();
-            _serviceScopeLoadResult?.Lifetime.Terminate();
+            _internalScope?.Dispose().Forget();
         }
     }
 }

@@ -70,6 +70,12 @@ namespace Internal
             registration.WithParameter(asset);
             return registration;
         }
+        
+        public static IRegistration WithScopeLifetime(this IServiceRegistration registration)
+        {
+            registration.Registration.WithParameter<IReadOnlyLifetime>(registration.Builder.Lifetime);
+            return registration;
+        }
 
         public static IServiceRegistration WithScriptableRegistry<T1, T2>(this IServiceRegistration registration)
             where T2 : EnvAsset

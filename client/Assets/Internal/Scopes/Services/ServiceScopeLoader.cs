@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
@@ -8,39 +7,47 @@ namespace Internal
 {
     public class ServiceScopeLoader : IServiceScopeLoader
     {
-        public ServiceScopeLoader(IAssetEnvironment assets, ISceneLoader sceneLoader)
+        public ServiceScopeLoader(
+            IAssetEnvironment assets,
+            ISceneLoader sceneLoader,
+            ISceneUnloader sceneUnloader)
         {
             _assets = assets;
             _sceneLoader = sceneLoader;
+            _sceneUnloader = sceneUnloader;
         }
 
         private readonly IAssetEnvironment _assets;
         private readonly ISceneLoader _sceneLoader;
+        private readonly ISceneUnloader _sceneUnloader;
 
         public IAssetEnvironment Assets => _assets;
 
-        public async UniTask<IServiceScopeLoadResult> Load(
-            LifetimeScope parent,
-            ServiceScopeData data,
-            IReadOnlyLifetime parentLifetime,
-            Func<IScopeBuilder, UniTask> construct)
+        public async UniTask<ILoadedScope> Load(ILoadedScope parent, ServiceScopeData data, ConstructCallback construct)
         {
             var profiler = new ProfilingScope("ServiceScopeLoader");
 
             var sceneLoader = new ServiceScopeSceneLoader(_sceneLoader);
-            var builder = await CreateBuilder(sceneLoader, parentLifetime, data);
+            var builder = await CreateBuilder(sceneLoader, parent, data);
 
             await construct.Invoke(builder);
-            BuildContainer(builder, parent);
+            BuildContainer(builder, parent.Container);
 
-            var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
+            var eventLoop = builder.Container.Container.Resolve<IEventLoop>();
             await eventLoop.RunConstruct(builder.Lifetime);
 
-            var loadResult = new ScopeLoadResult(
-                builder.Scope,
+            var disposer = new ServiceScopeDisposer(
                 builder.Lifetime,
                 eventLoop,
-                sceneLoader);
+                sceneLoader.Results,
+                _sceneUnloader,
+                builder.Container);
+
+            var loadResult = new ScopeLoadResult(
+                builder.Container,
+                builder.Lifetime,
+                eventLoop,
+                disposer);
 
             profiler.Dispose();
 
@@ -49,24 +56,22 @@ namespace Internal
 
         private async UniTask<ScopeBuilder> CreateBuilder(
             ISceneLoader sceneLoader,
-            IReadOnlyLifetime parentLifetime,
+            ILoadedScope parent,
             ServiceScopeData scopeData)
         {
             var servicesScene = await sceneLoader.Load(scopeData.ServicesScene);
             var binder = new ServiceScopeBinder(servicesScene.Scene);
             var scope = Object.Instantiate(scopeData.ScopePrefab);
             binder.MoveToModules(scope.gameObject);
-            var lifetime = parentLifetime.Child();
+            var lifetime = parent.Lifetime.Child();
             var services = new ServiceCollection();
 
-            return new ScopeBuilder(services, _assets, sceneLoader, binder, scope, lifetime, scopeData.IsMock);
+            return new ScopeBuilder(services, _assets, sceneLoader, binder, scope, lifetime, parent, scopeData.IsMock);
         }
 
-        private void BuildContainer(
-            ScopeBuilder builder,
-            LifetimeScope parent)
+        private void BuildContainer(ScopeBuilder builder, LifetimeScope parent)
         {
-            var scope = builder.Scope;
+            var scope = builder.Container;
 
             using (LifetimeScope.EnqueueParent(parent))
             {

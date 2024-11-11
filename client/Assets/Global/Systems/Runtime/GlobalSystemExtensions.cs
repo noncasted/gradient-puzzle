@@ -16,9 +16,6 @@ namespace Global.Systems
             builder.RegisterInstance(broker)
                 .As<IMessageBroker>();
 
-            builder.Register<ScopeDisposer>()
-                .As<IScopeDisposer>();
-
             var updaterPrefab = builder.GetAsset<GlobalSystemUtilsOptions>().UpdaterPrefab;
             var updater = builder.Instantiate(updaterPrefab);
 

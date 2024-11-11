@@ -1,4 +1,5 @@
-﻿using VContainer.Unity;
+﻿using Cysharp.Threading.Tasks;
+using VContainer.Unity;
 
 namespace Internal
 {
@@ -6,5 +7,8 @@ namespace Internal
     {
         LifetimeScope Container { get; }
         IReadOnlyLifetime Lifetime { get; }
+
+        UniTask Initialize();
+        UniTask Dispose();
     }
 }

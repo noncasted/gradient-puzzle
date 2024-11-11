@@ -1,4 +1,6 @@
-﻿using GamePlay.Paints;
+﻿using System.Linq;
+using GamePlay.Paints;
+using Global.GameServices;
 using Global.Inputs;
 using Global.Systems;
 using Internal;
@@ -13,19 +15,19 @@ namespace Services
             IUpdater updater,
             IPaintMoveArea moveArea,
             IGamePlayInputPositionConverter positionConverter,
-            Controls.GamePlayActions actions)
+            ILocalUserList users)
         {
             _updater = updater;
             _moveArea = moveArea;
             _positionConverter = positionConverter;
-            _actions = actions;
+            _localUser = users.First().Input;
         }
 
         private readonly ViewableProperty<bool> _action = new(false);
         private readonly IUpdater _updater;
         private readonly IPaintMoveArea _moveArea;
         private readonly IGamePlayInputPositionConverter _positionConverter;
-        private readonly Controls.GamePlayActions _actions;
+        private readonly IUserInput _localUser;
 
         private Vector2 _cursorPosition;
         private Vector2 _worldPosition;
@@ -37,7 +39,7 @@ namespace Services
         public void OnSetup(IReadOnlyLifetime lifetime)
         {
             _updater.Add(lifetime, this);
-            _actions.Action.AttachFlag(lifetime, _action);
+            _localUser.Controls.GamePlay.Action.AttachFlag(lifetime, _action);
         }
 
         public void OnUpdate(float delta)
@@ -46,7 +48,7 @@ namespace Services
             _cursorPosition = _positionConverter.ScreenToLocal(screenPosition);
             _worldPosition = _positionConverter.ScreenToWorld(screenPosition);
         }
-        
+
         public Vector2 GetInputInRect(RectTransform rect)
         {
             return _positionConverter.ScreenToLocal(Mouse.current.position.ReadValue());

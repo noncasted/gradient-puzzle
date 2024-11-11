@@ -1,53 +1,39 @@
 ﻿using Common.Setup;
 using Cysharp.Threading.Tasks;
 using Global.Cameras;
-using Global.Systems;
+using Global.GameLoops;
 using Global.UI;
 using Internal;
-using UnityEngine;
-using VContainer.Unity;
 
 namespace Loop
 {
-    public class GamePlayLoader : IScopeLoadedAsync
+    public class GamePlayLoader : IGamePlayLoader
     {
         public GamePlayLoader(
-            LifetimeScope parent,
             IServiceScopeLoader scopeLoaderFactory,
             ILoadingScreen loadingScreen,
             IGlobalCamera globalCamera,
-            IScopeDisposer scopeDisposer,
             ICurrentCameraProvider currentCameraProvider)
         {
-            _parent = parent;
             _scopeLoaderFactory = scopeLoaderFactory;
             _loadingScreen = loadingScreen;
             _globalCamera = globalCamera;
-            _scopeDisposer = scopeDisposer;
             _currentCameraProvider = currentCameraProvider;
         }
 
-        private readonly LifetimeScope _parent;
         private readonly IServiceScopeLoader _scopeLoaderFactory;
         private readonly ILoadingScreen _loadingScreen;
         private readonly IGlobalCamera _globalCamera;
-        private readonly IScopeDisposer _scopeDisposer;
         private readonly ICurrentCameraProvider _currentCameraProvider;
 
-        private IServiceScopeLoadResult _currentScope;
+        private ILoadedScope _currentScope;
 
-        public async UniTask OnLoadedAsync(IReadOnlyLifetime lifetime)
+        public UniTask Initialize(ILoadedScope parent)
         {
-            Debug.Log($"On game play load started");
-            Process(lifetime).Forget();
+            return LoadGamePlay(parent);
         }
 
-        private async UniTaskVoid Process(IReadOnlyLifetime lifetime)
-        {
-            await LoadGamePlay(lifetime);
-        }
-
-        private async UniTask LoadGamePlay(IReadOnlyLifetime lifetime)
+        private async UniTask LoadGamePlay(ILoadedScope parent)
         {
             _globalCamera.Enable();
             _currentCameraProvider.SetCamera(_globalCamera.Camera);
@@ -55,9 +41,9 @@ namespace Loop
             var unloadTask = UniTask.CompletedTask;
 
             if (_currentScope != null)
-                unloadTask = _scopeDisposer.Unload(_currentScope);
+                unloadTask = _currentScope.Dispose();
 
-            var loadResult = await _scopeLoaderFactory.ProcessGamePlay(_parent);
+            var loadResult = await _scopeLoaderFactory.ProcessGamePlay(parent);
 
             await unloadTask;
             _currentScope = loadResult;

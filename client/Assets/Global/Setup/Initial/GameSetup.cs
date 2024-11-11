@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Global.GameLoops;
 using Internal;
 using UnityEngine;
 using VContainer;
@@ -10,6 +11,8 @@ namespace Global.Setup
     {
         [SerializeField] private InternalScopeConfig _internal;
         [SerializeField] private SetupLoadingScreen _loading;
+        
+        private ILoadedScope _internalScope;
 
         private void Awake()
         {
@@ -20,16 +23,22 @@ namespace Global.Setup
         {
             var profiler = new ProfilingScope("GameSetup");
             var internalScopeLoader = new InternalScopeLoader(_internal);
-            
-            var internalScope = await internalScopeLoader.Load();
-            
-            var scopeLoader = internalScope.Container.Resolve<IServiceScopeLoader>();
-            var globalLoadResult = await scopeLoader.LoadGlobal(internalScope);
-            
-            await globalLoadResult.EventLoop.RunLoaded(globalLoadResult.Lifetime);
+
+            _internalScope = internalScopeLoader.Load();
+
+            var scopeLoader = _internalScope.Container.Container.Resolve<IServiceScopeLoader>();
+            var globalScope = await scopeLoader.LoadGlobal(_internalScope);
+
+            var gamePlayLoader = globalScope.Get<IGamePlayLoader>();
+            await gamePlayLoader.Initialize(globalScope);
 
             _loading.Dispose();
             profiler.Dispose();
+        }
+        
+        private void OnDestroy()
+        {
+            _internalScope.Dispose().Forget();
         }
     }
 }

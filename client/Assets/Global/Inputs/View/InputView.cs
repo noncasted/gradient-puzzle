@@ -12,7 +12,7 @@ namespace Global.Inputs
         {
             var controls = new Controls();
             controls.Enable();
-            var userInput = new UserInput(controls);
+            var userInput = new UserInput(controls, lifetime);
             
             _userConnected.Invoke(userInput);
             lifetime.Listen(userInput.Dispose);

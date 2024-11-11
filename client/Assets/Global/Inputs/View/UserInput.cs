@@ -4,10 +4,10 @@ namespace Global.Inputs
 {
     public class UserInput : IUserInput
     {
-        public UserInput(Controls controls)
+        public UserInput(Controls controls, IReadOnlyLifetime parent)
         {
             _controls = controls;
-            _lifetime = new Lifetime();
+            _lifetime = new Lifetime(parent);
         }
 
         private readonly Controls _controls;

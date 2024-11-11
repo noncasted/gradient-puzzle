@@ -8,7 +8,7 @@ namespace GamePlay.Paints
         {
             builder.Register<PaintFactory>()
                 .WithAsset<PaintFactoryOptions>()
-                .WithParameter(builder.Scope)
+                .WithParameter(builder.Container)
                 .As<IPaintFactory>();
 
             builder.Register<PaintDragStarter>()

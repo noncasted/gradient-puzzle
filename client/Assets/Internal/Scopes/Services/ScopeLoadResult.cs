@@ -1,27 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
 using VContainer.Unity;
 
 namespace Internal
 {
-    public class ScopeLoadResult : IServiceScopeLoadResult
+    public class ScopeLoadResult : ILoadScopeResult
     {
         public ScopeLoadResult(
             LifetimeScope scope,
             ILifetime lifetime,
             IEventLoop eventLoop,
-            ServiceScopeSceneLoader sceneLoader)
+            IScopeDisposer disposer)
         {
-            Scope = scope;
+            _disposer = disposer;
+            Container = scope;
             Lifetime = lifetime;
             EventLoop = eventLoop;
-            SceneLoader = sceneLoader;
-            Scenes = sceneLoader.Results;
         }
 
-        public LifetimeScope Scope { get; }
-        public ILifetime Lifetime { get; }
+        private readonly IScopeDisposer _disposer;
+
+        public LifetimeScope Container { get; }
+        public IReadOnlyLifetime Lifetime { get; }
         public IEventLoop EventLoop { get; }
-        public ServiceScopeSceneLoader SceneLoader { get; }
-        public IReadOnlyList<ISceneLoadResult> Scenes { get; }
+
+        public UniTask Initialize()
+        {
+            return EventLoop.RunLoaded(Lifetime);
+        }
+
+        public UniTask Dispose() => _disposer.Dispose();
     }
 }

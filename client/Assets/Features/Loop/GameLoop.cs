@@ -70,7 +70,6 @@ namespace Loop
 
         public UniTask Process(IReadOnlyLifetime lifetime)
         {
-            Debug.Log($"Start game loop");
             _parentLifetime = lifetime;
             _cameraProvider.SetCamera(_gameCamera.Camera);
 

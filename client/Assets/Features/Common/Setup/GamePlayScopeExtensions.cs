@@ -7,31 +7,23 @@ using Loop;
 using Services;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 namespace Common.Setup
 {
     public static class GamePlayScopeExtensions
     {
-        public static async UniTask<IServiceScopeLoadResult> ProcessGamePlay(
-            this IServiceScopeLoader loader,
-            LifetimeScope parent)
+        public static async UniTask<ILoadedScope> ProcessGamePlay(this IServiceScopeLoader loader, ILoadedScope parent)
         {
-            Debug.Log("Process game play load");
             var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
-            var scopeLoadResult = await loader.Load(parent, options.Default, Construct);
-            Debug.Log("Game scope loaded");
-            await scopeLoadResult.EventLoop.RunLoaded(scopeLoadResult.Lifetime);
+            var scope = await loader.Load(parent, options.Default, Construct);
+            await scope.Initialize();
 
-            Debug.Log("Game event loop executed");
-            var loop = scopeLoadResult.Scope.Container.Resolve<IGameLoop>();
-            await loop.Process(scopeLoadResult.Lifetime);
-            return scopeLoadResult;
+            var loop = scope.Container.Container.Resolve<IGameLoop>();
+            await loop.Process(scope.Lifetime);
+            return scope;
 
             UniTask Construct(IScopeBuilder builder)
             {
-                Debug.Log("Construct game play services");
-
                 builder
                     .AddGamePlayLoop()
                     .AddGamePlayServices()
@@ -43,15 +35,13 @@ namespace Common.Setup
             }
         }
 
-        public static async UniTask<IServiceScopeLoadResult> LoadGameMock(
-            this IServiceScopeLoader loader,
-            LifetimeScope parent)
+        public static async UniTask<ILoadedScope> LoadGameMock(this IServiceScopeLoader loader, ILoadedScope parent)
         {
             var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
-            var scopeLoadResult = await loader.Load(parent, options.Default, Construct);
-            await scopeLoadResult.EventLoop.RunLoaded(scopeLoadResult.Lifetime);
+            var scope = await loader.Load(parent, options.Default, Construct);
+            await scope.Initialize();
 
-            return scopeLoadResult;
+            return scope;
 
             UniTask Construct(IScopeBuilder builder)
             {

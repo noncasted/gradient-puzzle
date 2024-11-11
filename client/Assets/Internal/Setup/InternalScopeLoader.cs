@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -14,34 +13,33 @@ namespace Internal
 
         private readonly IInternalScopeConfig _config;
 
-        public async UniTask<LifetimeScope> Load()
+        public ILoadedScope Load()
         {
             var profiler = new ProfilingScope("InternalScopeLoader");
-
-            var scope = Object.Instantiate(_config.Scope);
+            var container = Object.Instantiate(_config.Scope);
 
             using (LifetimeScope.Enqueue(Register))
-                await UniTask.Create(async () => scope.Build());
+                container.Build();
 
             profiler.Dispose();
 
-            return scope;
+            return new InternalLoadedScope(container, new Lifetime());
 
-            void Register(IContainerBuilder container)
+            void Register(IContainerBuilder containerBuilder)
             {
                 var optionsRegistry = _config.AssetsStorage.Options[_config.Platform];
                 optionsRegistry.CacheRegistry();
                 optionsRegistry.AddOptions(new PlatformOptions(_config.Platform, Application.isMobilePlatform));
-                
-                var assets = new AssetEnvironment(_config.AssetsStorage, optionsRegistry);
-                var builder = new InternalScopeBuilder(assets, container);
 
-                builder
+                var assets = new AssetEnvironment(_config.AssetsStorage, optionsRegistry);
+                var scopeBuilder = new InternalScopeBuilder(assets, containerBuilder);
+
+                scopeBuilder
                     .AddScenes()
                     .AddLogs()
                     .AddScopeLoaders();
-                
-                container.RegisterInstance(assets)
+
+                containerBuilder.RegisterInstance(assets)
                     .As<IAssetEnvironment>();
             }
         }

@@ -12,7 +12,7 @@ namespace Tools
             var globalResult = await BootstrapGlobal();
 
             var scopeLoaderFactory = globalResult.Get<IServiceScopeLoader>();
-            var localResult = await scopeLoaderFactory.LoadGameMock(globalResult.Scope);
+            var localResult = await scopeLoaderFactory.LoadGameMock(globalResult);
 
             var loop = localResult.Get<IGameLoop>();
             loop.Process(localResult.Lifetime).Forget();

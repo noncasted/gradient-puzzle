@@ -6,6 +6,12 @@ namespace Internal
 {
     public class Lifetime : ILifetime
     {
+        public Lifetime(IReadOnlyLifetime parent = null)
+        {
+            _parent = parent;
+        }
+
+        private readonly IReadOnlyLifetime _parent;
         private readonly ModifiableList<Action> _listeners = new();
 
         private CancellationTokenSource _cancellation;
@@ -51,6 +57,7 @@ namespace Internal
                 listener.Invoke();
 
             _listeners.Clear();
+            _parent?.RemoveListener(Terminate);
         }
     }
 }

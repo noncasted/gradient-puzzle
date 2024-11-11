@@ -13,7 +13,7 @@ namespace Internal
 
         public static ILifetime Child(this IReadOnlyLifetime lifetime)
         {
-            var child = new Lifetime();
+            var child = new Lifetime(lifetime);
             lifetime.Listen(child.Terminate);
             return child;
         }
@@ -30,6 +30,9 @@ namespace Internal
             void OnTermination()
             {
                 child.Terminate();
+
+                lifetimeA.RemoveListener(OnTermination);
+                lifetimeB.RemoveListener(OnTermination);
             }
         }
     }

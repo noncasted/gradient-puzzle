@@ -8,9 +8,8 @@ namespace Loop
     {
         protected override void Create(IScopeBuilder builder)
         {
-            Debug.Log("Register game play loader");
             builder.Register<GamePlayLoader>()
-                .As<IScopeLoadedAsync>();
+                .As<IGamePlayLoader>();
         }
     }
 }

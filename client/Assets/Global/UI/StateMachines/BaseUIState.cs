@@ -5,10 +5,10 @@ namespace Global.UI
 {
     public class BaseUIState : IInternalUIStateHandle, IUIState
     {
-        public BaseUIState()
+        public BaseUIState(IReadOnlyLifetime parent)
         {
-            OuterLifetime = new Lifetime();
-            InnerLifetime = new Lifetime();
+            OuterLifetime = new Lifetime(parent);
+            InnerLifetime = new Lifetime(parent);
             Recovered = new ViewableDelegate();
         }
         
