@@ -51,6 +51,7 @@ namespace GamePlay.Paints
                     await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
                         progress => { _image.SetSize(dockSize * 2 * progress); });
                     
+                    _transform.SetRectPosition(dock.CenterTransform.anchoredPosition);
                     break;
                 }
                 case IArea area:
@@ -61,6 +62,7 @@ namespace GamePlay.Paints
                     await _updater.CurveProgression(handle.Lifetime, _options.AreaScaleCurve,
                         progress => { _image.SetSize(PaintExtensions.MaxRadius * progress); });
                     
+                    _transform.SetRectPosition(area.CenterTransform.anchoredPosition);
                     break;
                 }
                 default:

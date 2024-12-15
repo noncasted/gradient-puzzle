@@ -38,75 +38,48 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly PaintMoverOptions _options;
 
-        public async UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target)
+        public UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target, IPaintTarget from)
         {
-            var exitedStart = false;
-            var moveLifetime = lifetime.Child();
-
-            if (_interceptor.Current != null)
-                MoveInsideTarget(_interceptor.Current).Forget();
-            else
-                exitedStart = true;
-            
-            var directionSign = Mathf.Sign(target.position.x - _transform.WorldPosition.x);
-
+            Debug.Log($"Transit");
             var distance = Vector2.Distance(_transform.WorldPosition, target.position);
             var moveTime = _options.TransitTimeCurve.Evaluate(distance);
             var moveCurve = new Curve(moveTime, _options.TransitMoveCurve).CreateInstance();
             var heightCurve = new Curve(moveTime, _options.TransitHeightCurve).CreateInstance();
             var startPosition = _transform.WorldPosition;
+            var directionSign = Mathf.Sign(target.position.x - _transform.WorldPosition.x);
 
-            await _updater.RunUpdateAction(moveLifetime, IsMoved, delta =>
+            var moveTask = _updater.RunUpdateAction(lifetime, IsCompleted, Move);
+
+            if (from != null)
+            {
+                var scaleTask = ScaleDown(lifetime, from);
+                return UniTask.WhenAll(moveTask, scaleTask);
+            }
+
+            return moveTask;
+
+            void Move(float delta)
             {
                 var moveFactor = moveCurve.Step(delta);
                 var heightFactor = heightCurve.Step(delta);
                 var height = Mathf.Lerp(0, _options.TransitHeight, heightFactor) * directionSign;
                 var position = Vector2.Lerp(startPosition, target.position, moveFactor);
                 position.x += height;
+                Debug.Log($"{startPosition} {position} {distance}");
                 _transform.SetWorldPosition(position);
-            });
-
-            moveLifetime.Terminate();
-            return;
-
-            async UniTask MoveInsideTarget(IPaintTarget paintTarget)
-            {
-                var startSize = _image.Size;
-                var curve = paintTarget switch
-                {
-                    IArea => _options.AreaScaleCurve.CreateInstance(),
-                    IPaintDock => _options.DockScaleCurve.CreateInstance(),
-                    _ => throw new ArgumentOutOfRangeException(nameof(paintTarget))
-                };
-
-                await _updater.RunUpdateAction(
-                    moveLifetime,
-                    () => paintTarget.IsInside(_transform.RectPosition) && !curve.IsFinished,
-                    delta =>
-                    {
-                        var factor = curve.Step(delta);
-                        var size = Mathf.Lerp(startSize, _options.MoveSize, factor);
-                        _image.SetSize(size);
-                    });
-
-                _image.ResetMaterial();
-                _transform.AttachTo(_moveArea.Transform);
-                _image.SetSize(_options.MoveSize);
-                exitedStart = true;
             }
 
-            bool IsMoved()
+            bool IsCompleted()
             {
-                if (exitedStart == false)
-                    return true;
-
-                return moveCurve.IsFinished == false;
+                distance = Vector2.Distance(_transform.WorldPosition, target.position);
+                Debug.Log($"Distance: {distance}");
+                return distance > float.Epsilon;
             }
         }
 
         public async UniTask FollowCursor(IReadOnlyLifetime lifetime, IPaintTarget from)
         {
-            MoveInsideTarget(from).Forget();
+            ScaleDown(lifetime, from).Forget();
 
             await _updater.RunUpdateAction(lifetime, delta =>
             {
@@ -114,33 +87,48 @@ namespace GamePlay.Paints
                 var position = Vector2.Lerp(_transform.WorldPosition, targetPosition, _options.MoveSpeed * delta);
                 _transform.SetWorldPosition(position);
             });
+        }
 
-            return;
+        private async UniTask ScaleDown(IReadOnlyLifetime lifetime, IPaintTarget from)
+        {
+            var curve = GetScaleCurve(from);
+            var curveTime = curve.Time;
+            var curveTimer = 0f;
+            var progress = 0f;
+            var startDistance = from.GetMinDistanceToBorder(_transform.RectPosition);
 
-            async UniTask MoveInsideTarget(IPaintTarget paintTarget)
+            await _updater.RunUpdateAction(lifetime, () => progress >= 1f, delta =>
             {
-                var startSize = _image.Size;
-                var curve = paintTarget switch
-                {
-                    IArea => _options.AreaScaleCurve.CreateInstance(),
-                    IPaintDock => _options.DockScaleCurve.CreateInstance(),
-                    _ => throw new ArgumentOutOfRangeException(nameof(paintTarget))
-                };
+                curveTimer += delta;
+                progress = GetProgress();
+                var factor = curve.Evaluate(progress);
+                var size = Mathf.Lerp(_options.MoveSize, _image.Size, factor);
+                _image.SetSize(size);
+            });
 
-                await _updater.RunUpdateAction(
-                    lifetime,
-                    () => paintTarget.IsInside(_transform.RectPosition) && !curve.IsFinished,
-                    delta =>
-                    {
-                        var factor = curve.Step(delta);
-                        var size = Mathf.Lerp(startSize, _options.MoveSize, factor);
-                        _image.SetSize(size);
-                    });
+            _image.ResetMaterial();
+            _transform.AttachTo(_moveArea.Transform);
+            _image.SetSize(_options.MoveSize);
 
-                _image.ResetMaterial();
-                _transform.AttachTo(_moveArea.Transform);
-                _image.SetSize(_options.MoveSize);
+            float GetProgress()
+            {
+                var borderDistance = from.GetMinDistanceToBorder(_transform.RectPosition);
+                var borderProgress = Mathf.Clamp01(1f - (borderDistance / startDistance));
+
+                var curveProgress = curveTimer / curveTime;
+
+                return Mathf.Max(borderProgress, curveProgress);
             }
+        }
+
+        private Curve GetScaleCurve(IPaintTarget target)
+        {
+            return target switch
+            {
+                IArea area => _options.AreaScaleCurve,
+                IPaintDock dock => _options.DockScaleCurve,
+                _ => throw new ArgumentOutOfRangeException(nameof(target))
+            };
         }
     }
 }

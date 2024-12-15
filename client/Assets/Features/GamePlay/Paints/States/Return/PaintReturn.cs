@@ -37,7 +37,7 @@ namespace GamePlay.Paints
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
             target.PaintHandle.Lock();
-            await _mover.TransitTo(lifetime, target.CenterTransform);
+            await _mover.TransitTo(lifetime, target.CenterTransform, _interceptor.Current);
             _interceptor.Attach(target);
             target.PaintHandle.Unlock();
             

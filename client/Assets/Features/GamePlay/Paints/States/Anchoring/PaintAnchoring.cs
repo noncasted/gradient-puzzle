@@ -13,11 +13,11 @@ namespace GamePlay.Paints
             IPaintDrop drop,
             PaintAnchoringDefinition definition)
         {
-            Definition = definition;
             _mover = mover;
             _interceptor = interceptor;
             _stateMachine = stateMachine;
             _drop = drop;
+            Definition = definition;
         }
 
         private readonly IPaintMover _mover;
@@ -31,7 +31,7 @@ namespace GamePlay.Paints
         {
             var handle = _stateMachine.CreateHandle(this);
             
-            await _mover.TransitTo(handle.Lifetime, target.CenterTransform);
+            await _mover.TransitTo(handle.Lifetime, target.CenterTransform, _interceptor.Current);
             await _drop.Enter(target);
             
             _interceptor.Detach();

@@ -43,6 +43,20 @@ namespace GamePlay.Selections
             return rect.Contains(position);
         }
 
+        public float GetMinDistanceToBorder(Vector2 position)
+        {
+            var magnitude = position.magnitude;
+            var rect = _selfTransform.rect;
+
+            var halfWidth = rect.width / 2;
+            var distance = halfWidth - magnitude;
+
+            if (distance < 0)
+                return 0;
+            
+            return distance;
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             _isTouched.Set(true);

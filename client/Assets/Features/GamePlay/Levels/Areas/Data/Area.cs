@@ -43,7 +43,6 @@ namespace GamePlay.Levels
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
         {
-            _centerTransform.anchoredPosition = _center;
             _centerTransform.SetAsLastSibling();
             _color = _renderer.Color;
             _maskData = maskData;
@@ -79,6 +78,21 @@ namespace GamePlay.Levels
         public bool IsInside(Vector2 position)
         {
             return CheckInside(position);
+        }
+
+        public float GetMinDistanceToBorder(Vector2 position)
+        {
+            var minDistance = float.MaxValue;
+
+            foreach (var data in _datas)
+            {
+                var distance = data.GetMinDistanceToBorder(position);
+
+                if (distance < minDistance)
+                    minDistance = distance;
+            }
+
+            return minDistance;
         }
 
         public void CheckTouch(Vector2 cursorPosition)

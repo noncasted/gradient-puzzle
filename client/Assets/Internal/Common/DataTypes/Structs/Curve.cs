@@ -37,23 +37,25 @@ namespace Internal
     {
         public CurveInstance(ICurve curve)
         {
-            _curve = curve;
+            Curve = curve;
             _progress = 0f;
         }
 
-        private readonly ICurve _curve;
 
         private float _progress;
+        
+        public readonly ICurve Curve;
         public bool IsFinished => Mathf.Approximately(_progress, 1f);
+        public float Progress => _progress;
 
         public float Step(float delta)
         {
-            _progress += delta / _curve.Time;
+            _progress += delta / Curve.Time;
 
             if (_progress > 1f)
                 _progress = 1f;
 
-            return _curve.Evaluate(_progress);
+            return Curve.Evaluate(_progress);
         }
     }
 

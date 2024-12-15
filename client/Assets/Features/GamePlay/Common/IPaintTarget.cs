@@ -15,6 +15,7 @@ namespace GamePlay.Common
         IPaintHandle PaintHandle { get; }
         
         bool IsInside(Vector2 position);
+        float GetMinDistanceToBorder(Vector2 position);
     }
     
     public static class PaintTargetExtensions

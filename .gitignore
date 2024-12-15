@@ -2,25 +2,25 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Ll]og/
+/client/[Ll]ibrary/
+/client/[Tt]emp/
+/client/[Oo]bj/
+/client/[Bb]uild/
+/client/[Bb]uilds/
+/client/[Ll]ogs/
+/client/[Uu]ser[Ss]ettings/
+/client/[Dd]ebug/
+/client/[Dd]ebugPublic/
+/client/[Rr]elease/
+/client/[Rr]eleases/
+/backend/**/x64/
+/backend/**/x86/
+/backend/**/[Ww][Ii][Nn]32/
+/backend/**/[Aa][Rr][Mm]/
+/backend/**/[Aa][Rr][Mm]64/
+/backend/**/bld/
+/backend/**/[Bb]in/
+/backend/**/[Ll]og/
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /client/[Mm]emoryCaptures/
@@ -73,7 +73,7 @@ secrets.json
 *.app
 
 # Crashlytics generated file
-crashlytics-build.properties
+/client/crashlytics-build.properties
 
 # Packed Addressables
 /client/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*

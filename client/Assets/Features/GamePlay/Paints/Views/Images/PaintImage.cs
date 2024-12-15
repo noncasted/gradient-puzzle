@@ -18,6 +18,7 @@ namespace GamePlay.Paints
         public void Register(IEntityBuilder builder)
         {
             _defaultMaterial = _image.material;
+            
             builder.RegisterComponent(this)
                 .As<IPaintImage>();
         }

@@ -5,6 +5,22 @@ namespace GamePlay.Levels
 {
     public static class AreaDataExtensions
     {
+        public static float GetMinDistanceToBorder(this AreaData data, Vector2 position)
+        {
+            var minDistance = float.MaxValue;
+
+            foreach (var point in data.Points)
+            {
+                var distance = Vector2.Distance(position, point);
+
+                if (distance < minDistance)
+                    minDistance = distance;
+            }
+
+            return minDistance;
+
+         }
+        
         public static bool IsInside(this AreaData data, Vector2 position)
         {
             if (data.Points.Count < 3)
