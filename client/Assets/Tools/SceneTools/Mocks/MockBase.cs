@@ -25,8 +25,8 @@ namespace Tools
             var globalScope = await scopeLoader.LoadGlobal(_internalScope);
             globalScope.Container.Container.Resolve<ILoadingScreen>().HideGameLoading();
 
-            var gamePlayLoader = globalScope.Get<IGamePlayLoader>();
-            await gamePlayLoader.Initialize(globalScope);
+            // var gamePlayLoader = globalScope.Get<IGamePlayLoader>();
+            // await gamePlayLoader.Initialize(globalScope);
             
             return globalScope;
         }

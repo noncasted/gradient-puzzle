@@ -8,7 +8,13 @@ using UnityEngine.EventSystems;
 namespace GamePlay.Selections
 {
     [DisallowMultipleComponent]
-    public class PaintDock : MonoBehaviour, IPaintDock, IPointerEnterHandler, IPointerExitHandler
+    public class PaintDock : 
+        MonoBehaviour, 
+        IPaintDock,
+        IPointerEnterHandler,
+        IPointerExitHandler,
+        IPointerDownHandler,
+        IPointerUpHandler
     {
         [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _paintRoot;
@@ -63,6 +69,16 @@ namespace GamePlay.Selections
         }
 
         public void OnPointerExit(PointerEventData eventData)
+        {
+            _isTouched.Set(false);
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            _isTouched.Set(true);
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
         {
             _isTouched.Set(false);
         }

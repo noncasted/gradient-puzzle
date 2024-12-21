@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using GamePlay.Common;
 using Internal;
 using Services;
+using UnityEngine;
 
 namespace GamePlay.Paints
 {
@@ -51,10 +52,9 @@ namespace GamePlay.Paints
             _interceptor.Detach();
 
             _mover.FollowCursor(lifetime, start).Forget();
-
             await _input.Action.WaitFalse(lifetime);
             start.PaintHandle.Unlock();
-
+            
             var selected = _dragStarter.Selected;
 
             if (selected == null)

@@ -9,9 +9,9 @@ using UnityEngine.InputSystem;
 
 namespace Services
 {
-    public class GameInput : IGameInput, IScopeSetup, IUpdatable
+    public class DesktopGameInput : IGameInput, IScopeSetup, IUpdatable
     {
-        public GameInput(
+        public DesktopGameInput(
             IUpdater updater,
             IPaintMoveArea moveArea,
             IGamePlayInputPositionConverter positionConverter,
@@ -44,6 +44,7 @@ namespace Services
 
         public void OnUpdate(float delta)
         {
+            
             var screenPosition = Mouse.current.position.ReadValue();
             _cursorPosition = _positionConverter.ScreenToLocal(screenPosition);
             _worldPosition = _positionConverter.ScreenToWorld(screenPosition);

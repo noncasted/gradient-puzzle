@@ -29,6 +29,9 @@ namespace Internal
 
         public void Set(T value)
         {
+            if (_value?.Equals(value) == true)
+                return;
+            
             _lifetime?.Terminate();
 
             _lifetime = new Lifetime();

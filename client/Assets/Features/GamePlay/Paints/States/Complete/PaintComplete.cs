@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GamePlay.Paints
 {
-    public class PaintComplete : MonoBehaviour, IPaintComplete, IState
+    public class PaintComplete : IPaintComplete, IState
     {
         public PaintComplete(
             IStateMachine stateMachine,

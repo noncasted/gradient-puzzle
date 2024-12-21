@@ -38,7 +38,7 @@ namespace Common.Setup
         public static async UniTask<ILoadedScope> LoadGameMock(this IServiceScopeLoader loader, ILoadedScope parent)
         {
             var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
-            var scope = await loader.Load(parent, options.Default, Construct);
+            var scope = await loader.Load(parent, options.Mock, Construct);
             await scope.Initialize();
 
             return scope;

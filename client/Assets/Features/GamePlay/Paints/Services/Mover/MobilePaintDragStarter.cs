@@ -2,12 +2,13 @@
 using GamePlay.Common;
 using Internal;
 using Services;
+using UnityEngine;
 
 namespace GamePlay.Paints
 {
-    public class PaintDragStarter : IPaintDragStarter
+    public class MobilePaintDragStarter : IPaintDragStarter
     {
-        public PaintDragStarter(IGameInput input)
+        public MobilePaintDragStarter(IGameInput input)
         {
             _input = input;
         }
@@ -16,11 +17,14 @@ namespace GamePlay.Paints
 
         private IPaintTarget _selected;
         private IViewableProperty<bool> _action;
+        private IPaint _currentPaint;
 
         public IPaintTarget Selected => _selected;
 
         public void Start(IReadOnlyLifetime lifetime, IReadOnlyList<IPaintTarget> targets)
         {
+            _selected = null;
+            
             foreach (var target in targets)
             {
                 target.IsTouched.Advise(lifetime, isTouched =>
@@ -28,6 +32,7 @@ namespace GamePlay.Paints
                     if (isTouched == true)
                     {
                         _selected = target;
+                        OnActionPressed(true);
                     }
                     else
                     {
@@ -37,15 +42,31 @@ namespace GamePlay.Paints
                 });
             }
 
-            _input.Action.AdviseTrue(lifetime, OnActionPressed);
+            _input.Action.Advise(lifetime, OnActionPressed);
         }
 
-        private void OnActionPressed()
+        private void OnActionPressed(bool isPressed)
         {
-            if (_selected?.GetPaint() == null)
+            if (isPressed == false)
+            {
+                _currentPaint = null;
+                return;
+            }
+            
+            if (_selected == null)
+                return;
+            
+            if (_input.Action.Value == false)
+                return;
+            
+            if (_currentPaint != null)
+                return;
+            
+            if (_selected.GetPaint() == null)
                 return;
 
-            _selected.GetPaint().Drag();
+            _currentPaint = _selected.GetPaint();
+            _currentPaint.Drag();
         }
     }
 }

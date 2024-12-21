@@ -11,9 +11,20 @@ namespace Services
                 .As<ILevelsStorage>()
                 .As<IScopeSetupAsync>();
 
-            builder.Register<GameInput>()
-                .As<IGameInput>()
-                .As<IScopeSetup>();
+            var platformOptions = builder.GetOptions<PlatformOptions>();
+         
+            if (platformOptions.IsMobile == true)
+            {
+                builder.Register<MobileGameInput>()
+                    .As<IGameInput>()
+                    .As<IScopeSetup>();
+            }
+            else
+            {
+                builder.Register<DesktopGameInput>()
+                    .As<IGameInput>()
+                    .As<IScopeSetup>();
+            }
 
             builder.RegisterAsset<MaskRenderOptions>()
                 .As<IMaskRenderOptions>();

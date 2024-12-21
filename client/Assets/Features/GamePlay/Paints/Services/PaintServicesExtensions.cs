@@ -12,9 +12,19 @@ namespace GamePlay.Paints
                 .WithParameter(builder.Container)
                 .As<IPaintFactory>();
 
-            builder.Register<PaintDragStarter>()
-                .As<IPaintDragStarter>();
-
+            var platformOptions = builder.GetOptions<PlatformOptions>();
+            
+            if (platformOptions.IsMobile == true)
+            {
+                builder.Register<MobilePaintDragStarter>()
+                    .As<IPaintDragStarter>();
+            }
+            else
+            {
+                builder.Register<DesktopPaintDragStarter>()
+                    .As<IPaintDragStarter>();
+            }
+            
             builder.Register<PaintCollection>()
                 .As<IPaintCollection>();
             
