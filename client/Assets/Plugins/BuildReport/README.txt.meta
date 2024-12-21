@@ -5,5 +5,5 @@ AssetOrigin:
   productId: 8162
   packageName: Build Report Tool
   packageVersion: 3.11.11
-  assetPath: Assets/BuildReport/README.txt
+  assetPath: Assets/Plugins/BuildReport/README.txt
   uploadId: 682110

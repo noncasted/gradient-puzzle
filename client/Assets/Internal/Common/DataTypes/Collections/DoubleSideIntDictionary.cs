@@ -27,6 +27,18 @@ namespace Internal
             Keys = keys;
         }
         
+        public DoubleSideIntDictionary(IReadOnlyDictionary<int, TValue> source)
+        {
+            var keys = new Dictionary<TValue, int>();
+
+            foreach (var (index, value) in source)
+                keys.Add(value, index);
+
+            Values = source;
+            Keys = keys;
+        }
+
+        
         public IReadOnlyDictionary<int, TValue> Values { get; }
         public IReadOnlyDictionary<TValue, int> Keys { get; }
     }

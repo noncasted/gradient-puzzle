@@ -24,7 +24,7 @@ namespace GamePlay.Levels
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IViewableProperty<bool> IsCompleted => _isCompleted;
-        public Vector2 Position => _center;
+        public Vector2 Position => _centerTransform.position;
         public RectTransform Transform => _transform;
         public RectTransform CenterTransform => _centerTransform;
         public bool IsAnchor => _isAnchor;

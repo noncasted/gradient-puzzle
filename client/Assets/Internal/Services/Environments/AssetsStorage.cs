@@ -25,6 +25,7 @@ namespace Internal
             AssetDatabase.Refresh();
             var all = GetAssets();
             var index = GetMaxIndex();
+            var ids = new HashSet<int>();
 
             foreach (var asset in all)
             {
@@ -38,11 +39,13 @@ namespace Internal
                     if (asset is IEnvAssetValidator validator)
                         validator.OnValidation();
 
-                    if (asset.Id == -1)
+                    if (asset.Id == -1 || ids.Contains(asset.Id))
                     {
                         asset.SetId(index);
                         index++;
                     }
+                    
+                    ids.Add(asset.Id);
 
                     EditorUtility.SetDirty(asset);
                 }

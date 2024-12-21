@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using GamePlay.Paints.Collection;
 using Internal;
 using Services;
 using UnityEngine;
@@ -10,12 +11,14 @@ namespace GamePlay.Paints
     {
         public PaintFactory(
             IObjectFactory<PaintView> objectFactory,
-            IEntityScopeLoader entityScopeLoader,
+            IEntityScopeLoader entityScopeLoader, 
+            IPaintCollection collection,
             LifetimeScope parent,
             PaintFactoryOptions options)
         {
             _objectFactory = objectFactory;
             _entityScopeLoader = entityScopeLoader;
+            _collection = collection;
             _parent = parent;
             _options = options;
         }
@@ -23,6 +26,7 @@ namespace GamePlay.Paints
 
         private readonly IObjectFactory<PaintView> _objectFactory;
         private readonly IEntityScopeLoader _entityScopeLoader;
+        private readonly IPaintCollection _collection;
         private readonly LifetimeScope _parent;
         private readonly PaintFactoryOptions _options;
 
@@ -37,7 +41,10 @@ namespace GamePlay.Paints
             var eventLoop = result.Get<IEventLoop>();
             await eventLoop.RunLoaded(result.Lifetime);
 
-            return result.Get<IPaint>();
+            var paint = result.Get<IPaint>();
+            _collection.Add(paint);
+            
+            return paint;
 
             void Construct(IEntityBuilder builder)
             {
@@ -45,7 +52,8 @@ namespace GamePlay.Paints
                     .AddComponents()
                     .AddStates();
 
-                builder.Register<Paint>()
+                builder.Register<Paint>() 
+                    .WithParameter(builder.Lifetime)
                     .As<IPaint>();
             }
         }

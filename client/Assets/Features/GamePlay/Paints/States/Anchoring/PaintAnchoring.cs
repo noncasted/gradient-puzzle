@@ -30,12 +30,13 @@ namespace GamePlay.Paints
         public async UniTask Enter(IPaintTarget target)
         {
             var handle = _stateMachine.CreateHandle(this);
-            
-            await _mover.TransitTo(handle.Lifetime, target.CenterTransform, _interceptor.Current);
-            await _drop.Enter(target);
-            
+            var from = _interceptor.Current;
+
             _interceptor.Detach();
             _interceptor.Attach(target);
+            
+            await _mover.TransitTo(handle.Lifetime, target.CenterTransform, from);
+            await _drop.Enter(target);
         }
     }
 }

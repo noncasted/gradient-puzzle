@@ -38,9 +38,8 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly PaintMoverOptions _options;
 
-        public UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target, IPaintTarget from)
+        public async UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target, IPaintTarget from)
         {
-            Debug.Log($"Transit");
             var distance = Vector2.Distance(_transform.WorldPosition, target.position);
             var moveTime = _options.TransitTimeCurve.Evaluate(distance);
             var moveCurve = new Curve(moveTime, _options.TransitMoveCurve).CreateInstance();
@@ -53,10 +52,13 @@ namespace GamePlay.Paints
             if (from != null)
             {
                 var scaleTask = ScaleDown(lifetime, from);
-                return UniTask.WhenAll(moveTask, scaleTask);
+                await UniTask.WhenAll(moveTask, scaleTask);
+                return;
             }
 
-            return moveTask;
+            await moveTask;
+            
+            return;
 
             void Move(float delta)
             {
@@ -65,14 +67,15 @@ namespace GamePlay.Paints
                 var height = Mathf.Lerp(0, _options.TransitHeight, heightFactor) * directionSign;
                 var position = Vector2.Lerp(startPosition, target.position, moveFactor);
                 position.x += height;
-                Debug.Log($"{startPosition} {position} {distance}");
                 _transform.SetWorldPosition(position);
             }
 
             bool IsCompleted()
             {
+                if (moveCurve.IsFinished == true)
+                    return false;
+                
                 distance = Vector2.Distance(_transform.WorldPosition, target.position);
-                Debug.Log($"Distance: {distance}");
                 return distance > float.Epsilon;
             }
         }
@@ -96,13 +99,14 @@ namespace GamePlay.Paints
             var curveTimer = 0f;
             var progress = 0f;
             var startDistance = from.GetMinDistanceToBorder(_transform.RectPosition);
+            var imageSize = _image.Size;
 
-            await _updater.RunUpdateAction(lifetime, () => progress >= 1f, delta =>
+            await _updater.RunUpdateAction(lifetime, () => progress < 1f, delta =>
             {
                 curveTimer += delta;
                 progress = GetProgress();
                 var factor = curve.Evaluate(progress);
-                var size = Mathf.Lerp(_options.MoveSize, _image.Size, factor);
+                var size = Mathf.Lerp(imageSize, _options.MoveSize, factor);
                 _image.SetSize(size);
             });
 
@@ -110,14 +114,25 @@ namespace GamePlay.Paints
             _transform.AttachTo(_moveArea.Transform);
             _image.SetSize(_options.MoveSize);
 
+            return;
+
             float GetProgress()
             {
-                var borderDistance = from.GetMinDistanceToBorder(_transform.RectPosition);
-                var borderProgress = Mathf.Clamp01(1f - (borderDistance / startDistance));
-
+                var borderProgress = GetBorderProgress();
                 var curveProgress = curveTimer / curveTime;
 
-                return Mathf.Max(borderProgress, curveProgress);
+                var result = Mathf.Max(borderProgress, curveProgress);
+
+                return Mathf.Max(result, progress);
+
+                float GetBorderProgress()
+                {
+                    if (from.IsInside(_transform.RectPosition) == false)
+                        return 1f;
+
+                    var borderDistance = from.GetMinDistanceToBorder(_transform.RectPosition);
+                    return Mathf.Clamp01(1f - (borderDistance / startDistance));
+                }
             }
         }
 

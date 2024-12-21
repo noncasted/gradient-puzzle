@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0OS7+H6NEXc=",
+  "dgSpecHash": "5iYETrgSl5U=",
   "success": true,
   "projectFilePath": "P:\\noncasted\\gradient-puzzle\\backend\\TelegramBot\\Gateway\\Gateway.csproj",
   "expectedPackageFiles": [
@@ -18,11 +18,7 @@
     "C:\\Users\\nonca\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.6.2\\swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
     "C:\\Users\\nonca\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.6.2\\swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
     "C:\\Users\\nonca\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512",
-    "C:\\Users\\nonca\\.nuget\\packages\\telegram.bot\\22.0.2\\telegram.bot.22.0.2.nupkg.sha512",
-    "C:\\Users\\nonca\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.11\\microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
-    "C:\\Users\\nonca\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.11\\microsoft.windowsdesktop.app.ref.8.0.11.nupkg.sha512",
-    "C:\\Users\\nonca\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.11\\microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
-    "C:\\Users\\nonca\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.11\\microsoft.netcore.app.host.win-x64.8.0.11.nupkg.sha512"
+    "C:\\Users\\nonca\\.nuget\\packages\\telegram.bot\\22.0.2\\telegram.bot.22.0.2.nupkg.sha512"
   ],
   "logs": []
 }

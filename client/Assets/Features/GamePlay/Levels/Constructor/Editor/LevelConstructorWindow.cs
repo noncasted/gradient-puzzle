@@ -2,40 +2,49 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Internal;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
-#endif
 using UnityEngine;
 
 namespace GamePlay.Levels
 {
-    [DisallowMultipleComponent]
-    [RequireComponent(typeof(RectTransform))]
-    public class LevelConstructor : MonoBehaviour
+    public class LevelConstructorWindow : OdinEditorWindow
     {
-        [FoldoutGroup("Options")] [SerializeField]
-        private int _simplifyIterations = 1;
-
-        [FoldoutGroup("Options")] [SerializeField]
-        private float _distanceThreshold = 1f;
-
-        [FoldoutGroup("Options")] [SerializeField]
-        private int _erosionPixels;
-
-        [FoldoutGroup("Options")] [SerializeField]
-        private byte _colorEpsilon = 10;
-
-        [SerializeField] private Level _level;
+        [SerializeField] private int _simplifyIterations = 1;
+        [SerializeField] private float _distanceThreshold = 1f;
+        [SerializeField] private int _erosionPixels;
+        [SerializeField] private byte _colorEpsilon = 10;
         [SerializeField] private Area _prefab;
 
-        [Button]
+        private Level _level;
+
+        public void Setup(Level level)
+        {
+            _level = level;
+
+            var options = AssetsExtensions.FindAsset<LevelConstructorOptions>();
+
+            _simplifyIterations = options.SimplifyIterations;
+            _distanceThreshold = options.DistanceThreshold;
+            _erosionPixels = options.ErosionPixels;
+            _colorEpsilon = options.ColorEpsilon;
+            _prefab = options.Prefab;
+        }
+
+        [Button("Construct Level")]
         public void Construct()
         {
-#if UNITY_EDITOR
+            if (_level == null || _prefab == null)
+            {
+                Debug.LogError("Please assign a Level and Prefab reference.");
+                return;
+            }
+
             Clear();
-            var size = GetComponent<RectTransform>().rect.size;
+            var size = _level.GetComponent<RectTransform>().rect.size;
 
             var source = GetSource();
             var extractor = new AreasExtractor(source);
@@ -52,7 +61,7 @@ namespace GamePlay.Levels
 
             foreach (var extracted in areaDatas)
             {
-                var area = (PrefabUtility.InstantiatePrefab(_prefab, transform) as Area)!;
+                var area = (PrefabUtility.InstantiatePrefab(_prefab, _level.transform) as Area)!;
                 area.transform.localPosition = Vector2.zero;
                 spawnedAreas.Add(area);
 
@@ -78,14 +87,14 @@ namespace GamePlay.Levels
                 area.transform.SetSiblingIndex(i);
             }
 
-            var colors = new List<LevelColorData>()
+            var colors = new List<LevelColorData>
             {
                 new(Color.white, Vector2.zero),
                 new(Color.black, new Vector2(1080, 1080)),
                 new(Color.red, new Vector2(0, 1080)),
                 new(Color.blue, new Vector2(1080, 0))
             };
-            
+
             foreach (var area in orderedAreas)
             {
                 var center = area.Position;
@@ -102,10 +111,12 @@ namespace GamePlay.Levels
             }
 
             EditorUtility.SetDirty(_level);
-            
+
+            return;
+
             Texture2D GetSource()
             {
-                var stage = PrefabStageUtility.GetPrefabStage(gameObject);
+                var stage = PrefabStageUtility.GetPrefabStage(_level.gameObject);
                 var folderPath = Path.GetDirectoryName(stage.assetPath);
 
                 var textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { folderPath });
@@ -115,19 +126,18 @@ namespace GamePlay.Levels
                     var texturePath = AssetDatabase.GUIDToAssetPath(textureGuid);
                     var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
 
-                    if (texture.name == name)
+                    if (texture.name == _level.name)
                         return texture;
                 }
 
-                throw new Exception($"Texture with name {name} not found in folder {folderPath}");
+                throw new Exception($"Texture with name {_level.name} not found in folder {folderPath}");
             }
-#endif
         }
 
         private void Clear()
         {
-            var areas = GetComponentsInChildren<Area>(true);
-            var colors = GetComponentsInChildren<AreaColorGroup>(true);
+            var areas = _level.GetComponentsInChildren<Area>(true);
+            var colors = _level.GetComponentsInChildren<AreaColorGroup>(true);
 
             foreach (var area in areas)
                 DestroyImmediate(area.gameObject);

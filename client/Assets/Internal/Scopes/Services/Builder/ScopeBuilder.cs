@@ -23,14 +23,14 @@ namespace Internal
             Lifetime = lifetime;
             IsMock = isMock;
             Parent = parent;
-            EventListeners = new ScopeEventListeners();
+            Events = new ScopeEventListeners();
         }
 
         public IServiceCollection Services { get; }
         public IAssetEnvironment Assets { get; }
         public ISceneLoader SceneLoader { get; }
         public IServiceScopeBinder Binder { get; }
-        public IScopeEventListeners EventListeners { get; }
+        public IScopeEventListeners Events { get; }
         public ILoadedScope Parent { get; }
         public LifetimeScope Container { get; }
         public ILifetime Lifetime { get; }

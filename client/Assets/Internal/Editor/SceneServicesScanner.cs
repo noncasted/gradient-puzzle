@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 namespace Internal
 {
@@ -10,40 +9,41 @@ namespace Internal
     {
         private static string[] OnWillSaveAssets(string[] paths)
         {
-            var factories = FindObjects<SceneServicesFactory>();
-            var behaviours = FindObjects<MonoBehaviour>();
+            var targets = new List<ISceneReloadListener>();
+            var scenes = GetScenes();
 
-            var services = new Dictionary<Scene, List<MonoBehaviour>>();
-
-            foreach (var behaviour in behaviours)
+            foreach (var scene in scenes)
             {
-                if (behaviour is not ISceneService)
-                    continue;
+                var rootObjects = scene.GetRootGameObjects();
 
-                var scene = behaviour.gameObject.scene;
-
-                if (services.ContainsKey(scene) == false)
-                    services[scene] = new List<MonoBehaviour>();
-
-                services[scene].Add(behaviour);
+                foreach (var rootObject in rootObjects)
+                {
+                    var components = rootObject.GetComponentsInChildren<ISceneReloadListener>();
+                    targets.AddRange(components);
+                }
             }
 
-            foreach (var factory in factories)
+            foreach (var target in targets)
             {
-                if (services.TryGetValue(factory.gameObject.scene, out var targets) == false)
-                    continue;
-
-                factory.SetServices(targets.ToArray());
-                EditorUtility.SetDirty(factory);
+                target.OnReload();
+                EditorUtility.SetDirty(target as MonoBehaviour);
             }
 
             return paths;
-
-            IReadOnlyList<T> FindObjects<T>() where T : Object
+            
+            IReadOnlyList<Scene> GetScenes()
             {
-                return Object.FindObjectsByType<T>(
-                    FindObjectsInactive.Include,
-                    FindObjectsSortMode.None);
+                var foundScenes = new List<Scene>();
+
+                for (var i = 0; i < SceneManager.sceneCount; i++)
+                {
+                    var scene = SceneManager.GetSceneAt(i);
+
+                    if (scene.isLoaded)
+                        foundScenes.Add(scene);
+                }
+
+                return foundScenes;
             }
         }
     }

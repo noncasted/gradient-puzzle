@@ -2,7 +2,7 @@
 
 namespace Internal
 {
-    public class SceneServicesFactory : MonoBehaviour
+    public class SceneServicesFactory : MonoBehaviour, ISceneReloadListener
     {
         [SerializeField] private MonoBehaviour[] _services;
 
@@ -17,9 +17,9 @@ namespace Internal
             }
         }
 
-        public void SetServices(MonoBehaviour[] services)
+        public void OnReload()
         {
-            _services = services;
+            _services = this.GetObjectsWithComponentInScene<ISceneService>();
         }
     }
 }

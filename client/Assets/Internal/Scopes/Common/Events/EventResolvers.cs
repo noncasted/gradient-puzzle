@@ -1,43 +1,54 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 namespace Internal
 {
-    public class ScopeSetupResolver : IScopeSetup, IEventResolver<IScopeSetup>
+    public class EventCollectionBase<T> : IEventCollection<T>, IEventResolver where T : class
     {
-        private readonly List<IScopeSetup> _listeners = new();
+        private readonly List<T> _listeners = new();
 
-        public void OnSetup(IReadOnlyLifetime lifetime)
-        {
-            foreach (var listener in _listeners)
-            {
-                Debug.Log($"Invoke view event on {((MonoBehaviour)listener).name}: OnSetup to {listener.GetType().Name}");
-                listener.OnSetup(lifetime);
-            }
-        }
+        public Type Type => typeof(T);
+        public IReadOnlyList<T> Listeners => _listeners;
 
-        public void Add(IScopeSetup listener)
+        public void Add(T listener)
         {
             _listeners.Add(listener);
+        }
+
+        protected void Invoke(Action<T> callback)
+        {
+            foreach (var listener in _listeners)
+                callback.Invoke(listener);
+        }
+    }
+    
+    public class AsyncEventCollectionBase<T> : IEventCollection<T>, IEventResolver where T : class
+    {
+        private readonly List<T> _listeners = new();
+
+        public Type Type => typeof(T);
+        public IReadOnlyList<T> Listeners => _listeners;
+
+        public void Add(T listener)
+        {
+            _listeners.Add(listener);
+        }
+
+        protected async UniTask Invoke(Func<T, UniTask> callback)
+        {
+            foreach (var listener in _listeners)
+                await callback.Invoke(listener);
         }
     }
 
-    public class ScopeCompletionSetupResolver : IScopeSetupCompletion, IEventResolver<IScopeSetupCompletion>
+    public class ScopeSetupCollection : EventCollectionBase<IScopeSetup>, IScopeSetup
     {
-        private readonly List<IScopeSetupCompletion> _listeners = new();
+        public void OnSetup(IReadOnlyLifetime lifetime) => Invoke(l => l.OnSetup(lifetime));
+    }
 
-        public void OnSetupCompletion(IReadOnlyLifetime lifetime)
-        {
-            foreach (var listener in _listeners)
-            {
-                Debug.Log($"Invoke view event on {((MonoBehaviour)listener).name}: ScopeSetupCompletion to {listener.GetType().Name}");
-                listener.OnSetupCompletion(lifetime);
-            }
-        }
-
-        public void Add(IScopeSetupCompletion listener)
-        {
-            _listeners.Add(listener);
-        }
+    public class ScopeSetupCompletionCollection : EventCollectionBase<IScopeSetupCompletion>, IScopeSetupCompletion
+    {
+        public void OnSetupCompletion(IReadOnlyLifetime lifetime) => Invoke(l => l.OnSetupCompletion(lifetime));
     }
 }

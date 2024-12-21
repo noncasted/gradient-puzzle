@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 
 namespace Internal
@@ -40,6 +41,13 @@ namespace Internal
 
             for (var i = 0; i < count; i++)
                 invoker.Invoke(listeners[i]);
+        }
+
+        public static void Sort<T, TKey>(this List<T> source, Func<T, TKey> comparator)
+        {
+            var sorted = source.OrderBy(comparator).ToList();
+            source.Clear();
+            source.AddRange(sorted);
         }
     }
 }

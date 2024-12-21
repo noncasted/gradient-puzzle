@@ -19,7 +19,7 @@ namespace GamePlay.Paints
 
         public void AttachTo(Transform target)
         {
-            _transform.parent = target;
+            _transform.SetParent(target);
         }
 
         public void SetRotation(float angle)

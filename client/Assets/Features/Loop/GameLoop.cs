@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using GamePlay.Common;
 using GamePlay.Levels;
 using GamePlay.Paints;
+using GamePlay.Paints.Collection;
 using GamePlay.Selections;
 using Global.Cameras;
 using Global.Systems;
@@ -31,6 +32,7 @@ namespace Loop
             IPaintSelectionScaler selectionScaler,
             ICompletionUI completionUI,
             IUpdater updater,
+            IPaintCollection paintCollection,
             GameLoopCheats cheats)
         {
             _stateMachine = stateMachine;
@@ -45,6 +47,7 @@ namespace Loop
             _selectionScaler = selectionScaler;
             _completionUI = completionUI;
             _updater = updater;
+            _paintCollection = paintCollection;
             _cheats = cheats;
         }
 
@@ -62,6 +65,7 @@ namespace Loop
         private readonly IPaintSelectionScaler _selectionScaler;
         private readonly ICompletionUI _completionUI;
         private readonly IUpdater _updater;
+        private readonly IPaintCollection _paintCollection;
         private readonly GameLoopCheats _cheats;
 
         private ILifetime _currentLifetime;
@@ -94,6 +98,9 @@ namespace Loop
         private async UniTask HandleLevel(IReadOnlyLifetime lifetime, ILevelConfiguration configuration)
         {
             _overlay.HideReset();
+
+            await _paintCollection.Initialize();
+            
             var level = _levelLoader.Load(configuration);
 
             var colors = new List<Color>();
@@ -153,6 +160,7 @@ namespace Loop
             {
                 var paint = colorToPaint[anchor.Source];
                 anchor.PaintHandle.Set(paint);
+                anchor.PaintHandle.Lock();
                 paint.Anchor(anchor);
             }
 

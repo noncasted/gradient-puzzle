@@ -10,7 +10,7 @@ namespace GamePlay.Levels
         [SerializeField] private RectTransform _selfTransform;
 
         public Color Color => _image.color;
-        public Vector2 Position => _selfTransform.anchoredPosition;
+        public Vector2 Position => _selfTransform.position;
 
         public void SetColor(Color color)
         {

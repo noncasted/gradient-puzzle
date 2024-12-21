@@ -3,6 +3,7 @@ using System.Linq;
 using Global.Systems;
 using Internal;
 using Services;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
@@ -16,8 +17,12 @@ namespace GamePlay.Levels
         private IUpdater _updater;
         private IGameInput _input;
 
-        public IReadOnlyList<IArea> Areas => _areas;
-
+        public IReadOnlyList<IArea> Areas => _areas;  
+        
+        private static readonly ViewableDelegate<Level> _constructorRequest = new();
+        
+        public static IViewableDelegate<Level> ConstructorRequest => _constructorRequest;
+        
         [Inject]
         private void Construct(IUpdater updater, IGameInput input)
         {
@@ -49,6 +54,12 @@ namespace GamePlay.Levels
                 foreach (var area in _areas)
                     area.CheckTouch(_input.CursorPosition);
             });
+        }
+        
+        [Button("Open Constructor")]
+        public void OpenLevelConstructor()
+        {
+            _constructorRequest.Invoke(this);
         }
     }
 }

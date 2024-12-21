@@ -5,6 +5,12 @@ namespace Internal
 {
     public static class DirectionUtils
     {
+        public static Quaternion RotationTo(this Transform from, Transform to)
+        {
+            var direction = (Vector2)(to.position - from.position).normalized;
+            return Quaternion.Euler(0f, 0f, direction.ToAngle());
+        }
+        
         public static float ToAngle(this Vector2 direction)
         {
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

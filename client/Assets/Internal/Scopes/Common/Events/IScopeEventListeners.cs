@@ -1,14 +1,22 @@
-﻿using VContainer;
+﻿using System;
+using VContainer;
 
 namespace Internal
 {
+    public interface IEventResolver
+    {
+        Type Type { get; }
+    }
+    
     public interface IScopeEventListeners
     {
-        void Add<T>(T listener) where T : class;
+        void AddResolver(IEventResolver resolver);
+        
+        void AddListener<T>(T listener) where T : class;
         void Register(IContainerBuilder builder);
     }
 
-    public interface IEventResolver<T> where T : class
+    public interface IEventCollection<T> where T : class
     {
         void Add(T listener);
     }
@@ -18,28 +26,28 @@ namespace Internal
         public static IScopeBuilder AddViewEvents<T>(this IScopeBuilder builder, T target) where T : class
         {
             if (target is IScopeBaseSetup baseSetup)
-                builder.EventListeners.Add(baseSetup);
+                builder.Events.AddListener(baseSetup);
 
             if (target is IScopeBaseSetupAsync baseSetupAsync)
-                builder.EventListeners.Add(baseSetupAsync);
+                builder.Events.AddListener(baseSetupAsync);
 
             if (target is IScopeSetup setup)
-                builder.EventListeners.Add(setup);
+                builder.Events.AddListener(setup);
 
             if (target is IScopeSetupAsync setupAsync)
-                builder.EventListeners.Add(setupAsync);
+                builder.Events.AddListener(setupAsync);
 
             if (target is IScopeSetupCompletion setupCompletion)
-                builder.EventListeners.Add(setupCompletion);
+                builder.Events.AddListener(setupCompletion);
 
             if (target is IScopeSetupCompletionAsync setupCompletionAsync)
-                builder.EventListeners.Add(setupCompletionAsync);
+                builder.Events.AddListener(setupCompletionAsync);
 
             if (target is IScopeDispose dispose)
-                builder.EventListeners.Add(dispose);
+                builder.Events.AddListener(dispose);
 
             if (target is IScopeDisposeAsync disposeAsync)
-                builder.EventListeners.Add(disposeAsync);
+                builder.Events.AddListener(disposeAsync);
 
             return builder;
         }

@@ -60,7 +60,10 @@ namespace GamePlay.Paints
                     _image.SetMaterial(area.MaskData.Content);
 
                     await _updater.CurveProgression(handle.Lifetime, _options.AreaScaleCurve,
-                        progress => { _image.SetSize(PaintExtensions.MaxRadius * progress); });
+                        progress =>
+                        {
+                            _image.SetSize(PaintExtensions.MaxRadius * progress);
+                        });
                     
                     _transform.SetRectPosition(area.CenterTransform.anchoredPosition);
                     break;

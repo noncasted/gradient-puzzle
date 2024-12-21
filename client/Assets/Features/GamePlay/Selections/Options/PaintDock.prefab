@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selfTransform: {fileID: 3433163522006785300}
-  _paintRoot: {fileID: 3433163522006785300}
+  _paintRoot: {fileID: 1167187636137875538}
 --- !u!222 &5336233334179807245
 CanvasRenderer:
   m_ObjectHideFlags: 0

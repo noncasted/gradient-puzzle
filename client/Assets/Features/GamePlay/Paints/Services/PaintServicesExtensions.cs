@@ -1,4 +1,5 @@
-﻿using Internal;
+﻿using GamePlay.Paints.Collection;
+using Internal;
 
 namespace GamePlay.Paints
 {
@@ -14,6 +15,9 @@ namespace GamePlay.Paints
             builder.Register<PaintDragStarter>()
                 .As<IPaintDragStarter>();
 
+            builder.Register<PaintCollection>()
+                .As<IPaintCollection>();
+            
             return builder;
         }
     }

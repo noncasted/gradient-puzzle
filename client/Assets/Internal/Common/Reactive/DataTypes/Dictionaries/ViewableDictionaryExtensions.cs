@@ -4,7 +4,7 @@ namespace Internal
 {
     public static class ViewableDictionaryExtensions
     {
-        public static void View<TKey, TValue>(
+        public static void Advise<TKey, TValue>(
             this IViewableDictionary<TKey, TValue> dictionary,
             IReadOnlyLifetime lifetime,
             Action<TKey, TValue> listener)
@@ -37,6 +37,18 @@ namespace Internal
                 listener.Invoke(dictionary.GetLifetime(key), value);
         }
 
+        public static void View<TKey, TValue>(
+            this IViewableDictionary<TKey, TValue> dictionary,
+            IReadOnlyLifetime lifetime,
+            Action<TValue> listener)
+        {
+            dictionary.Advise(lifetime, (_, _, value) => listener.Invoke(value));
+
+            foreach (var (_, value) in dictionary)
+                listener.Invoke(value);
+        }
+
+        
         public static void AddLifetimed<TKey, TSource, TView>(
             this ViewableDictionary<TKey, TSource, TView> dictionary,
             IReadOnlyLifetime lifetime,

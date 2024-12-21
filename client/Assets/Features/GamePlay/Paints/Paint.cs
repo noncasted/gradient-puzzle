@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using GamePlay.Common;
+using GamePlay.Paints.GameObjects;
+using Internal;
 using UnityEngine;
 
 namespace GamePlay.Paints
@@ -14,7 +16,9 @@ namespace GamePlay.Paints
             IPaintDrop drop,
             IPaintReturn @return,
             IPaintAnchoring anchoring,
-            IPaintComplete complete)
+            IPaintComplete complete, 
+            ILifetime lifetime, 
+            IPaintGameObject gameObject)
         {
             _image = image;
             _interceptor = interceptor;
@@ -24,6 +28,8 @@ namespace GamePlay.Paints
             _return = @return;
             _anchoring = anchoring;
             _complete = complete;
+            _lifetime = lifetime;
+            _gameObject = gameObject;
         }
 
         private readonly IPaintImage _image;
@@ -34,6 +40,8 @@ namespace GamePlay.Paints
         private readonly IPaintReturn _return;
         private readonly IPaintAnchoring _anchoring;
         private readonly IPaintComplete _complete;
+        private readonly ILifetime _lifetime;
+        private readonly IPaintGameObject _gameObject;
 
         private Color _color;
 
@@ -78,6 +86,8 @@ namespace GamePlay.Paints
 
         public async UniTask Destroy()
         {
+            _lifetime.Terminate();
+            _gameObject.DestroySelf();            
         }
     }
 }

@@ -30,7 +30,6 @@ namespace Internal
                 throw new NullReferenceException();
 
             var builder = new InstanceRegistrationBuilder(instance, lifetime).As(typeof(T));
-            builder.AsSelf();
             var registration = new BaseRegistration(services, builder);
             services.AddBuilder(builder);
 

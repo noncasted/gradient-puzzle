@@ -57,9 +57,16 @@ namespace GamePlay.Paints
 
             var selected = _dragStarter.Selected;
 
-            if (selected == null || selected.GetPaint() != null)
+            if (selected == null)
             {
                 _return.Enter(start);
+            }
+            else if (selected.GetPaint() != null && selected.PaintHandle.IsLocked == false)
+            {
+                var target = selected.GetPaint();
+                target.Anchor(start).Forget();
+                _interceptor.Attach(selected);
+                _drop.Enter(selected).Forget();
             }
             else
             {

@@ -64,7 +64,7 @@ public class BuildApi : IHostedService, IUpdateHandler
             }
             else
             {
-                var gameUrl = $"https://minio-gradient-puzzle.noncasted.dev/build/index.html";
+                var gameUrl = $"https://gradient-puzzle.noncasted.dev/";
                 await _bot.AnswerCallbackQuery(callbackQuery.Id, url: gameUrl, cancellationToken: cancellationToken);
             }
         }
