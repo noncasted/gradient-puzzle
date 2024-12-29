@@ -18,7 +18,7 @@ namespace GamePlay.Levels
 
         public void SetPoints(IReadOnlyList<Vector2> points)
         {
-            _data = points.GetAreaRenderData(color);
+            _data = points.GetAreaRenderData();
         }
 
         protected override void OnPopulateMesh(VertexHelper vh)

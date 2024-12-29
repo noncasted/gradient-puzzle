@@ -32,14 +32,14 @@ namespace GamePlay.Levels
 
         private void Awake()
         {
-            _areas = _areas.OrderByDescending(t => t.Position.y).ToArray();
-
-            for (var i = 0; i < _areas.Length; i++)
-            {
-                var area = _areas[i];
-                area.transform.parent = transform;
-                area.transform.SetSiblingIndex(i);
-            }
+            // _areas = _areas.OrderByDescending(t => t.Position.y).ToArray();
+            //
+            // for (var i = 0; i < _areas.Length; i++)
+            // {
+            //     var area = _areas[i];
+            //     area.transform.parent = transform;
+            //     area.transform.SetSiblingIndex(i);
+            // }
         }
 
         public void Construct(Area[] areas)

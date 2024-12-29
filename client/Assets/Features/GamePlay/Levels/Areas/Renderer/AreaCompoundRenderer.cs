@@ -38,7 +38,6 @@ namespace GamePlay.Levels
             foreach (var areaRenderer in _renderers)
             {
                 areaRenderer.material = material;
-                areaRenderer.Outline.maskable = material;
             }
         }
 

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LevelConstructorOptions
   m_EditorClassIdentifier: 
   _assetId: 78
-  _simplifyIterations: 1
-  _distanceThreshold: 1
+  _simplifyIterations: 3
+  _distanceThreshold: 2
   _erosionPixels: 1
   _colorEpsilon: 10
   _prefab: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}

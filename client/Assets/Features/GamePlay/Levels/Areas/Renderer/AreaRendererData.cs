@@ -44,7 +44,7 @@ namespace GamePlay.Levels
             return sum;
         }
 
-        public static AreaRendererData GetAreaRenderData(this IReadOnlyList<Vector2> path, Color color)
+        public static AreaRendererData GetAreaRenderData(this IReadOnlyList<Vector2> path)
         {
             var isClockwise = PolygonSignedArea(path) > 0;
 
@@ -132,7 +132,17 @@ namespace GamePlay.Levels
                     s += "Failed point set:\n";
                     s += string.Join("\n", pointsLeft.Select(p => $"[{p.VertexIndex}]: {p.ReflexState}"));
                     Debug.LogError(s);
-                    return new AreaRendererData();
+                        
+                    var newPath = new List<Vector2>(path);
+                    var offset = 0;
+                    
+                    foreach (var left in pointsLeft)
+                    {
+                        newPath.RemoveAt(left.VertexIndex - offset);
+                        offset++;
+                    }
+
+                    return newPath.GetAreaRenderData();
                 }
             }
 

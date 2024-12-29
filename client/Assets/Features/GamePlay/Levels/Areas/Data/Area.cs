@@ -39,6 +39,7 @@ namespace GamePlay.Levels
             _datas = new List<AreaData>(datas);
             _renderer.Construct(datas);
             _center = AreaDataExtensions.GetCenter(datas);
+            _centerTransform.anchoredPosition = _center;
         }
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
