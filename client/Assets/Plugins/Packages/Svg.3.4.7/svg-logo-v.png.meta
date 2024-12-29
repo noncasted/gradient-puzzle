@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      svg-logo-v_0: -3594765720619088817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
