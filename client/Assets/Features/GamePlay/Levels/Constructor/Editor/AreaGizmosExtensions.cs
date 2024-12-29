@@ -1,12 +1,45 @@
 ﻿using Drawing;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 namespace GamePlay.Levels
 {
+    [InitializeOnLoad]
     public static class AreaGizmosExtensions
     {
+        static AreaGizmosExtensions()
+        {
+            EditorApplication.update += OnUpdate;
+        }
+
+        private static void OnUpdate()
+        {
+            if (Selection.gameObjects == null || Selection.gameObjects.Length == 0)
+                return;
+
+            foreach (var gameObject in Selection.gameObjects)
+            {
+                var area = TryGetArea();
+                
+                if (area == null)
+                    continue;
+                
+                area.DrawContour();
+
+                Area TryGetArea()
+                {
+                    var t = gameObject.GetComponent<Area>();
+                    
+                    if (t != null)
+                        return t;
+                    
+                    return gameObject.GetComponentInParent<Area>();
+                }
+            }
+        }
+        
         public static void DrawContour(this Area area)
         {
             var offset = new Vector2(540, 960);

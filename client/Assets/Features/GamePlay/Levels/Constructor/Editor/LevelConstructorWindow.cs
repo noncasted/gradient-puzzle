@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GamePlay.Levels.SVGs;
 using Internal;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
@@ -13,11 +14,25 @@ namespace GamePlay.Levels
 {
     public class LevelConstructorWindow : OdinEditorWindow
     {
-        [SerializeField] private int _simplifyIterations = 1;
-        [SerializeField] private float _distanceThreshold = 1f;
-        [SerializeField] private int _erosionPixels;
-        [SerializeField] private byte _colorEpsilon = 10;
+        [SerializeField] [ShowIf(nameof(_isTexture))]
+        private int _textureSimplifyIterations = 1;
+
+        [SerializeField] [ShowIf(nameof(_isTexture))]
+        private float _textureDistanceThreshold = 1f;
+
+        [SerializeField] [ShowIf(nameof(_isTexture))]
+        private int _textureErosionPixels;
+
+        [SerializeField] [ShowIf(nameof(_isTexture))]
+        private byte _textureColorEpsilon = 10;
+
+        [SerializeField] [ShowIf(nameof(_isSvg))]
+        private float _svgPointDensity = 1f;
+        
         [SerializeField] private Area _prefab;
+
+        private bool _isTexture => LevelExtractionUtils.Type == LevelExtractionType.Texture;
+        private bool _isSvg => LevelExtractionUtils.Type == LevelExtractionType.SVG;
 
         private Level _level;
 
@@ -25,13 +40,17 @@ namespace GamePlay.Levels
         {
             _level = level;
 
-            var options = AssetsExtensions.FindAsset<LevelConstructorOptions>();
-
-            _simplifyIterations = options.SimplifyIterations;
-            _distanceThreshold = options.DistanceThreshold;
-            _erosionPixels = options.ErosionPixels;
-            _colorEpsilon = options.ColorEpsilon;
-            _prefab = options.Prefab;
+            var textureOptions = AssetsExtensions.FindAsset<TextureLevelConstructorOptions>();
+            var svgOptions = AssetsExtensions.FindAsset<SvgLevelConstructorOptions>();
+            
+            _textureSimplifyIterations = textureOptions.SimplifyIterations;
+            _textureDistanceThreshold = textureOptions.DistanceThreshold;
+            _textureErosionPixels = textureOptions.ErosionPixels;
+            _textureColorEpsilon = textureOptions.ColorEpsilon;
+            
+            _svgPointDensity = svgOptions.PointsDensity;
+            
+            _prefab = textureOptions.Prefab;
         }
 
         [Button("Construct Level")]
@@ -46,20 +65,10 @@ namespace GamePlay.Levels
             Clear();
             var size = _level.GetComponent<RectTransform>().rect.size;
 
-            var source = GetSource();
-            var extractor = new AreasExtractor(source);
-
-            var options = new AreaExtractOptions(
-                size,
-                _colorEpsilon,
-                _simplifyIterations,
-                _distanceThreshold,
-                _erosionPixels);
-
-            var areaDatas = extractor.Extract(options);
             var spawnedAreas = new List<Area>();
+            var extractedAreas = Extract();
 
-            foreach (var extracted in areaDatas)
+            foreach (var extracted in extractedAreas)
             {
                 var area = (PrefabUtility.InstantiatePrefab(_prefab, _level.transform) as Area)!;
                 area.transform.localPosition = Vector2.zero;
@@ -113,8 +122,57 @@ namespace GamePlay.Levels
             EditorUtility.SetDirty(_level);
 
             return;
+        }
 
-            Texture2D GetSource()
+        private void Clear()
+        {
+            var areas = _level.GetComponentsInChildren<Area>(true);
+            var colors = _level.GetComponentsInChildren<AreaColorGroup>(true);
+
+            foreach (var area in areas)
+                DestroyImmediate(area.gameObject);
+
+            foreach (var color in colors)
+                DestroyImmediate(color.gameObject);
+        }
+
+        private IReadOnlyList<ExtractedArea> Extract()
+        {
+            var size = _level.GetComponent<RectTransform>().rect.size;
+
+            switch (LevelExtractionUtils.Type)
+            {
+                case LevelExtractionType.Texture:
+                {
+                    var source = GetTextureSource();
+                    var extractor = new TextureLevelExtractor(source);
+
+                    var options = new TextureLevelExtractOptions(
+                        size,
+                        _textureColorEpsilon,
+                        _textureSimplifyIterations,
+                        _textureDistanceThreshold,
+                        _textureErosionPixels);
+
+                    return extractor.Extract(options);
+                }
+                case LevelExtractionType.SVG:
+                {
+                    var source = GetSvgSource();
+                    var options = new SvgLevelExtractOptions(
+                        source,
+                        AssetsExtensions.FindAsset<SvgLevelConstructorOptions>().InkscapePath,
+                        size, _svgPointDensity);
+                    
+                    var extractor = new SvgLevelExtractor(options);
+                    return extractor.Extract();
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
+            Texture2D GetTextureSource()
             {
                 var stage = PrefabStageUtility.GetPrefabStage(_level.gameObject);
                 var folderPath = Path.GetDirectoryName(stage.assetPath);
@@ -132,18 +190,16 @@ namespace GamePlay.Levels
 
                 throw new Exception($"Texture with name {_level.name} not found in folder {folderPath}");
             }
-        }
 
-        private void Clear()
-        {
-            var areas = _level.GetComponentsInChildren<Area>(true);
-            var colors = _level.GetComponentsInChildren<AreaColorGroup>(true);
+            string GetSvgSource()
+            {
+                var stage = PrefabStageUtility.GetPrefabStage(_level.gameObject);
+                var folderPath = Path.GetDirectoryName(stage.assetPath);
+                var levelName = _level.name;
 
-            foreach (var area in areas)
-                DestroyImmediate(area.gameObject);
-
-            foreach (var color in colors)
-                DestroyImmediate(color.gameObject);
+                // Get the full system path by combining the folder path and the file name, and then getting the absolute path
+                return Path.GetFullPath(Path.Combine(folderPath, $"{levelName}.svg"));
+            }
         }
     }
 }

@@ -5,6 +5,9 @@
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Cabstract/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Cdata/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Cextraction/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Cextraction_005Cabstract/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Cextraction_005Ctexture/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Cextraction_005Ctextures/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas_005Crenderer/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Careas/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cfeatures_005Cgameplay_005Clevels_005Cconstructor/@EntryIndexedValue">True</s:Boolean>

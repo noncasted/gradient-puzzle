@@ -16,15 +16,19 @@
         "GUID:2665a8d13d1b3f18800f46e256720795",
         "GUID:6ab62fa3a26a4114ba44fa891b5fa123",
         "GUID:de4e6084e6d474788bb8c799d6b461ec"
-        
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Sirenix.OdinInspector.Attributes.dll",
+        "Sirenix.OdinInspector.Editor.dll",
+        "SvgPathProperties.dll",
+        "Svg.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
