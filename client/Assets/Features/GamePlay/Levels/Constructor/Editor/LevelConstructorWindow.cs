@@ -29,6 +29,12 @@ namespace GamePlay.Levels
         [SerializeField] [ShowIf(nameof(_isSvg))]
         private float _svgPointDensity = 1f;
 
+        [SerializeField] [ShowIf(nameof(_isSvg))]
+        private float _svgSimplifyAngle = 10f;
+
+        [SerializeField] [ShowIf(nameof(_isSvg))]
+        private float _svgScale = 1f;
+        
         [SerializeField] private Area _prefab;
 
         private bool _isTexture => LevelExtractionUtils.Type == LevelExtractionType.Texture;
@@ -49,7 +55,9 @@ namespace GamePlay.Levels
             _textureColorEpsilon = textureOptions.ColorEpsilon;
 
             _svgPointDensity = svgOptions.PointsDensity;
-
+            _svgSimplifyAngle = svgOptions.SimplifyAngle;
+            _svgScale = svgOptions.Scale;
+            
             _prefab = textureOptions.Prefab;
         }
 
@@ -66,7 +74,7 @@ namespace GamePlay.Levels
             var extractedAreas = Extract();
 
             var existingAreas = _level.GetComponentsInChildren<Area>(true);
-            
+
             if (extractedAreas.Count != existingAreas.Length)
                 Clear();
 
@@ -75,7 +83,7 @@ namespace GamePlay.Levels
                 var existing = existingAreas.FirstOrDefault(t => t.Id == extracted.Name);
                 Area area;
                 var color = extracted.Color;
-                
+
                 var shapesData = new List<AreaShapeData>();
 
                 foreach (var contour in extracted.Contours)
@@ -85,13 +93,13 @@ namespace GamePlay.Levels
 
                     shapesData.Add(data);
                 }
-                
+
                 if (existing == null)
                 {
                     area = (PrefabUtility.InstantiatePrefab(_prefab, _level.transform) as Area)!;
                     area.transform.localPosition = Vector2.zero;
                     area.name = extracted.Name;
-                    
+
                     area.Construct(shapesData, color, extracted.Order, extracted.Name);
                 }
                 else
@@ -160,11 +168,15 @@ namespace GamePlay.Levels
                 {
                     var source = GetSvgSource();
                     var svgOptions = AssetsExtensions.FindAsset<SvgLevelConstructorOptions>();
+
                     var options = new SvgLevelExtractOptions(
                         source,
                         svgOptions.InkscapePath,
                         svgOptions.InkscapeActions,
-                        size, _svgPointDensity);
+                        size,
+                        _svgPointDensity,
+                        _svgSimplifyAngle,
+                        _svgScale);
 
                     var extractor = new SvgLevelExtractor(options);
                     return extractor.Extract();

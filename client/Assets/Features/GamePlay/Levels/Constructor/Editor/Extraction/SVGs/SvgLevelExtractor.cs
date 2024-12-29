@@ -38,6 +38,8 @@ namespace GamePlay.Levels.SVGs
 
                         var convertedPoint = new Vector2((float)point.X, (float)point.Y);
                         convertedPoint.y *= -1f;
+                        convertedPoint *= _options.SvgScale;
+
                         points.Add(convertedPoint);
                     }
 
@@ -54,6 +56,12 @@ namespace GamePlay.Levels.SVGs
                     for (var i = 0; i < path.ResultPoints.Count; i++)
                         path.ResultPoints[i] += centerOffset;
                 }
+            }
+
+            foreach (var area in rawAreas)
+            {
+                foreach (var path in area.Paths)
+                    path.ResultPoints.Simplify(_options.SimplifyAngle);
             }
 
             foreach (var area in rawAreas)
@@ -114,9 +122,7 @@ namespace GamePlay.Levels.SVGs
             {
                 var d = pathElement.Attribute("d")!.Value;
                 var id = pathElement.Attribute("id")!.Value;
-                var style = pathElement.Attribute("style")!.Value;
-
-                var color = ExtractColor(style);
+                var color = ExtractColor();
 
                 var data = new RawPathData(
                     d,
@@ -125,6 +131,28 @@ namespace GamePlay.Levels.SVGs
                     id);
 
                 paths.Add((color, data));
+
+                Color ExtractColor()
+                {
+                    var fill = pathElement.Attribute("style")?.Value;
+
+                    if (string.IsNullOrEmpty(fill) || !fill.StartsWith("fill:#"))
+                        fill = pathElement.Attribute("fill")?.Value.Replace("#", "fill:#");
+
+                    var hexColor = fill!.Substring(6);
+
+                    if (hexColor.Length != 6)
+                    {
+                        Debug.LogWarning("Hex color code should be 6 characters long.");
+                        return Color.clear;
+                    }
+
+                    var r = byte.Parse(hexColor.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                    var g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                    var b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+
+                    return new Color(r / 255f, g / 255f, b / 255f, 1f); // Alpha is fully opaque
+                }
             }
 
             var result = new Dictionary<Color, RawAreaData>();
@@ -141,35 +169,13 @@ namespace GamePlay.Levels.SVGs
             }
 
             return result.Values.ToList();
-
-            Color ExtractColor(string fill)
-            {
-                if (string.IsNullOrEmpty(fill) || !fill.StartsWith("fill:#"))
-                {
-                    Debug.LogWarning("Invalid fill attribute format.");
-                    return Color.clear;
-                }
-
-                var hexColor = fill.Substring(6);
-
-                if (hexColor.Length != 6)
-                {
-                    Debug.LogWarning("Hex color code should be 6 characters long.");
-                    return Color.clear;
-                }
-
-                var r = byte.Parse(hexColor.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-                var g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-                var b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-
-                return new Color(r / 255f, g / 255f, b / 255f, 1f); // Alpha is fully opaque
-            }
         }
 
         private void ConvertToPaths()
         {
             var inputFilePath = _options.SvgPath;
-            var arguments = $"inkscape --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
+            var arguments =
+                $"inkscape --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
 
             var processStartInfo = new ProcessStartInfo
             {

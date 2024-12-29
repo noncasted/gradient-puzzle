@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   fill="none"
+   version="1.1"
+   id="svg6"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <g
+     clip-path="url(#clip0_1_111)"
+     id="g5">
+    <path
+       id="rect1"
+       style="fill:#fdfbe0"
+       d="M 1450,370 H 830 v -620 h 620 z" />
+    <path
+       id="rect2"
+       style="fill:#94549d"
+       d="M 400,1420 H -220 V 800 h 620 z" />
+    <path
+       id="rect3"
+       style="fill:#ac7eb2"
+       d="M 231,531 H 670 V 970 H 231 Z" />
+    <path
+       id="rect4"
+       style="fill:#e2d2d5"
+       d="M 531,231 H 970 V 670 H 531 Z" />
+    <path
+       id="rect5"
+       style="fill:#c6a9c5"
+       d="M 438,438 H 763 V 763 H 438 Z" />
+  </g>
+  <defs
+     id="defs6">
+    <clipPath
+       id="clip0_1_111">
+      <rect
+         width="1200"
+         height="1200"
+         fill="white"
+         id="rect6" />
+    </clipPath>
+  </defs>
+</svg>

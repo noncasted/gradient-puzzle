@@ -62,6 +62,7 @@ namespace GamePlay.Levels
         {
             _shapes = new List<AreaShapeData>(shapes);
             _renderer.Construct(shapes);
+            _renderer.SetColor(_color);
         }
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
