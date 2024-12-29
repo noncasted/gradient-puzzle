@@ -95,11 +95,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isAnchor: 0
-  _transform: {fileID: 2731452419824307189}
   _renderer: {fileID: 1947493757046551786}
-  _datas: []
-  _center: {x: 0, y: 0}
+  _color: {r: 0, g: 0, b: 0, a: 0}
+  _order: 0
+  _id: 
+  _selfTransform: {fileID: 2731452419824307189}
   _centerTransform: {fileID: 2655484002863866401}
+  _shapes: []
 --- !u!114 &1947493757046551786
 MonoBehaviour:
   m_ObjectHideFlags: 0

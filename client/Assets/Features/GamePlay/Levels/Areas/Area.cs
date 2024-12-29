@@ -14,6 +14,7 @@ namespace GamePlay.Levels
         
         [SerializeField] private Color _color;
         [SerializeField] private int _order;
+        [SerializeField] private string _id;
         
         [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _centerTransform = new();
@@ -39,9 +40,15 @@ namespace GamePlay.Levels
         public AreaRenderer Renderer => _renderer;
         public IReadOnlyList<AreaShapeData> Shapes => _shapes; 
         public int Order => _order;
+        public string Id => _id;
 
-        public void Construct(IReadOnlyList<AreaShapeData> shapes, Color color, int order)
+        public void Construct(
+            IReadOnlyList<AreaShapeData> shapes,
+            Color color,
+            int order, 
+            string id)
         {
+            _id = id;
             _order = order;
             _shapes = new List<AreaShapeData>(shapes);
             _renderer.Construct(shapes);
@@ -49,6 +56,12 @@ namespace GamePlay.Levels
             
             _color = color;
             _renderer.SetColor(color);
+        }
+        
+        public void UpdateShapes(IReadOnlyList<AreaShapeData> shapes)
+        {
+            _shapes = new List<AreaShapeData>(shapes);
+            _renderer.Construct(shapes);
         }
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)

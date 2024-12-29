@@ -15,14 +15,16 @@ namespace GamePlay.Levels
         public Color Color => _color;
         public IReadOnlyList<AreaShapeRenderer> Renderers => _renderers;
 
-        public void Construct(IReadOnlyList<AreaShapeData> datas)
+        public void Construct(IReadOnlyList<AreaShapeData> shapesData)
         {
             var renderers = GetComponentsInChildren<AreaShapeRenderer>(true);
 
             foreach (var areaRenderer in renderers)
                 DestroyImmediate(areaRenderer.gameObject);
+            
+            _renderers.Clear();
 
-            foreach (var data in datas)
+            foreach (var data in shapesData)
             {
 #if UNITY_EDITOR
                 var areaRenderer = PrefabUtility.InstantiatePrefab(_prefab, transform) as AreaShapeRenderer;
