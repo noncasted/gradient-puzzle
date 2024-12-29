@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -20,27 +21,28 @@ namespace GamePlay.Levels.SVGs
         {
             ConvertToPaths();
 
-            var paths = GetPathDAttributes(_options.SvgPath);
+            var rawAreas = GetRawAreas(_options.SvgPath);
             var areas = new List<ExtractedArea>();
-            var rawAreas = new List<List<List<Vector2>>>();
 
-            foreach (var path in paths)
+            foreach (var area in rawAreas)
             {
-                var properties = new SvgPathProperties.SvgPath(path.D);
-                var length = properties.Length;
-                var points = new List<Vector2>();
-
-                for (var i = 0f; i < length; i += _options.PointsDensity)
+                foreach (var path in area.Paths)
                 {
-                    var point = properties.GetPointAtLength(i);
+                    var properties = new SvgPathProperties.SvgPath(path.D);
+                    var length = properties.Length;
+                    var points = new List<Vector2>();
 
-                    var convertedPoint = new Vector2((float)point.X, (float)point.Y);
-                    var rotatedPoint = ApplyRotation(convertedPoint, path.Transform);
-                    rotatedPoint.y *= -1f;
-                    points.Add(rotatedPoint);
+                    for (var i = 0f; i < length; i += _options.PointsDensity)
+                    {
+                        var point = properties.GetPointAtLength(i);
+
+                        var convertedPoint = new Vector2((float)point.X, (float)point.Y);
+                        convertedPoint.y *= -1f;
+                        points.Add(convertedPoint);
+                    }
+                    
+                    path.ResultPoints.AddRange(points);
                 }
-
-                rawAreas.Add(new List<List<Vector2>>() { points });
             }
 
             var centerOffset = GetCenterOffset();
@@ -58,21 +60,6 @@ namespace GamePlay.Levels.SVGs
                 areas.Add(new ExtractedArea(area));
 
             return areas;
-
-            Vector2 ApplyRotation(Vector2 point, Vector3 transform)
-            {
-                var angleInRadians = Mathf.Deg2Rad * transform.x;
-
-                var cosAngle = Mathf.Cos(angleInRadians);
-                var sinAngle = Mathf.Sin(angleInRadians);
-
-                var translatedX = point.x - transform.y;
-                var translatedY = point.y - transform.z;
-                var rotatedX = cosAngle * translatedX - sinAngle * translatedY;
-                var rotatedY = sinAngle * translatedX + cosAngle * translatedY;
-
-                return new Vector2(rotatedX + transform.y, rotatedY + transform.z);
-            }
 
             Vector2 GetCenterOffset()
             {
@@ -104,15 +91,15 @@ namespace GamePlay.Levels.SVGs
 
                 var result = new Vector2(minX + (maxX - minX) / 2f, minY + (maxY - minY) / 2f);
                 result *= -1f;
-                Debug.Log($"minX: {minX}, maxX: {maxX}, minY: {minY}, maxY: {maxY} offset: {result}");
+
                 return result;
             }
         }
 
-        private List<RawPathData> GetPathDAttributes(string svgFilePath)
+        private IReadOnlyList<RawAreaData> GetRawAreas(string svgFilePath)
         {
             var svgDocument = XDocument.Load(svgFilePath);
-            var paths = new List<RawPathData>();
+            var paths = new Dictionary<Color, RawPathData>();
             var index = 0;
 
             foreach (var pathElement in svgDocument.Descendants("{http://www.w3.org/2000/svg}path"))
@@ -120,45 +107,42 @@ namespace GamePlay.Levels.SVGs
                 var d = pathElement.Attribute("d")!.Value;
                 var id = pathElement.Attribute("id")!.Value;
                 var style = pathElement.Attribute("style")!.Value;
-                var rotation = ExtractRotation();
 
-                paths.Add(new RawPathData(
+                var color = ExtractColor(style);
+
+                var data = new RawPathData(
                     d,
-                    rotation,
                     index,
-                    ExtractColor(style),
-                    id));
+                    color,
+                    id);
 
-                Vector3 ExtractRotation()
-                {
-                    var transform = pathElement.Attribute("transform")?.Value;
-
-                    if (string.IsNullOrEmpty(transform))
-                        return Vector3.zero;
-
-                    transform = transform.Replace("rotate(", "").Replace(")", "");
-
-                    var transformValues = transform.Split(' ');
-
-                    return new Vector3(
-                        float.Parse(transformValues[0]),
-                        float.Parse(transformValues[1]),
-                        float.Parse(transformValues[2]));
-                }
+                paths.Add(color, data);
             }
 
-            return paths;
+            var result = new Dictionary<Color, RawAreaData>();
+
+            foreach (var (color, path) in paths)
+            {
+                if (result.TryGetValue(color, out var area) == false)
+                {
+                    area = new RawAreaData(new List<RawPathData>(), index, color);
+                    result.Add(color, area);
+                }
+                
+                area.Paths.Add(path);
+            }
             
+            return result.Values.ToList();
+
             Color ExtractColor(string fill)
             {
                 if (string.IsNullOrEmpty(fill) || !fill.StartsWith("fill:#"))
                 {
                     Debug.LogWarning("Invalid fill attribute format.");
-                    return Color.clear; // Return transparent color if the format is invalid
+                    return Color.clear;
                 }
 
-                // Remove "fill:#" and parse the hex string
-                string hexColor = fill.Substring(6);
+                var hexColor = fill.Substring(6);
 
                 if (hexColor.Length != 6)
                 {
@@ -166,12 +150,10 @@ namespace GamePlay.Levels.SVGs
                     return Color.clear;
                 }
 
-                // Parse RGB components from the hex string
-                byte r = byte.Parse(hexColor.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-                byte g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-                byte b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                var r = byte.Parse(hexColor.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                var g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                var b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-                // Convert to Unity Color (values normalized between 0 and 1)
                 return new Color(r / 255f, g / 255f, b / 255f, 1f); // Alpha is fully opaque
             }
         }
@@ -180,7 +162,7 @@ namespace GamePlay.Levels.SVGs
         {
             var inputFilePath = _options.SvgPath;
             var arguments =
-                $"inkscape --export-plain-svg --actions=\"select-all;object-to-path;;transform-remove\" --export-overwrite {inputFilePath}";
+                $"inkscape --export-plain-svg --actions=\"select-all;transform-reapply;object-to-path;\" --export-overwrite {inputFilePath}";
 
             var processStartInfo = new ProcessStartInfo
             {
@@ -207,23 +189,36 @@ namespace GamePlay.Levels.SVGs
         {
             public RawPathData(
                 string d,
-                Vector3 transform,
                 int order,
                 Color color,
                 string name)
             {
                 D = d;
-                Transform = transform;
                 Order = order;
                 Color = color;
                 Name = name;
             }
 
             public string D { get; }
-            public Vector3 Transform { get; }
             public int Order { get; }
             public Color Color { get; }
             public string Name { get; }
+            
+            public List<Vector2> ResultPoints { get; } = new();
+        }
+
+        public class RawAreaData
+        {
+            public RawAreaData(List<RawPathData> paths, int order, Color color)
+            {
+                Paths = paths;
+                Order = order;
+                Color = color;
+            }
+
+            public List<RawPathData> Paths { get; }
+            public int Order { get; }
+            public Color Color { get; }
         }
     }
 }
