@@ -43,7 +43,7 @@ namespace GamePlay.Paints
             {
                 case IPaintDock dock:
                 {
-                    _transform.AttachTo(dock.Transform);
+                    _transform.AttachTo(dock.SelfTransform);
                     _transform.SetRectPosition(Vector2.zero);
                     var dockSize = dock.Size;
                     _image.ResetMaterial();
@@ -56,7 +56,7 @@ namespace GamePlay.Paints
                 }
                 case IArea area:
                 {
-                    _transform.AttachTo(area.Transform);
+                    _transform.AttachTo(area.SelfTransform);
                     _image.SetMaterial(area.MaskData.Content);
 
                     await _updater.CurveProgression(handle.Lifetime, _options.AreaScaleCurve,

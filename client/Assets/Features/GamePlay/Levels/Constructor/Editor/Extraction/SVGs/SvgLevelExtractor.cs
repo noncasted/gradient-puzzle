@@ -40,7 +40,7 @@ namespace GamePlay.Levels.SVGs
                         convertedPoint.y *= -1f;
                         points.Add(convertedPoint);
                     }
-                    
+
                     path.ResultPoints.AddRange(points);
                 }
             }
@@ -49,15 +49,23 @@ namespace GamePlay.Levels.SVGs
 
             foreach (var area in rawAreas)
             {
-                foreach (var subArea in area)
+                foreach (var path in area.Paths)
                 {
-                    for (var i = 0; i < subArea.Count; i++)
-                        subArea[i] += centerOffset;
+                    for (var i = 0; i < path.ResultPoints.Count; i++)
+                        path.ResultPoints[i] += centerOffset;
                 }
             }
 
             foreach (var area in rawAreas)
-                areas.Add(new ExtractedArea(area));
+            {
+                var contours = new List<IReadOnlyList<Vector2>>();
+
+                foreach (var path in area.Paths)
+                    contours.Add(path.ResultPoints);
+
+                var order = area.Paths.Min(t => t.Order);
+                areas.Add(new ExtractedArea(contours, area.Color, order, area.Paths[0].Name));
+            }
 
             return areas;
 
@@ -70,9 +78,9 @@ namespace GamePlay.Levels.SVGs
 
                 foreach (var area in rawAreas)
                 {
-                    foreach (var subArea in area)
+                    foreach (var path in area.Paths)
                     {
-                        foreach (var point in subArea)
+                        foreach (var point in path.ResultPoints)
                         {
                             if (point.x > maxX)
                                 maxX = point.x;
@@ -99,7 +107,7 @@ namespace GamePlay.Levels.SVGs
         private IReadOnlyList<RawAreaData> GetRawAreas(string svgFilePath)
         {
             var svgDocument = XDocument.Load(svgFilePath);
-            var paths = new Dictionary<Color, RawPathData>();
+            var paths = new List<(Color, RawPathData)>();
             var index = 0;
 
             foreach (var pathElement in svgDocument.Descendants("{http://www.w3.org/2000/svg}path"))
@@ -116,7 +124,7 @@ namespace GamePlay.Levels.SVGs
                     color,
                     id);
 
-                paths.Add(color, data);
+                paths.Add((color, data));
             }
 
             var result = new Dictionary<Color, RawAreaData>();
@@ -125,13 +133,13 @@ namespace GamePlay.Levels.SVGs
             {
                 if (result.TryGetValue(color, out var area) == false)
                 {
-                    area = new RawAreaData(new List<RawPathData>(), index, color);
+                    area = new RawAreaData(new List<RawPathData>(), color);
                     result.Add(color, area);
                 }
-                
+
                 area.Paths.Add(path);
             }
-            
+
             return result.Values.ToList();
 
             Color ExtractColor(string fill)
@@ -161,8 +169,7 @@ namespace GamePlay.Levels.SVGs
         private void ConvertToPaths()
         {
             var inputFilePath = _options.SvgPath;
-            var arguments =
-                $"inkscape --export-plain-svg --actions=\"select-all;transform-reapply;object-to-path;\" --export-overwrite {inputFilePath}";
+            var arguments = $"inkscape --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
 
             var processStartInfo = new ProcessStartInfo
             {
@@ -177,6 +184,8 @@ namespace GamePlay.Levels.SVGs
             try
             {
                 using var process = Process.Start(processStartInfo)!;
+                var output = process.StandardOutput.ReadToEnd();
+                var error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
             }
             catch (Exception ex)
@@ -203,21 +212,19 @@ namespace GamePlay.Levels.SVGs
             public int Order { get; }
             public Color Color { get; }
             public string Name { get; }
-            
+
             public List<Vector2> ResultPoints { get; } = new();
         }
 
         public class RawAreaData
         {
-            public RawAreaData(List<RawPathData> paths, int order, Color color)
+            public RawAreaData(List<RawPathData> paths, Color color)
             {
                 Paths = paths;
-                Order = order;
                 Color = color;
             }
 
             public List<RawPathData> Paths { get; }
-            public int Order { get; }
             public Color Color { get; }
         }
     }

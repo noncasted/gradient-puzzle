@@ -74,20 +74,20 @@ namespace GamePlay.Levels
                 area.transform.localPosition = Vector2.zero;
                 spawnedAreas.Add(area);
 
-                var datas = new List<AreaData>();
+                var shapesData = new List<AreaShapeData>();
 
                 foreach (var contour in extracted.Contours)
                 {
-                    var center = AreaDataExtensions.GetCenter(contour);
-
-                    var data = new AreaData(contour.ToArray(), center);
-                    datas.Add(data);
+                    var center = AreaShapeDataExtensions.GetCenter(contour);
+                    var data = new AreaShapeData(contour.ToArray(), center);
+                    
+                    shapesData.Add(data);
                 }
 
-                area.Construct(datas);
+                area.Construct(shapesData, extracted.Color, extracted.Order);
             }
 
-            var orderedAreas = spawnedAreas.OrderByDescending(t => t.Position.y).ToList();
+            var orderedAreas = spawnedAreas.OrderByDescending(t => t.Order).ToList();
 
             for (var i = 0; i < orderedAreas.Count; i++)
             {
@@ -96,20 +96,20 @@ namespace GamePlay.Levels
                 area.transform.SetSiblingIndex(i);
             }
 
-            var colors = new List<LevelColorData>
-            {
-                new(Color.white, Vector2.zero),
-                new(Color.black, new Vector2(1080, 1080)),
-                new(Color.red, new Vector2(0, 1080)),
-                new(Color.blue, new Vector2(1080, 0))
-            };
-
-            foreach (var area in orderedAreas)
-            {
-                var center = area.Position;
-                var color = AreaDataExtensions.GetInterpolatedColor(center, size.x, colors);
-                area.Renderer.SetColor(color);
-            }
+            // var colors = new List<LevelColorData>
+            // {
+            //     new(Color.white, Vector2.zero),
+            //     new(Color.black, new Vector2(1080, 1080)),
+            //     new(Color.red, new Vector2(0, 1080)),
+            //     new(Color.blue, new Vector2(1080, 0))
+            // };
+            //
+            // foreach (var area in orderedAreas)
+            // {
+            //     var center = area.Position;
+            //     var color = AreaShapeDataExtensions.GetInterpolatedColor(center, size.x, colors);
+            //     area.Renderer.SetColor(color);
+            // }
 
             _level.Construct(orderedAreas.ToArray());
 
@@ -159,9 +159,11 @@ namespace GamePlay.Levels
                 case LevelExtractionType.SVG:
                 {
                     var source = GetSvgSource();
+                    var svgOptions = AssetsExtensions.FindAsset<SvgLevelConstructorOptions>(); 
                     var options = new SvgLevelExtractOptions(
                         source,
-                        AssetsExtensions.FindAsset<SvgLevelConstructorOptions>().InkscapePath,
+                        svgOptions.InkscapePath,
+                        svgOptions.InkscapeActions,
                         size, _svgPointDensity);
                     
                     var extractor = new SvgLevelExtractor(options);

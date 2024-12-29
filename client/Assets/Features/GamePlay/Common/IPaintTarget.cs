@@ -9,7 +9,7 @@ namespace GamePlay.Common
     {
         IViewableProperty<bool> IsTouched { get; }
         Vector2 Position { get; }
-        RectTransform Transform { get; }
+        RectTransform SelfTransform { get; }
         RectTransform CenterTransform { get; }
         RenderMaskData MaskData { get; }
         IPaintHandle PaintHandle { get; }

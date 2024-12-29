@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: SvgLevelConstructorOptions
   m_EditorClassIdentifier: 
   _assetId: 89
-  _pointsDensity: 10
+  _pointsDensity: 1.28
+  _inkscapePath: S:\apps\inkscape\bin\inkscape.exe
+  _inkscapeActions:
+  - select-all
+  - transform-reapply
+  - object-to-path
+  - element-image-crop

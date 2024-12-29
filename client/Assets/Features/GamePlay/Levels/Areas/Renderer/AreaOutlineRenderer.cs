@@ -6,7 +6,7 @@ namespace GamePlay.Levels
     [DisallowMultipleComponent]
     public class AreaOutlineRenderer : MonoBehaviour
     {
-        [SerializeField] private AreaRenderer _renderer;
+        [SerializeField] private AreaShapeRenderer _shapeRenderer;
         [SerializeField] private AreaRendererOptions _options;
         [SerializeField] private Polyline _line;
         
@@ -24,7 +24,7 @@ namespace GamePlay.Levels
         {
             _line.points.Clear();
             
-            foreach (var point in _renderer.Data.Vertices)
+            foreach (var point in _shapeRenderer.Data.Vertices)
                 _line.points.Add(new PolylinePoint(point));
         }
     }

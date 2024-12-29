@@ -7,7 +7,7 @@ namespace GamePlay.Levels
 {
     public interface IArea : IPaintTarget
     {
-        Color Source { get; }
+        Color Color { get; }
         bool IsAnchor { get; }
         IViewableProperty<bool> IsCompleted { get; }
 

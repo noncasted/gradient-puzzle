@@ -25,7 +25,7 @@ namespace GamePlay.Selections
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public Vector2 Position => _selfTransform.anchoredPosition;
-        public RectTransform Transform => _paintRoot;
+        public RectTransform SelfTransform => _paintRoot;
         public RectTransform CenterTransform => _paintRoot;
         public RenderMaskData MaskData => null;
         public IPaintHandle PaintHandle { get; } = new PaintHandle();

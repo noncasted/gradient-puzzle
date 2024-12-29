@@ -47,7 +47,7 @@ namespace GamePlay.Paints
             {
                 case IPaintDock dock:
                 {
-                    _transform.AttachTo(dock.Transform);
+                    _transform.AttachTo(dock.SelfTransform);
                     _transform.SetRectPosition(Vector2.zero);
                     var dockSize = dock.Size;
                     _image.SetSize(_options.StartDockSize);

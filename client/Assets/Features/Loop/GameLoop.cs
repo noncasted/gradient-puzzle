@@ -113,9 +113,9 @@ namespace Loop
 
             foreach (var area in level.Areas)
             {
-                colors.Add(area.Source);
+                colors.Add(area.Color);
                 target.Add(area);
-                colorToArea.Add(area.Source, area);
+                colorToArea.Add(area.Color, area);
             }
 
             _selection.Clear();
@@ -158,7 +158,7 @@ namespace Loop
 
             foreach (var anchor in anchors)
             {
-                var paint = colorToPaint[anchor.Source];
+                var paint = colorToPaint[anchor.Color];
                 anchor.PaintHandle.Set(paint);
                 anchor.PaintHandle.Lock();
                 paint.Anchor(anchor);

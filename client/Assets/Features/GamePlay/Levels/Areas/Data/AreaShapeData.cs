@@ -5,9 +5,9 @@ using UnityEngine;
 namespace GamePlay.Levels
 {
     [Serializable]
-    public class AreaData
+    public class AreaShapeData
     {
-        public AreaData(Vector2[] points, Vector2 center)
+        public AreaShapeData(Vector2[] points, Vector2 center)
         {
             _points = points;
             _center = center;

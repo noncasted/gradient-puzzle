@@ -1,35 +1,61 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GamePlay.Levels
 {
     [DisallowMultipleComponent]
-    public class AreaRenderer : MaskableGraphic
+    public class AreaRenderer : MonoBehaviour
     {
-        [SerializeField] private float _offset;
-        [SerializeField] private AreaRendererData _data;
-        [SerializeField] private AreaOutlineRenderer _outline;
-        
-        private IReadOnlyList<Vector2> _points;
+        [SerializeField] private AreaShapeRenderer _prefab;
+        [SerializeField] private List<AreaShapeRenderer> _renderers;
 
-        public AreaRendererData Data => _data;
-        public AreaOutlineRenderer Outline => _outline;
+        [SerializeField] private Color _color;
 
-        public void SetPoints(IReadOnlyList<Vector2> points)
+        public Color Color => _color;
+        public IReadOnlyList<AreaShapeRenderer> Renderers => _renderers;
+
+        public void Construct(IReadOnlyList<AreaShapeData> datas)
         {
-            _data = points.GetAreaRenderData();
+            var renderers = GetComponentsInChildren<AreaShapeRenderer>(true);
+
+            foreach (var areaRenderer in renderers)
+                DestroyImmediate(areaRenderer.gameObject);
+
+            foreach (var data in datas)
+            {
+#if UNITY_EDITOR
+                var areaRenderer = PrefabUtility.InstantiatePrefab(_prefab, transform) as AreaShapeRenderer;
+                areaRenderer.SetPoints(data.Points);
+
+                _renderers.Add(areaRenderer);
+#endif
+            }
         }
 
-        protected override void OnPopulateMesh(VertexHelper vh)
+        public void SetMaterial(Material material)
         {
-            if (_data == null || _data.Vertices.Count < 3)
-                return;
+            foreach (var areaRenderer in _renderers)
+            {
+                areaRenderer.material = material;
+            }
+        }
 
-            base.OnPopulateMesh(vh);
-            vh.Clear();
+        public void SetColor(Color color)
+        {
+            color.a = 1f;
+            _color = color;
 
-            _data.Render(ref vh, color);
+            foreach (var areaRenderer in _renderers)
+                areaRenderer.color = color;
+        }
+
+        public void SetDirty()
+        {
+#if UNITY_EDITOR
+            foreach (var areaRenderer in _renderers)
+                EditorUtility.SetDirty(areaRenderer);
+#endif
         }
     }
 }

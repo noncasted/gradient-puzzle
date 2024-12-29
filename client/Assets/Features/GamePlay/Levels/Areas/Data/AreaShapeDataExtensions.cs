@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace GamePlay.Levels
 {
-    public static class AreaDataExtensions
+    public static class AreaShapeDataExtensions
     {
-        public static float GetMinDistanceToBorder(this AreaData data, Vector2 position)
+        public static float GetMinDistanceToBorder(this AreaShapeData shapeData, Vector2 position)
         {
             var minDistance = float.MaxValue;
 
-            foreach (var point in data.Points)
+            foreach (var point in shapeData.Points)
             {
                 var distance = Vector2.Distance(position, point);
 
@@ -21,15 +21,15 @@ namespace GamePlay.Levels
 
          }
         
-        public static bool IsInside(this AreaData data, Vector2 position)
+        public static bool IsInside(this AreaShapeData shapeData, Vector2 position)
         {
-            if (data.Points.Count < 3)
+            if (shapeData.Points.Count < 3)
                 return false;
 
             var isInPolygon = false;
-            var lastVertex = data.Points[^1];
+            var lastVertex = shapeData.Points[^1];
 
-            foreach (var vertex in data.Points)
+            foreach (var vertex in shapeData.Points)
             {
                 if (position.y.IsBetween(lastVertex.y, vertex.y))
                 {
@@ -104,7 +104,7 @@ namespace GamePlay.Levels
             return new Vector2(centerX, centerY);
         }
 
-        public static Vector2 GetCenter(IReadOnlyList<AreaData> datas)
+        public static Vector2 GetCenter(IReadOnlyList<AreaShapeData> datas)
         {
             var centers = new List<Vector2>();
 

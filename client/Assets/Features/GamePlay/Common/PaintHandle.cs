@@ -8,10 +8,10 @@ namespace GamePlay.Common
     {
         private readonly ViewableProperty<IPaint> _paint = new(null);
         private bool _isLocked;
-        
-        public IViewableProperty<IPaint> Paint =>_paint;
-        public bool IsLocked =>_isLocked;
-        
+
+        public IViewableProperty<IPaint> Paint => _paint;
+        public bool IsLocked => _isLocked;
+
         public void Set(IPaint paint)
         {
             _paint.Set(paint);
@@ -21,7 +21,7 @@ namespace GamePlay.Common
         {
             if (_paint.Value != paint)
                 throw new Exception();
-            
+
             _paint.Set(null);
         }
 

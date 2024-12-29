@@ -96,7 +96,7 @@ namespace GamePlay.Levels
             foreach (var area in _areas)
             {
                 var center = area.Position;
-                var color = AreaDataExtensions.GetInterpolatedColor(center, size, colors);
+                var color = AreaShapeDataExtensions.GetInterpolatedColor(center, size, colors);
                 area.Renderer.SetColor(color);
                 area.Renderer.SetDirty();
             }

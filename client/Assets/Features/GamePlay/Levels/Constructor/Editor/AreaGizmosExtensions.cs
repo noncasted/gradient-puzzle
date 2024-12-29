@@ -46,7 +46,7 @@ namespace GamePlay.Levels
 
             using (Draw.WithLineWidth(1.5f))
             {
-                foreach (var data in area.Datas)
+                foreach (var data in area.Shapes)
                 {
                     var points = new NativeArray<float3>(data.Points.Count, Allocator.Temp);
 

@@ -10,36 +10,45 @@ namespace GamePlay.Levels
     public class Area : MonoBehaviour, IArea
     {
         [SerializeField] private bool _isAnchor;
-        [SerializeField] private RectTransform _transform;
-        [SerializeField] private AreaCompoundRenderer _renderer;
-        [SerializeField] private List<AreaData> _datas;
-        [SerializeField] private Vector2 _center;
+        [SerializeField] private AreaRenderer _renderer;
+        
+        [SerializeField] private Color _color;
+        [SerializeField] private int _order;
+        
+        [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _centerTransform = new();
+        
+        [SerializeField] private List<AreaShapeData> _shapes;
 
         private readonly ViewableProperty<bool> _isTouched = new();
         private readonly ViewableProperty<bool> _isCompleted = new();
 
-        private Color _color;
         private RenderMaskData _maskData;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IViewableProperty<bool> IsCompleted => _isCompleted;
+        
         public Vector2 Position => _centerTransform.position;
-        public RectTransform Transform => _transform;
+        public RectTransform SelfTransform => _selfTransform;
         public RectTransform CenterTransform => _centerTransform;
+        
         public bool IsAnchor => _isAnchor;
         public RenderMaskData MaskData => _maskData;
         public IPaintHandle PaintHandle { get; } = new PaintHandle();
-        public Color Source => _color;
-        public AreaCompoundRenderer Renderer => _renderer;
-        public IReadOnlyList<AreaData> Datas => _datas;
+        public Color Color => _color;
+        public AreaRenderer Renderer => _renderer;
+        public IReadOnlyList<AreaShapeData> Shapes => _shapes; 
+        public int Order => _order;
 
-        public void Construct(IReadOnlyList<AreaData> datas)
+        public void Construct(IReadOnlyList<AreaShapeData> shapes, Color color, int order)
         {
-            _datas = new List<AreaData>(datas);
-            _renderer.Construct(datas);
-            _center = AreaDataExtensions.GetCenter(datas);
-            _centerTransform.anchoredPosition = _center;
+            _order = order;
+            _shapes = new List<AreaShapeData>(shapes);
+            _renderer.Construct(shapes);
+            _centerTransform.anchoredPosition = AreaShapeDataExtensions.GetCenter(shapes);
+            
+            _color = color;
+            _renderer.SetColor(color);
         }
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
@@ -85,7 +94,7 @@ namespace GamePlay.Levels
         {
             var minDistance = float.MaxValue;
 
-            foreach (var data in _datas)
+            foreach (var data in _shapes)
             {
                 var distance = data.GetMinDistanceToBorder(position);
 
@@ -114,7 +123,7 @@ namespace GamePlay.Levels
 
         private bool CheckInside(Vector2 position)
         {
-            foreach (var data in _datas)
+            foreach (var data in _shapes)
             {
                 if (data.IsInside(position) == false)
                     continue;
