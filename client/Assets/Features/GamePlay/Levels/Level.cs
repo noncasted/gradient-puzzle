@@ -17,12 +17,12 @@ namespace GamePlay.Levels
         private IUpdater _updater;
         private IGameInput _input;
 
-        public IReadOnlyList<IArea> Areas => _areas;  
-        
+        public IReadOnlyList<IArea> Areas => _areas;
+
         private static readonly ViewableDelegate<Level> _constructorRequest = new();
-        
+
         public static IViewableDelegate<Level> ConstructorRequest => _constructorRequest;
-        
+
         [Inject]
         private void Construct(IUpdater updater, IGameInput input)
         {
@@ -32,14 +32,7 @@ namespace GamePlay.Levels
 
         private void Awake()
         {
-            // _areas = _areas.OrderByDescending(t => t.Position.y).ToArray();
-            //
-            // for (var i = 0; i < _areas.Length; i++)
-            // {
-            //     var area = _areas[i];
-            //     area.transform.parent = transform;
-            //     area.transform.SetSiblingIndex(i);
-            // }
+            _areas = GetComponentsInChildren<Area>(true).Reverse().ToArray();
         }
 
         public void Construct(Area[] areas)
@@ -51,11 +44,18 @@ namespace GamePlay.Levels
         {
             _updater.RunUpdateAction(lifetime, _ =>
             {
+                var isInside = false;
+
                 foreach (var area in _areas)
-                    area.CheckTouch(_input.CursorPosition);
+                {
+                    if (isInside == false)
+                        isInside = area.CheckTouch(_input.CursorPosition);
+                    else
+                        area.ResetTouch();
+                }
             });
         }
-        
+
         [Button("Open Constructor")]
         public void OpenLevelConstructor()
         {

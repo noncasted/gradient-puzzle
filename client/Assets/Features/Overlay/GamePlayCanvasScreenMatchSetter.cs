@@ -12,7 +12,6 @@ namespace Overlay
         public void Create(IScopeBuilder builder)
         {
             var resolution = Screen.currentResolution.height / (float)Screen.currentResolution.width;
-            Debug.Log($"Resolution: {resolution} {Screen.currentResolution.height} {Screen.currentResolution.width}");
             
             if (resolution > 1.3f)
             {

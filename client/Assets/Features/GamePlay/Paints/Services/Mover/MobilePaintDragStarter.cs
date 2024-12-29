@@ -36,13 +36,23 @@ namespace GamePlay.Paints
                     }
                     else
                     {
-                        if (_selected == target)
-                            _selected = null;
+                        TryResetTouch();
                     }
                 });
             }
 
             _input.Action.Advise(lifetime, OnActionPressed);
+            
+            void TryResetTouch()
+            {
+                foreach (var target in targets)
+                {
+                    if (target.IsTouched.Value == true)
+                        return;
+                }
+                
+                _selected = null;
+            }
         }
 
         private void OnActionPressed(bool isPressed)

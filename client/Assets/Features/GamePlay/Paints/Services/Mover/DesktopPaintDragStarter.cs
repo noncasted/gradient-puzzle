@@ -26,18 +26,24 @@ namespace GamePlay.Paints
                 target.IsTouched.Advise(lifetime, isTouched =>
                 {
                     if (isTouched == true)
-                    {
                         _selected = target;
-                    }
                     else
-                    {
-                        if (_selected == target)
-                            _selected = null;
-                    }
+                        TryResetTouch();
                 });
             }
 
             _input.Action.AdviseTrue(lifetime, OnActionPressed);
+
+            void TryResetTouch()
+            {
+                foreach (var target in targets)
+                {
+                    if (target.IsTouched.Value == true)
+                        return;
+                }
+                
+                _selected = null;
+            }
         }
 
         private void OnActionPressed()

@@ -96,12 +96,20 @@ namespace GamePlay.Levels
             return minDistance;
         }
 
-        public void CheckTouch(Vector2 cursorPosition)
+        public bool CheckTouch(Vector2 cursorPosition)
         {
             if (_isAnchor == true)
-                return;
+                return false;
 
-            _isTouched.Set(CheckInside(cursorPosition));
+            var isInside = CheckInside(cursorPosition);
+
+            _isTouched.Set(isInside);
+            return isInside;
+        }
+        
+        public void ResetTouch()
+        {
+            _isTouched.Set(false);
         }
 
         private bool CheckInside(Vector2 position)

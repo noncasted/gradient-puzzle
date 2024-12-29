@@ -45,8 +45,8 @@ namespace Services
         { 
             if (Input.touchCount != 1)
             {
-                _cursorPosition = Vector2.zero;
-                _worldPosition = Vector2.zero;
+                _cursorPosition = Vector2.positiveInfinity;
+                _worldPosition = Vector2.positiveInfinity;
                 _action.Set(false);
                 
                 return;
