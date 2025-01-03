@@ -72,7 +72,7 @@ namespace Internal
 
             var optionsRegistry = config.AssetsStorage.Options[config.Platform];
             optionsRegistry.CacheRegistry();
-            optionsRegistry.AddOptions(new PlatformOptions(config.Platform, true));
+            optionsRegistry.AddOptions(new PlatformOptions(config.Platform, Application.isMobilePlatform));
 
             var assets = new AssetEnvironment(config.AssetsStorage, optionsRegistry);
             return assets;
