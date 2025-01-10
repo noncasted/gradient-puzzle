@@ -16,7 +16,7 @@ MonoBehaviour:
   _scale: 1
   _simplifyAngle: 10
   _pointsDensity: 1.28
-  _inkscapePath: S:\apps\inkscape\bin\inkscape.exe
+  _inkscapePath: \tools\inkscape\bin\inkscape.exe
   _inkscapeActions:
   - select-all
   - transform-reapply

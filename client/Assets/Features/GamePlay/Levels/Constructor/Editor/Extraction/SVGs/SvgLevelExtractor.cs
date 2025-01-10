@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
@@ -174,12 +175,15 @@ namespace GamePlay.Levels.SVGs
         private void ConvertToPaths()
         {
             var inputFilePath = _options.SvgPath;
+            var rootPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+            var inkscapePath = rootPath + _options.InkscapePath;
+         
             var arguments =
-                $"inkscape --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
+                $"{inkscapePath} --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
 
             var processStartInfo = new ProcessStartInfo
             {
-                FileName = _options.InkscapePath,
+                FileName = inkscapePath,
                 Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
