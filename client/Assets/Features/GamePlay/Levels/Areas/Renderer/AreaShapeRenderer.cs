@@ -10,7 +10,7 @@ namespace GamePlay.Levels
         [SerializeField] private float _offset;
         [SerializeField] private AreaRendererData _data;
         [SerializeField] private AreaOutlineRenderer _outline;
-        
+
         private IReadOnlyList<Vector2> _points;
 
         public AreaRendererData Data => _data;

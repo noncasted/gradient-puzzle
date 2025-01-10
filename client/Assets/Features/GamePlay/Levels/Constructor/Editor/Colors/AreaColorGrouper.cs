@@ -10,7 +10,7 @@ namespace GamePlay.Levels
         public static void GroupSelected()
         {
             var selectedObjects = Selection.gameObjects;
-            
+
             if (selectedObjects.Length == 0)
                 return;
 
@@ -18,7 +18,7 @@ namespace GamePlay.Levels
             if (selectedObjects.Length == 1)
             {
                 var group = selectedObjects[0].GetComponent<AreaColorGroup>();
-                
+
                 if (group != null)
                 {
                     HandleUngroup(group);
@@ -54,10 +54,10 @@ namespace GamePlay.Levels
             var parent = group.transform.parent;
 
             var areas = group.GetComponentsInChildren<Area>(true);
-            
+
             foreach (var area in areas)
                 Undo.SetTransformParent(area.transform, parent, "Ungroup Selected Objects");
-            
+
             Object.DestroyImmediate(group.gameObject);
         }
     }

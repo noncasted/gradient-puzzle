@@ -14,7 +14,7 @@ namespace GamePlay.Levels
         private static void OnPress(int _, Rect _1)
         {
             var current = Event.current;
-            
+
             if (current.type == EventType.KeyDown && current.control && current.keyCode == KeyCode.G)
             {
                 AreaColorGrouper.GroupSelected();

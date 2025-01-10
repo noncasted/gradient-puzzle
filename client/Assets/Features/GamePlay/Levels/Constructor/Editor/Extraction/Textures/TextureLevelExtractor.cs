@@ -30,7 +30,9 @@ namespace GamePlay.Levels
         {
             var pixels = _texture.GetPixels32();
             var textureSize = new Vector2Int(_texture.width, _texture.height);
-            var contours = TextureLevelExtractorExtensions.ExtractContours(pixels, textureSize, options.ErosionPixels, sourceColor);
+            var contours =
+                TextureLevelExtractorExtensions.ExtractContours(pixels, textureSize, options.ErosionPixels,
+                    sourceColor);
 
             foreach (var contour in contours)
             {

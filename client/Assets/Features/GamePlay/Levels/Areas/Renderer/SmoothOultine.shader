@@ -8,7 +8,10 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags
+        {
+            "RenderType"="Transparent" "Queue"="Transparent"
+        }
         LOD 200
 
         Blend SrcAlpha OneMinusSrcAlpha
@@ -36,7 +39,7 @@
             float4 _Color;
             float _BlurRadius;
 
-            v2f vert (appdata_t v)
+            v2f vert(appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -44,7 +47,7 @@
                 return o;
             }
 
-            float4 frag (v2f i) : SV_Target
+            float4 frag(v2f i) : SV_Target
             {
                 // Fixed-size offsets for sampling
                 float2 blurOffsets[5] = {

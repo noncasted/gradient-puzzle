@@ -30,7 +30,7 @@ namespace GamePlay.Levels
             new(0, -1),
             new(1, -1),
         };
-        
+
         public static IReadOnlyList<AreaExtractedColor> GetColors(this Texture2D texture, byte epsilon)
         {
             var pixels = texture.GetPixels32();
@@ -40,7 +40,7 @@ namespace GamePlay.Levels
             {
                 if (color.a < 255)
                     continue;
-                
+
                 if (IsUnique(color) == false)
                     continue;
 

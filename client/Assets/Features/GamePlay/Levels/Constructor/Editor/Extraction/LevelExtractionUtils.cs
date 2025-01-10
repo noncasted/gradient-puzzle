@@ -4,7 +4,7 @@
     {
         public static LevelExtractionType Type => LevelExtractionType.SVG;
     }
-    
+
     public enum LevelExtractionType
     {
         Texture,

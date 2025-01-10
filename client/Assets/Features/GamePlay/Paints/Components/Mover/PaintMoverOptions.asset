@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PaintMoverOptions
   m_EditorClassIdentifier: 
   _assetId: 9
-  _moveSpeed: 10
+  _moveSpeed: 20
   _moveSize: 25
   _dockScaleCurve:
     _time: 0.2

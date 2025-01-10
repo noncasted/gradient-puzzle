@@ -32,17 +32,17 @@ namespace GamePlay.Levels
             _value = value;
             _epsilon = epsilon;
         }
-        
+
         private readonly Color32 _value;
         private readonly byte _epsilon;
-        
+
         public bool IsEqual(Color32 color)
         {
             var areEqual = Mathf.Abs(_value.r - color.r) <= _epsilon
                            && Mathf.Abs(_value.g - color.g) <= _epsilon
                            && Mathf.Abs(_value.b - color.b) <= _epsilon
                            && color.a > 100;
-            
+
             return areEqual;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GamePlay.Levels.SVGs
+namespace GamePlay.Levels
 {
     public class SvgLevelExtractOptions
     {
@@ -9,14 +9,16 @@ namespace GamePlay.Levels.SVGs
             string inkscapePath,
             string inkscapeActions,
             Vector2 rectSize,
+            Vector2 offset,
             float pointsDensity,
-            float simplifyAngle, 
+            float simplifyAngle,
             float svgScale)
         {
             SvgPath = svgPath;
             InkscapePath = inkscapePath;
             InkscapeActions = inkscapeActions;
             RectSize = rectSize;
+            Offset = offset;
             PointsDensity = pointsDensity;
             SimplifyAngle = simplifyAngle;
             SvgScale = svgScale;
@@ -26,6 +28,7 @@ namespace GamePlay.Levels.SVGs
         public string InkscapePath { get; }
         public string InkscapeActions { get; }
         public Vector2 RectSize { get; }
+        public Vector2 Offset { get; }
         public float PointsDensity { get; }
         public float SimplifyAngle { get; }
         public float SvgScale { get; }

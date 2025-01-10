@@ -24,9 +24,9 @@ namespace GamePlay.Levels
                 var previous = points[i - 1];
                 var current = points[i];
                 var next = points[i + 1];
-                
+
                 var angle = GetAngle(previous, current, next);
-                
+
                 if ((angle < 100 || angle > 250) && Mathf.Approximately(angle, 180f) == false)
                     continue;
 
@@ -39,16 +39,16 @@ namespace GamePlay.Levels
                 }
             }
         }
-        
+
         private static float GetAngle(Vector2 previous, Vector2 current, Vector2 next)
         {
             var vectorToPrev = (previous - current).normalized;
             var vectorToNext = (next - current).normalized;
-            
+
             float dotProduct = Vector2.Dot(vectorToPrev, vectorToNext);
             float angleRadians = MathF.Acos(Math.Clamp(dotProduct, -1f, 1f));
             float angleDegrees = angleRadians * (180f / MathF.PI);
-            
+
             return angleDegrees;
         }
     }

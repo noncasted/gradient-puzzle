@@ -2,7 +2,7 @@
 using Internal;
 using UnityEngine;
 
-namespace GamePlay.Levels.SVGs
+namespace GamePlay.Levels
 {
     public static class SvgContourSimplify
     {
@@ -13,7 +13,7 @@ namespace GamePlay.Levels.SVGs
             for (var i = 2; i < points.Count; i++)
             {
                 var angle = AngleBetween(points[i - 1], points[i]);
-                
+
                 if (Mathf.Abs(angle - previous) < angleThreshold)
                 {
                     points.RemoveAt(i - 1);

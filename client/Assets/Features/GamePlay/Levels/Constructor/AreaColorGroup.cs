@@ -36,7 +36,7 @@ namespace GamePlay.Levels
             foreach (var (point, _) in _points)
                 point.gameObject.SetActive(false);
         }
-        
+
         [Button("Add point")]
         private void AddPoint()
         {
@@ -51,7 +51,7 @@ namespace GamePlay.Levels
         public void ResetPoints()
         {
             var points = GetComponentsInChildren<AreaColorPoint>(true);
-            
+
             foreach (var point in points)
                 DestroyImmediate(point.gameObject);
 
@@ -69,7 +69,7 @@ namespace GamePlay.Levels
 
                 if (level == null)
                     return false;
-                
+
                 _level = level.GetComponent<RectTransform>();
             }
 
@@ -80,7 +80,7 @@ namespace GamePlay.Levels
         }
 
         public void UpdateColors()
-        { 
+        {
             if (Prepare() == false)
                 return;
 

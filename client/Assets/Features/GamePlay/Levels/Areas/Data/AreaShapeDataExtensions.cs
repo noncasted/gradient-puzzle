@@ -18,9 +18,8 @@ namespace GamePlay.Levels
             }
 
             return minDistance;
+        }
 
-         }
-        
         public static bool IsInside(this AreaShapeData shapeData, Vector2 position)
         {
             if (shapeData.Points.Count < 3)
@@ -110,7 +109,7 @@ namespace GamePlay.Levels
 
             foreach (var data in datas)
                 centers.Add(data.Center);
-            
+
             return GetCenter(centers);
         }
     }

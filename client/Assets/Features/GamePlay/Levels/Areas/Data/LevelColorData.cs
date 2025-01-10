@@ -9,7 +9,7 @@ namespace GamePlay.Levels
             Color = color;
             Position = position;
         }
-        
+
         public Color Color { get; }
         public Vector2 Position { get; }
     }

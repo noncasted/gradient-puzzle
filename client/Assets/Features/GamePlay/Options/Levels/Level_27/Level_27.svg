@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1200"
+   height="1200"
+   viewBox="0 0 1200 1200"
+   fill="none"
+   version="1.1"
+   id="svg12"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs12" />
+  <path
+     d="M 600.001,599.988 360.743,461.33 V 354.287 H 461.33 Z"
+     fill="#000e5e"
+     id="path1" />
+  <path
+     d="m 845.701,354.287 v 107.03 L 600,599.988 738.671,354.287 Z"
+     fill="#d2d5ff"
+     id="path2" />
+  <path
+     d="M 600.001,599.987 461.33,839.258 H 360.743 V 738.645 Z"
+     fill="#2036ff"
+     id="path3" />
+  <path
+     d="m 845.701,738.658 v 100.6 H 738.671 L 600,599.987 Z"
+     fill="#808cff"
+     id="path4" />
+  <path
+     d="M 461.329,354.3 600,115.029 V 600 Z"
+     fill="#ffffff"
+     id="path5" />
+  <path
+     d="M 738.671,354.3 600,115.029 V 600 Z"
+     fill="#e3e5ff"
+     id="path6" />
+  <path
+     d="M 461.329,839.258 600,600 v 484.97 z"
+     fill="#3e51ff"
+     id="path7" />
+  <path
+     d="M 738.671,839.258 600,600 v 484.97 z"
+     fill="#606eff"
+     id="path8" />
+  <path
+     d="M 845.701,461.329 1084.97,600 H 600 Z"
+     fill="#bfc6ff"
+     id="path9" />
+  <path
+     d="M 845.701,738.671 1084.97,600 H 600 Z"
+     fill="#9fa9ff"
+     id="path10" />
+  <path
+     d="M 360.73,461.329 600,600 H 115.029 Z"
+     fill="#021294"
+     id="path11" />
+  <path
+     d="M 360.73,738.671 600,600 H 115.029 Z"
+     fill="#0018e4"
+     id="path12" />
+</svg>

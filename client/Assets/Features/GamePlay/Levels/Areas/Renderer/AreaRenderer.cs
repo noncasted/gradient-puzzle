@@ -21,7 +21,7 @@ namespace GamePlay.Levels
 
             foreach (var areaRenderer in renderers)
                 DestroyImmediate(areaRenderer.gameObject);
-            
+
             _renderers.Clear();
 
             foreach (var data in shapesData)

@@ -16,7 +16,7 @@ namespace GamePlay.Levels
             Order = order;
             Name = name;
         }
-        
+
         public IReadOnlyList<IReadOnlyList<Vector2>> Contours { get; }
         public Color Color { get; }
         public int Order { get; }

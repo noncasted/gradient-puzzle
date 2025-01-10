@@ -247,6 +247,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514ff0d7247945bf9e15e9e6c2358fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
   _shapeRenderer: {fileID: 2866741290884124117}
   _options: {fileID: 11400000, guid: a8f0cacb81cdd534b8185f449d1fba00, type: 2}
   _line: {fileID: 9010921068754974474}

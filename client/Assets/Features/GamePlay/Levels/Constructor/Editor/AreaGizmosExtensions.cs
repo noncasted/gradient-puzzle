@@ -22,24 +22,24 @@ namespace GamePlay.Levels
             foreach (var gameObject in Selection.gameObjects)
             {
                 var area = TryGetArea();
-                
+
                 if (area == null)
                     continue;
-                
+
                 area.DrawContour();
 
                 Area TryGetArea()
                 {
                     var t = gameObject.GetComponent<Area>();
-                    
+
                     if (t != null)
                         return t;
-                    
+
                     return gameObject.GetComponentInParent<Area>();
                 }
             }
         }
-        
+
         public static void DrawContour(this Area area)
         {
             var offset = new Vector2(540, 960);

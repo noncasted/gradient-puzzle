@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace GamePlay.Levels.SVGs
+namespace GamePlay.Levels
 {
     public class SvgLevelExtractor
     {
@@ -56,6 +56,81 @@ namespace GamePlay.Levels.SVGs
                 {
                     for (var i = 0; i < path.ResultPoints.Count; i++)
                         path.ResultPoints[i] += centerOffset;
+
+                    for (var i = 0; i < path.ResultPoints.Count; i++)
+                        path.ResultPoints[i] += _options.Offset;
+                }
+            }
+
+            foreach (var area in rawAreas)
+            {
+                foreach (var path in area.Paths)
+                {
+                    for (var i = 0; i < path.ResultPoints.Count; i++)
+                    {
+                        var halfSize = _options.RectSize / 2f;
+                        var point = path.ResultPoints[i];
+
+                        if (point.x < -halfSize.x)
+                            point.x = -halfSize.x;
+
+                        if (point.y < -halfSize.y)
+                            point.y = -halfSize.y;
+
+                        if (point.x > halfSize.x)
+                            point.x = halfSize.x;
+
+                        if (point.y > halfSize.y)
+                            point.y = halfSize.y;
+
+                        if (i != 0)
+                        {
+                            var distanceToPrevious = Vector2.Distance(path.ResultPoints[i - 1], point);
+
+                            if (distanceToPrevious < 1)
+                            {
+                                path.ResultPoints.RemoveAt(i);
+                                i--;
+                            }
+                        }
+
+                        path.ResultPoints[i] = point;
+
+                        // if (point.x < -halfSize.x ||
+                        //     point.y < -halfSize.y ||
+                        //     point.x > halfSize.x ||
+                        //     point.y > halfSize.y)
+                        // {
+                        //     path.ResultPoints.RemoveAt(i);
+                        //     i--;
+                        // }
+                    }
+                }
+            }
+
+            foreach (var area in rawAreas)
+            {
+                for (var i = 0; i < area.Paths.Count; i++)
+                {
+                    var path = area.Paths[i];
+
+                    if (path.ResultPoints.Count < 4)
+                    {
+                        area.Paths.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+
+            for (var i = 0; i < rawAreas.Count; i++)
+            {
+                var area = rawAreas[i];
+
+                if (area.Paths.Count == 0)
+                {
+                    rawAreas.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -113,7 +188,7 @@ namespace GamePlay.Levels.SVGs
             }
         }
 
-        private IReadOnlyList<RawAreaData> GetRawAreas(string svgFilePath)
+        private List<RawAreaData> GetRawAreas(string svgFilePath)
         {
             var svgDocument = XDocument.Load(svgFilePath);
             var paths = new List<(Color, RawPathData)>();
@@ -121,6 +196,9 @@ namespace GamePlay.Levels.SVGs
 
             foreach (var pathElement in svgDocument.Descendants("{http://www.w3.org/2000/svg}path"))
             {
+                if (pathElement.Attribute("width") != null && pathElement.Attribute("width").Value == "1200")
+                    continue;
+
                 var d = pathElement.Attribute("d")!.Value;
                 var id = pathElement.Attribute("id")!.Value;
                 var color = ExtractColor();
@@ -177,7 +255,14 @@ namespace GamePlay.Levels.SVGs
             var inputFilePath = _options.SvgPath;
             var rootPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
             var inkscapePath = rootPath + _options.InkscapePath;
-         
+
+            var content = File.ReadAllText(inputFilePath);
+            content = content.Replace("<rect width=\"1200\" height=\"1200\" fill=\"black\"/>", "");
+            content = content.Replace(
+                "<rect width=\"1200\" height=\"1200\" transform=\"translate(0 0.5)\" fill=\"black\"/>", "");
+
+            File.WriteAllText(inputFilePath, content);
+
             var arguments =
                 $"{inkscapePath} --export-plain-svg --actions={_options.InkscapeActions} --export-overwrite {inputFilePath}";
 
@@ -196,6 +281,9 @@ namespace GamePlay.Levels.SVGs
                 using var process = Process.Start(processStartInfo)!;
                 var output = process.StandardOutput.ReadToEnd();
                 var error = process.StandardError.ReadToEnd();
+
+                Debug.Log($"Inkscape output: {output}");
+                Debug.Log($"Inkscape error: {error}");
                 process.WaitForExit();
             }
             catch (Exception ex)

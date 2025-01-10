@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GamePlay.Levels.SVGs;
 using Internal;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
@@ -30,11 +29,14 @@ namespace GamePlay.Levels
         private float _svgPointDensity = 1f;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
+        private Vector2 _svgOffset;
+
+        [SerializeField] [ShowIf(nameof(_isSvg))]
         private float _svgSimplifyAngle = 10f;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
         private float _svgScale = 1f;
-        
+
         [SerializeField] private Area _prefab;
 
         private bool _isTexture => LevelExtractionUtils.Type == LevelExtractionType.Texture;
@@ -57,7 +59,7 @@ namespace GamePlay.Levels
             _svgPointDensity = svgOptions.PointsDensity;
             _svgSimplifyAngle = svgOptions.SimplifyAngle;
             _svgScale = svgOptions.Scale;
-            
+
             _prefab = textureOptions.Prefab;
         }
 
@@ -174,6 +176,7 @@ namespace GamePlay.Levels
                         svgOptions.InkscapePath,
                         svgOptions.InkscapeActions,
                         size,
+                        _svgOffset,
                         _svgPointDensity,
                         _svgSimplifyAngle,
                         _svgScale);

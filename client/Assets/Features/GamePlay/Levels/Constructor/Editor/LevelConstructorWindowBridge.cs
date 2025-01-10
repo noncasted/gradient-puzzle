@@ -9,7 +9,7 @@ namespace GamePlay.Levels
         static LevelConstructorWindowBridge()
         {
             var lifetime = new Lifetime();
-            
+
             Level.ConstructorRequest.Advise(lifetime, OnRequest);
         }
 

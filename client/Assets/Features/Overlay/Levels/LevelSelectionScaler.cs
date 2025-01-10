@@ -14,7 +14,7 @@ namespace Overlay
             var rows = amount / _grid.constraintCount;
             var rowHeight = _grid.cellSize.y + _grid.spacing.y;
 
-            _transform.sizeDelta = new Vector2(_transform.sizeDelta.x, rows * rowHeight);
+            _transform.sizeDelta = new Vector2(_transform.sizeDelta.x, rows * rowHeight + 300);
         }
     }
 }

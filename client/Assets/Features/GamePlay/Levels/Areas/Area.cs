@@ -6,19 +6,20 @@ using UnityEngine;
 
 namespace GamePlay.Levels
 {
+    [SelectionBase]
     [DisallowMultipleComponent]
     public class Area : MonoBehaviour, IArea
     {
         [SerializeField] private bool _isAnchor;
         [SerializeField] private AreaRenderer _renderer;
-        
+
         [SerializeField] private Color _color;
         [SerializeField] private int _order;
         [SerializeField] private string _id;
-        
+
         [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _centerTransform = new();
-        
+
         [SerializeField] private List<AreaShapeData> _shapes;
 
         private readonly ViewableProperty<bool> _isTouched = new();
@@ -28,24 +29,24 @@ namespace GamePlay.Levels
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public IViewableProperty<bool> IsCompleted => _isCompleted;
-        
+
         public Vector2 Position => _centerTransform.position;
         public RectTransform SelfTransform => _selfTransform;
         public RectTransform CenterTransform => _centerTransform;
-        
+
         public bool IsAnchor => _isAnchor;
         public RenderMaskData MaskData => _maskData;
         public IPaintHandle PaintHandle { get; } = new PaintHandle();
         public Color Color => _color;
         public AreaRenderer Renderer => _renderer;
-        public IReadOnlyList<AreaShapeData> Shapes => _shapes; 
+        public IReadOnlyList<AreaShapeData> Shapes => _shapes;
         public int Order => _order;
         public string Id => _id;
 
         public void Construct(
             IReadOnlyList<AreaShapeData> shapes,
             Color color,
-            int order, 
+            int order,
             string id)
         {
             _id = id;
@@ -53,11 +54,11 @@ namespace GamePlay.Levels
             _shapes = new List<AreaShapeData>(shapes);
             _renderer.Construct(shapes);
             _centerTransform.anchoredPosition = AreaShapeDataExtensions.GetCenter(shapes);
-            
+
             _color = color;
             _renderer.SetColor(color);
         }
-        
+
         public void UpdateShapes(IReadOnlyList<AreaShapeData> shapes)
         {
             _shapes = new List<AreaShapeData>(shapes);
@@ -75,11 +76,11 @@ namespace GamePlay.Levels
 
             var lifetime = this.GetObjectLifetime();
 
-            foreach (var areaRenderer in _renderer.Renderers)
-            {
-                areaRenderer.Outline.transform.parent = outlineParent;
-                areaRenderer.Outline.transform.SetAsLastSibling();
-            }
+            // foreach (var areaRenderer in _renderer.Renderers)
+            // {
+            //     areaRenderer.Outline.transform.parent = outlineParent;
+            //     areaRenderer.Outline.transform.SetAsLastSibling();
+            // }
 
             PaintHandle.Paint.Advise(lifetime, paint =>
             {
@@ -129,7 +130,7 @@ namespace GamePlay.Levels
             _isTouched.Set(isInside);
             return isInside;
         }
-        
+
         public void ResetTouch()
         {
             _isTouched.Set(false);

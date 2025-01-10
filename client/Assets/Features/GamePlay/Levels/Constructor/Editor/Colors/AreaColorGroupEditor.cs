@@ -32,7 +32,7 @@ namespace GamePlay.Levels
                 EditorGUI.BeginChangeCheck();
                 point.SetColor(color);
                 var newPosition = Handles.PositionHandle(point.transform.position, Quaternion.identity);
-                
+
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(point.transform, "Move Transform Handle");
@@ -42,7 +42,7 @@ namespace GamePlay.Levels
 
             foreach (var area in _group.Areas)
                 area.DrawContour();
-            
+
             _group.UpdateColors();
         }
     }

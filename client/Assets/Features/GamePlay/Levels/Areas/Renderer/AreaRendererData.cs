@@ -118,10 +118,10 @@ namespace GamePlay.Levels
                     s += "Failed point set:\n";
                     s += string.Join("\n", pointsLeft.Select(p => $"[{p.VertexIndex}]: {p.ReflexState}"));
                     Debug.LogError(s);
-                        
+
                     var newPath = new List<Vector2>(path);
                     var offset = 0;
-                    
+
                     foreach (var left in pointsLeft)
                     {
                         newPath.RemoveAt(left.VertexIndex - offset);
