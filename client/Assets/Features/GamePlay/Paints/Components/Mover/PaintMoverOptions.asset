@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assetId: 9
   _moveSpeed: 20
-  _moveSize: 25
+  _moveSize: 30
   _dockScaleCurve:
     _time: 0.2
     _curve:

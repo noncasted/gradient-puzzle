@@ -1,20 +1,15 @@
-﻿Shader "Custom/BlurredLine"
+﻿Shader "Custom/BlurOutlineShader"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color", Color) = (1,1,1,1)
-        _BlurRadius ("Blur Radius", Range(0.0, 1.0)) = 0.1
+        _OutlineColor ("Outline Color", Color) = (1,1,1,1)
+        _BlurSize ("Blur Size", Range(0, 10)) = 1
     }
     SubShader
     {
-        Tags
-        {
-            "RenderType"="Transparent" "Queue"="Transparent"
-        }
+        Tags { "RenderType"="Transparent" }
         LOD 200
-
-        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -36,42 +31,35 @@
             };
 
             sampler2D _MainTex;
-            float4 _Color;
-            float _BlurRadius;
+            float4 _MainTex_ST;
+            float4 _OutlineColor;
+            float _BlurSize;
 
-            v2f vert(appdata_t v)
+            v2f vert (appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
-            float4 frag(v2f i) : SV_Target
+            half4 frag (v2f i) : SV_Target
             {
-                // Fixed-size offsets for sampling
-                float2 blurOffsets[5] = {
-                    float2(-_BlurRadius, 0),
-                    float2(-_BlurRadius * 0.5, 0),
-                    float2(0, 0),
-                    float2(_BlurRadius * 0.5, 0),
-                    float2(_BlurRadius, 0)
-                };
+                half4 color = tex2D(_MainTex, i.uv);
+                half4 outlineColor = _OutlineColor;
 
-                // Corresponding weights for Gaussian blur
-                float weights[5] = {0.1, 0.2, 0.4, 0.2, 0.1};
+                float2 blurOffset = float2(_BlurSize / _ScreenParams.x, _BlurSize / _ScreenParams.y);
+                half4 blurColor = tex2D(_MainTex, i.uv + blurOffset) +
+                                  tex2D(_MainTex, i.uv - blurOffset) +
+                                  tex2D(_MainTex, i.uv + float2(blurOffset.x, -blurOffset.y)) +
+                                  tex2D(_MainTex, i.uv + float2(-blurOffset.x, blurOffset.y));
 
-                float4 color = float4(0, 0, 0, 0);
-                for (int j = 0; j < 5; j++)
-                {
-                    float2 sampleUV = i.uv + blurOffsets[j];
-                    color += tex2D(_MainTex, sampleUV) * weights[j];
-                }
+                blurColor /= 4.0;
 
-                color *= _Color;
-                return float4(color.rgb, color.a);
+                return lerp(color, outlineColor, blurColor.a);
             }
             ENDCG
         }
     }
+    FallBack "Diffuse"
 }

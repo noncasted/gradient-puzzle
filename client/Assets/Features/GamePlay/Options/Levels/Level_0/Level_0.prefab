@@ -4545,6 +4545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AreaRenderer
       objectReference: {fileID: 0}
+    - target: {fileID: 2831736542265462653, guid: d2cec020c70a557459f4732ed1695251, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2866741290884124117, guid: d2cec020c70a557459f4732ed1695251, type: 3}
       propertyPath: m_Color.b
       value: 0.019607844
@@ -5253,9 +5257,17 @@ PrefabInstance:
       propertyPath: _data._vertices.Array.data[35].y
       value: -56.7265
       objectReference: {fileID: 0}
+    - target: {fileID: 5741246452946514551, guid: d2cec020c70a557459f4732ed1695251, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6593918245425688744, guid: d2cec020c70a557459f4732ed1695251, type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8691445195439200955, guid: d2cec020c70a557459f4732ed1695251, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,5 +1,4 @@
-﻿using Shapes;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GamePlay.Levels
@@ -9,7 +8,6 @@ namespace GamePlay.Levels
     {
         [SerializeField] private AreaShapeRenderer _shapeRenderer;
         [SerializeField] private AreaRendererOptions _options;
-        [SerializeField] private Polyline _line;
 
         public void Enable()
         {
