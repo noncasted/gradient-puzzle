@@ -55,20 +55,21 @@ namespace GamePlay.Levels
             Vector3 offset = rectTransform.sizeDelta / 2;
             var vertex = UIVertex.simpleVert;
             vertex.color = _options.OutlineColor;
+            var halfWidth = _options.OutlineWidth / 2;
 
             var point1Rotation = Quaternion.Euler(0, 0, RotatePointTowards(point1, point2) + 90);
-            vertex.position = point1Rotation * new Vector3(-_options.OutlineWidth / 2, 0);
+            vertex.position = point1Rotation * new Vector3(-halfWidth, 0);
             vertex.position += point1 - offset;
             vh.AddVert(vertex);
-            vertex.position = point1Rotation * new Vector3(_options.OutlineWidth / 2, 0);
+            vertex.position = point1Rotation * new Vector3(halfWidth, 0);
             vertex.position += point1 - offset;
             vh.AddVert(vertex);
 
             var point2Rotation = Quaternion.Euler(0, 0, RotatePointTowards(point2, point1) - 90);
-            vertex.position = point2Rotation * new Vector3(-_options.OutlineWidth / 2, 0);
+            vertex.position = point2Rotation * new Vector3(-halfWidth, 0);
             vertex.position += point2 - offset;
             vh.AddVert(vertex);
-            vertex.position = point2Rotation * new Vector3(_options.OutlineWidth / 2, 0);
+            vertex.position = point2Rotation * new Vector3(halfWidth, 0);
             vertex.position += point2 - offset;
             vh.AddVert(vertex);
 
