@@ -230,7 +230,7 @@ namespace GamePlay.Levels
                     var g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
                     var b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-                    return new Color(r / 255f, g / 255f, b / 255f, 1f); // Alpha is fully opaque
+                    return new Color(r / 255f, g / 255f, b / 255f, 1f);
                 }
             }
 

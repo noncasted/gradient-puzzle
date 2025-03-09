@@ -8,7 +8,13 @@ namespace Internal
     {
         UniTask<IEntityScopeResult> Load(
             IReadOnlyLifetime parentLifetime,
-            LifetimeScope parentScope,
+            LifetimeScope parent,
+            IScopeEntityView view,
+            Func<IEntityBuilder, UniTask> construct);
+        
+        UniTask<IEntityScopeResult> Load(
+            IReadOnlyLifetime parentLifetime,
+            LifetimeScope parent,
             IScopeEntityView view,
             Action<IEntityBuilder> construct);
     }

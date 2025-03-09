@@ -1,3 +1,8 @@
+Version 3.11.12
+- FIX: Fixed file sizes not showing for DLL files in
+  Android and WebGL builds.
+- FIX: Minor UI fix for message getting cut off.
+
 Version 3.11.11
 - FIX: Fixed compile error in Unity 2020.3.0 to 2020.3.16.
 - NEW: Added custom Build Report save type, to allow user to

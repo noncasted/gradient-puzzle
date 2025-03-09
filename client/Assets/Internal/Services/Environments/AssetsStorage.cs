@@ -12,10 +12,10 @@ namespace Internal
     {
         [SerializeField] private AssetsDictionary _assets;
         [SerializeField] private OptionsDictionary _options;
-
-        public IReadOnlyDictionary<string, EnvAsset> Assets => _assets;
+//
+        public IReadOnlyDictionary<string, List<EnvAsset>> Assets => _assets;
         public IReadOnlyDictionary<PlatformType, OptionsRegistry> Options => _options;
-
+        
         [Button]
         public void Scan()
         {
@@ -31,11 +31,16 @@ namespace Internal
             {
                 try
                 {
-                    if (asset is IEnvAssetKeyOverride keyOverride)
-                        _assets[keyOverride.GetKeyOverride()] = asset;
-                    else
-                        _assets[asset.GetType().FullName!] = asset;
+                    var key = GetKey();
+                    
+                    if (_assets.TryGetValue(key, out var collection) == false)
+                    {
+                        collection = new List<EnvAsset>();
+                        _assets[key] = collection;
+                    }
 
+                    collection.Add(asset);
+                    
                     if (asset is IEnvAssetValidator validator)
                         validator.OnValidation();
 
@@ -48,6 +53,14 @@ namespace Internal
                     ids.Add(asset.Id);
 
                     EditorUtility.SetDirty(asset);
+
+                    string GetKey()
+                    {
+                        if (asset is IEnvAssetKeyOverride keyOverride)
+                            return keyOverride.GetKeyOverride();
+                        
+                        return asset.GetType().FullName!;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -90,10 +103,16 @@ namespace Internal
         }
 
 #if UNITY_EDITOR
+        [InitializeOnLoad]
         public static class StorageScanner
         {
             private static bool _isScanning;
 
+            static StorageScanner()
+            {
+                ScanAssets();
+            }
+            
             [MenuItem("Assets/Scan assets %w", priority = -1000)]
             public static void ScanAssets()
             {
@@ -120,6 +139,7 @@ namespace Internal
                 }
 
                 _isScanning = false;
+                EditorUtility.SetDirty(storage);
             }
         }
 #endif

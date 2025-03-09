@@ -4,8 +4,7 @@ namespace Internal
 {
     public interface IAssetsStorage
     {
-        IReadOnlyDictionary<string, EnvAsset> Assets { get; }
+        IReadOnlyDictionary<string, List<EnvAsset>> Assets { get; }
         IReadOnlyDictionary<PlatformType, OptionsRegistry> Options { get; }
-
     }
 }

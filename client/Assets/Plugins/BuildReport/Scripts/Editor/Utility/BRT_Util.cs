@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace BuildReportTool
@@ -790,10 +791,18 @@ namespace BuildReportTool
 			}
 
 			double totalBytesOfFilesInFolder = 0;
+#if UNITY_2019_4_OR_NEWER
+			foreach (string file in System.IO.Directory.EnumerateFiles(folderPath, "*", SearchOption.AllDirectories))
+			{
+				totalBytesOfFilesInFolder += GetFileSizeInBytes(file);
+			}
+#else
+			// Note: Old versions of Unity did not have Directory.EnumerateFiles so we use this instead:
 			foreach (string file in DldUtil.TraverseDirectory.Do(folderPath))
 			{
 				totalBytesOfFilesInFolder += GetFileSizeInBytes(file);
 			}
+#endif
 
 			return totalBytesOfFilesInFolder;
 		}
@@ -2057,11 +2066,38 @@ namespace BuildReportTool
 			return tempFolder;
 		}
 
+		public static string GetProjectScriptAssembliesPath(string projectDataPath)
+		{
+			string tempFolder = projectDataPath;
+			const string ASSETS = "Assets";
+			tempFolder = tempFolder.Substring(0, tempFolder.Length - ASSETS.Length);
+			tempFolder += "Library/Bee/PlayerScriptAssemblies/";
+			return tempFolder;
+		}
+
+		public static string GetProjectWebGLManagedStrippedPath(string projectDataPath)
+		{
+			string tempFolder = projectDataPath;
+			const string ASSETS = "Assets";
+			tempFolder = tempFolder.Substring(0, tempFolder.Length - ASSETS.Length);
+			tempFolder += "Library/Bee/artifacts/WebGL/ManagedStripped/";
+			return tempFolder;
+		}
+
+		public static string GetProjectManagedDLLArtifacts(string projectDataPath)
+		{
+			string tempFolder = projectDataPath;
+			const string ASSETS = "Assets";
+			tempFolder = tempFolder.Substring(0, tempFolder.Length - ASSETS.Length);
+			tempFolder += "Library/Bee/artifacts/csharpactions/";
+			return tempFolder;
+		}
+
 		public static bool AttemptGetWebTempStagingArea(string projectDataPath, out string path)
 		{
 			string tempFolder = GetProjectTempStagingArea(projectDataPath) + "/Data/Managed/";
 
-			if (System.IO.Directory.Exists(tempFolder))
+			if (System.IO.Directory.Exists(tempFolder) && System.IO.Directory.EnumerateFiles(tempFolder, "*.dll").Any())
 			{
 				path = tempFolder;
 				return true;
@@ -2077,7 +2113,15 @@ namespace BuildReportTool
 
 			//Debug.Log(tempFolder);
 
-			if (System.IO.Directory.Exists(tempFolder))
+			if (System.IO.Directory.Exists(tempFolder) && System.IO.Directory.EnumerateFiles(tempFolder, "*.dll").Any())
+			{
+				path = tempFolder;
+				return true;
+			}
+
+			tempFolder = GetProjectTempStagingArea(projectDataPath) + "/Data/Managed/";
+
+			if (System.IO.Directory.Exists(tempFolder) && System.IO.Directory.EnumerateFiles(tempFolder, "*.dll").Any())
 			{
 				path = tempFolder;
 				return true;
@@ -2091,6 +2135,22 @@ namespace BuildReportTool
 			string editorAppContentsPath, ApiCompatibilityLevel monoLevel, StrippingLevel codeStrippingLevel,
 			out string path, out string higherPriorityPath)
 		{
+			if (wasAndroidApkBuild)
+			{
+				string unityEditorPath = System.IO.Path.GetDirectoryName(EditorApplication.applicationPath);
+				path = unityEditorPath + "/Data/PlaybackEngines/AndroidPlayer/Variations/mono/Managed/";
+				higherPriorityPath = unityEditorPath + "/Data/MonoBleedingEdge/lib/mono/unityjit-linux/";
+				return true;
+			}
+
+			if (wasWebBuild)
+			{
+				string unityEditorPath = System.IO.Path.GetDirectoryName(EditorApplication.applicationPath);
+				path = unityEditorPath + "/Data/MonoBleedingEdge/lib/mono/4.5/";
+				higherPriorityPath = unityEditorPath + "/Data/MonoBleedingEdge/lib/mono/4.5/Facades/";
+				return true;
+			}
+
 			bool success = false;
 
 			// more hackery
@@ -2236,6 +2296,19 @@ namespace BuildReportTool
 		public static bool Exists(this SizePart[] list, string assetName)
 		{
 			for (int n = 0; n < list.Length; ++n)
+			{
+				if (list[n].Name == assetName)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public static bool Exists(this List<SizePart> list, string assetName)
+		{
+			for (int n = 0; n < list.Count; ++n)
 			{
 				if (list[n].Name == assetName)
 				{

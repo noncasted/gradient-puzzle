@@ -44,7 +44,6 @@ namespace Services
 
         public void OnUpdate(float delta)
         {
-            
             var screenPosition = Mouse.current.position.ReadValue();
             _cursorPosition = _positionConverter.ScreenToLocal(screenPosition);
             _worldPosition = _positionConverter.ScreenToWorld(screenPosition);

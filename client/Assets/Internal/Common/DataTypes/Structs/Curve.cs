@@ -8,7 +8,7 @@ namespace Internal
     {
         float Time { get; }
         AnimationCurve Animation { get; }
-        
+
         CurveInstance CreateInstance();
     }
 
@@ -38,19 +38,36 @@ namespace Internal
         public CurveInstance(ICurve curve)
         {
             Curve = curve;
+            _timer = 0f;
             _progress = 0f;
         }
 
-
+        private float _timer;
         private float _progress;
-        
+
         public readonly ICurve Curve;
-        public bool IsFinished => Mathf.Approximately(_progress, 1f);
-        public float Progress => _progress;
+
+        public bool IsFinished => Mathf.Approximately(_timer / Curve.Time, 1f);
 
         public float Step(float delta)
         {
-            _progress += delta / Curve.Time;
+            _timer += delta;
+            _timer = Mathf.Clamp(_timer, 0f, Curve.Time);
+
+            _progress = _timer / Curve.Time;
+
+            if (_progress > 1f)
+                _progress = 1f;
+
+            return Curve.Evaluate(_progress);
+        }
+
+        public float StepBack(float delta)
+        {
+            _timer -= delta;
+            _timer = Mathf.Clamp(_timer, 0f, Curve.Time);
+
+            _progress = _timer / Curve.Time;
 
             if (_progress > 1f)
                 _progress = 1f;

@@ -1411,7 +1411,7 @@ public class BRT_BuildReportWindow : EditorWindow
 	void DrawCentralMessage(string msg)
 	{
 		float w = 300;
-		float h = 100;
+		float h = 200;
 		float x = (position.width - w) * 0.5f;
 		float y = (position.height - h) * 0.25f;
 

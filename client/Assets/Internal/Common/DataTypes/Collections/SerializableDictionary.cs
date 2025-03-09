@@ -7,9 +7,8 @@ namespace Internal
     [Serializable]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField] private TKey[] _keys = Array.Empty<TKey>();
-
-        [SerializeField] private TValue[] _values = Array.Empty<TValue>();
+        [SerializeField] private TKey[] _keys;
+        [SerializeField] private TValue[] _values;
 
         public void OnAfterDeserialize()
         {

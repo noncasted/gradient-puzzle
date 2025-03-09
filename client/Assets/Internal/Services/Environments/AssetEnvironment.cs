@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Internal
@@ -15,11 +17,27 @@ namespace Internal
 
         private readonly IAssetsStorage _assetsStorage;
         private readonly OptionsRegistry _optionsRegistry;
-        
+
         public T GetAsset<T>() where T : ScriptableObject
         {
             var type = typeof(T);
-            return _assetsStorage.Assets[type.FullName] as T;
+            var assetCollection = _assetsStorage.Assets[type.FullName];
+
+            if (assetCollection.Count != 1)
+                throw new Exception();
+
+            return assetCollection.First() as T;
+        }
+
+        public IReadOnlyList<T> GetAssets<T>() where T : ScriptableObject
+        {
+            var collection = _assetsStorage.Assets[typeof(T).FullName];
+            var result = new List<T>(collection.Count);
+
+            foreach (var asset in collection)
+                result.Add(asset as T);
+
+            return result;
         }
 
         public T GetOptions<T>() where T : class, IOptionsEntry

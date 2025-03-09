@@ -18,6 +18,26 @@ namespace Internal
             IReadOnlyLifetime parentLifetime,
             LifetimeScope parent,
             IScopeEntityView view,
+            Func<IEntityBuilder, UniTask> construct)
+        {
+            var builder = CreateBuilder(parentLifetime, view);
+
+            await construct.Invoke(builder);
+            
+            view.CreateViews(builder);
+
+            BuildContainer(builder, parent);
+
+            var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
+            await eventLoop.RunConstruct(builder.Lifetime);
+
+            return new EntityScopeResult(view.Scope, builder.Lifetime);
+        }
+
+        public async UniTask<IEntityScopeResult> Load(
+            IReadOnlyLifetime parentLifetime,
+            LifetimeScope parent,
+            IScopeEntityView view,
             Action<IEntityBuilder> construct)
         {
             var builder = CreateBuilder(parentLifetime, view);
@@ -51,6 +71,7 @@ namespace Internal
                     builder.Scope.Build();
                 }
             }
+
             builder.InternalServices.Resolve(builder.Scope.Container);
 
             return;
@@ -59,7 +80,7 @@ namespace Internal
             {
                 container.AddEvents();
                 container.Register<IViewInjector, ViewInjector>(VContainer.Lifetime.Scoped);
-                
+
                 builder.InternalServices.PassRegistrations(container);
             }
         }
