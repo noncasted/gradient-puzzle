@@ -10,10 +10,10 @@ namespace Global.UI
     [CreateAssetMenu(fileName = "LanguageText", menuName = "UI/Localization/Text")]
     public class LanguageTextData : LocalizationEntry
     {
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _eng;
 
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _ru;
 
         private readonly ViewableProperty<string> _text = new();

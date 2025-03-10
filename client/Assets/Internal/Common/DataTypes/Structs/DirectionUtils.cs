@@ -103,7 +103,7 @@ namespace Internal
             var delta = targetAngle - sourceAngle;
             delta = Mathf.Clamp(delta, -clampAngle, clampAngle);
 
-            return (sourceAngle + delta).Angle().ToVector2();
+            return (sourceAngle + delta).ToAngle().ToVector2();
         }
     }
 }

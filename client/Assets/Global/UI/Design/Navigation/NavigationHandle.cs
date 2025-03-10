@@ -31,7 +31,7 @@ namespace Global.UI
             void OnMove(InputAction.CallbackContext context)
             {
                 var direction = context.ReadValue<Vector2>();
-                var side = direction.ToSide();
+                var side = direction.ToDirection4();
 
                 if (current.Targets.ContainsKey(side) == false)
                     return;

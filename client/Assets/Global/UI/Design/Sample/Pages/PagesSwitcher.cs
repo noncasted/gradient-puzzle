@@ -76,7 +76,7 @@ namespace Global.UI
 
             void OnUpdate(float delta)
             {
-                var evaluation = curve.Step(delta);
+                var evaluation = curve.StepForward(delta);
                 _pagesRoot.position = Vector3.Lerp(_pagesRoot.position, targetPosition, evaluation);
             }
         }

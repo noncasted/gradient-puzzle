@@ -4,7 +4,7 @@ using Internal;
 namespace Global.UI
 {
     [Serializable]
-    public class TargetsDictionary : SerializableDictionary<Side, NavigationTarget>
+    public class TargetsDictionary : SerializableDictionary<Direction4, NavigationTarget>
     {
     }
 }

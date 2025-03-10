@@ -41,7 +41,7 @@ namespace Internal
 
     public static class AngleExtensions
     {
-        public static Angle Angle(this float value)
+        public static Angle ToAngle(this float value)
         {
             if (value < 0)
                 value += 360;

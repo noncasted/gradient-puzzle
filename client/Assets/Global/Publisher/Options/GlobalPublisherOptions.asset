@@ -14,5 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assetId: 33
   _itchCallbacksPrefab: {fileID: 2268424486547412797, guid: 3d9d23b65258c78429a3914671514e35, type: 3}
-  _yandexProductsRegistry: {fileID: 0}
-  _yandexAdsDisableProduct: {fileID: 0}

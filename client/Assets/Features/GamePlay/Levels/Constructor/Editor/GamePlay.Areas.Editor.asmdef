@@ -25,9 +25,7 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "Sirenix.OdinInspector.Attributes.dll",
-        "Sirenix.OdinInspector.Editor.dll",
-        "SvgPathProperties.dll",
-        "Svg.dll"
+        "Sirenix.OdinInspector.Editor.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

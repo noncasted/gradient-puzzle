@@ -1,6 +1,5 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using Sirenix.Utilities;
 using UnityEngine.SceneManagement;
 
 namespace Internal
@@ -9,7 +8,7 @@ namespace Internal
     {
         public async UniTask<ISceneLoadResult> Load(SceneData data)
         {
-            if (data.Scene == null || data.Scene.SceneName.IsNullOrWhitespace())
+            if (data.Scene == null || data.Scene.SceneName == null || data.Scene.SceneName == string.Empty)
                 throw new Exception();
             
             var targetScene = new Scene();

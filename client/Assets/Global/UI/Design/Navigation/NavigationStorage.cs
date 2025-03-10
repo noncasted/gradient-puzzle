@@ -50,31 +50,31 @@ namespace Global.UI
 
                 foreach (var target in yTargets)
                 {
-                    if (dictionary.ContainsKey(Side.Right) == false)
+                    if (dictionary.ContainsKey(Direction4.Right) == false)
                     {
                         if (current.Position.x < target.Position.x)
-                            dictionary.Add(Side.Right, target);
+                            dictionary.Add(Direction4.Right, target);
                     }
 
-                    if (dictionary.ContainsKey(Side.Left) == false)
+                    if (dictionary.ContainsKey(Direction4.Left) == false)
                     {
                         if (current.Position.x > target.Position.y)
-                            dictionary.Add(Side.Left, target);
+                            dictionary.Add(Direction4.Left, target);
                     }
                 }
 
                 foreach (var target in xTargets)
                 {
-                    if (dictionary.ContainsKey(Side.Up) == false)
+                    if (dictionary.ContainsKey(Direction4.Up) == false)
                     {
                         if (current.Position.y < target.Position.y)
-                            dictionary.Add(Side.Up, target);
+                            dictionary.Add(Direction4.Up, target);
                     }
 
-                    if (dictionary.ContainsKey(Side.Down) == false)
+                    if (dictionary.ContainsKey(Direction4.Down) == false)
                     {
                         if (current.Position.y > target.Position.y)
-                            dictionary.Add(Side.Down, target);
+                            dictionary.Add(Direction4.Down, target);
                     }
                 }
 

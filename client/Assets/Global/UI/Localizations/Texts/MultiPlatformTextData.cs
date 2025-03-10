@@ -10,16 +10,16 @@ namespace Global.UI
     [CreateAssetMenu(fileName = "PlatformLanguageText", menuName = "UI/Localization/PlatformText")]
     public class MultiPlatformTextData : LocalizationEntry
     {
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _engMobile;
 
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _engDesktop;
 
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _ruMobile;
 
-        [SerializeField] [ChildSOField] [Indent]
+        [SerializeField] [Indent]
         private LanguageEntry _ruDesktop;
 
         private readonly ViewableProperty<string> _text = new();

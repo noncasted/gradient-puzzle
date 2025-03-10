@@ -20,7 +20,7 @@ namespace Global.UI
 
         private void Update()
         {
-            var factor = _curve.Step(Time.deltaTime);
+            var factor = _curve.StepForward(Time.deltaTime);
 
             var scale = Vector3.Lerp(_fromScale, _targetScale, factor);
             transform.localScale = scale;

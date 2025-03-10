@@ -12,7 +12,7 @@ namespace Internal
     {
         [SerializeField] private AssetsDictionary _assets;
         [SerializeField] private OptionsDictionary _options;
-//
+
         public IReadOnlyDictionary<string, List<EnvAsset>> Assets => _assets;
         public IReadOnlyDictionary<PlatformType, OptionsRegistry> Options => _options;
         

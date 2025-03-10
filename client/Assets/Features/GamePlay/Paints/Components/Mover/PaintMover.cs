@@ -62,8 +62,8 @@ namespace GamePlay.Paints
 
             void Move(float delta)
             {
-                var moveFactor = moveCurve.Step(delta);
-                var heightFactor = heightCurve.Step(delta);
+                var moveFactor = moveCurve.StepForward(delta);
+                var heightFactor = heightCurve.StepForward(delta);
                 var height = Mathf.Lerp(0, _options.TransitHeight, heightFactor) * directionSign;
                 var position = Vector2.Lerp(startPosition, target.position, moveFactor);
                 position.x += height;

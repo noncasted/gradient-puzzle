@@ -5,7 +5,7 @@ namespace Global.UI
 {
     public interface INavigationTarget
     {
-        IReadOnlyDictionary<Side, INavigationTarget> Targets { get; }
+        IReadOnlyDictionary<Direction4, INavigationTarget> Targets { get; }
         
         void Inc();
         void Select();

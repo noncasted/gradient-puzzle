@@ -13,19 +13,19 @@ namespace Global.UI
         [SerializeField] private DesignButton _button;
         [SerializeField] private GameObject _selection;
 
-        private IReadOnlyDictionary<Side, INavigationTarget> _cachedTargets;
+        private IReadOnlyDictionary<Direction4, INavigationTarget> _cachedTargets;
         private int _usageCount;
         
         public Vector2 Position => transform.position;
 
-        public IReadOnlyDictionary<Side, INavigationTarget> Targets
+        public IReadOnlyDictionary<Direction4, INavigationTarget> Targets
         {
             get
             {
                 if (_cachedTargets != null)
                     return _cachedTargets;
 
-                var dictionary = new Dictionary<Side, INavigationTarget>();
+                var dictionary = new Dictionary<Direction4, INavigationTarget>();
 
                 foreach (var pair in _targets)
                     dictionary.Add(pair.Key, pair.Value);
