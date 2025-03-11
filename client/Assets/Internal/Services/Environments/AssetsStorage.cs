@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace Internal
@@ -50,7 +51,7 @@ namespace Internal
 #if UNITY_EDITOR
             _assets.Clear();
 
-            UnityEditor.AssetDatabase.Refresh();
+            AssetDatabase.Refresh();
             
             var all = GetAssets();
             var index = GetMaxIndex();
@@ -65,26 +66,26 @@ namespace Internal
                 {
                     asset.SetId(index);
                     index++;
-                    UnityEditor.EditorUtility.SetDirty(asset);
+                    EditorUtility.SetDirty(asset);
                 }
 
                 ids.Add(asset.Id);
                 _assets.Add(asset);
             }
 
-            UnityEditor.EditorUtility.SetDirty(this);
-            UnityEditor.AssetDatabase.SaveAssets();
-            UnityEditor.AssetDatabase.Refresh();
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             IReadOnlyList<EnvAsset> GetAssets()
             {
-                var items = UnityEditor.AssetDatabase.FindAssets("t:EnvAsset", new[] { "Assets/" }).ToArray();
+                var items = AssetDatabase.FindAssets("t:EnvAsset", new[] { "Assets/" }).ToArray();
                 var assets = new List<EnvAsset>();
 
                 foreach (var guid in items)
                 {
-                    var path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-                    var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<EnvAsset>(path);
+                    var path = AssetDatabase.GUIDToAssetPath(guid);
+                    var asset = AssetDatabase.LoadAssetAtPath<EnvAsset>(path);
                     assets.Add(asset);
                 }
 
@@ -107,7 +108,7 @@ namespace Internal
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.InitializeOnLoad]
+        [InitializeOnLoad]
         public static class StorageScanner
         {
             private static bool _isScanning;
@@ -117,21 +118,21 @@ namespace Internal
                 ScanAssets();
             }
 
-            [UnityEditor.MenuItem("Assets/Scan assets %w", priority = -1000)]
+            [MenuItem("Assets/Scan assets %w", priority = -1000)]
             public static void ScanAssets()
             {
                 if (_isScanning == true)
                     return;
 
-                var ids = UnityEditor.AssetDatabase.FindAssets("t:AssetsStorage");
+                var ids = AssetDatabase.FindAssets("t:AssetsStorage");
 
                 if (ids.Length == 0 || ids.Length > 1)
                     throw new Exception();
 
                 _isScanning = true;
 
-                var path = UnityEditor.AssetDatabase.GUIDToAssetPath(ids[0]);
-                var storage = UnityEditor.AssetDatabase.LoadAssetAtPath<AssetsStorage>(path);
+                var path = AssetDatabase.GUIDToAssetPath(ids[0]);
+                var storage = AssetDatabase.LoadAssetAtPath<AssetsStorage>(path);
 
                 try
                 {
@@ -143,7 +144,7 @@ namespace Internal
                 }
 
                 _isScanning = false;
-                UnityEditor.EditorUtility.SetDirty(storage);
+                EditorUtility.SetDirty(storage);
             }
         }
 #endif

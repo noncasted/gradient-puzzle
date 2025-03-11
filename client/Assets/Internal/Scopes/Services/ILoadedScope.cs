@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
-using VContainer.Unity;
 using VContainer;
+using VContainer.Unity;
 
 namespace Internal
 {

@@ -1,6 +1,4 @@
-﻿using VContainer.Unity;
-
-namespace Internal
+﻿namespace Internal
 {
     public interface IScopeBuilder : IBuilder
     {
