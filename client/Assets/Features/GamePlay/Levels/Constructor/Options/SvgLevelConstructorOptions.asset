@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SvgLevelConstructorOptions
   m_EditorClassIdentifier: 
   _assetId: 89
-  _scale: 1
-  _simplifyAngle: 5
-  _pointsDensity: 1.28
+  _scale: 0.9
+  _simplifyAngle: 1
+  _pointsDensity: 0.1
   _inkscapePath: \tools\inkscape\bin\inkscape.exe
   _inkscapeActions:
   - select-all

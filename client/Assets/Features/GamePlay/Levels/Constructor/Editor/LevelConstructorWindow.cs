@@ -26,16 +26,16 @@ namespace GamePlay.Levels
         private byte _textureColorEpsilon = 10;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
-        private float _svgPointDensity = 1f;
+        private float _svgPointDensity = 0.1f;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
         private Vector2 _svgOffset;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
-        private float _svgSimplifyAngle = 10f;
+        private float _svgSimplifyAngle = 1f;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
-        private float _svgScale = 1f;
+        private float _svgScale = 0.9f;
 
         [SerializeField] private Area _prefab;
 

@@ -33,6 +33,7 @@ namespace GamePlay.Levels
                     var length = properties.Length;
                     var points = new List<Vector2>();
 
+
                     for (var i = 0f; i < length; i += _options.PointsDensity)
                     {
                         var point = properties.GetPointAtLength(i);
@@ -62,51 +63,57 @@ namespace GamePlay.Levels
                 }
             }
 
-            foreach (var area in rawAreas)
-            {
-                foreach (var path in area.Paths)
-                {
-                    for (var i = 0; i < path.ResultPoints.Count; i++)
-                    {
-                        var halfSize = _options.RectSize / 2f;
-                        var point = path.ResultPoints[i];
-
-                        if (point.x < -halfSize.x)
-                            point.x = -halfSize.x;
-
-                        if (point.y < -halfSize.y)
-                            point.y = -halfSize.y;
-
-                        if (point.x > halfSize.x)
-                            point.x = halfSize.x;
-
-                        if (point.y > halfSize.y)
-                            point.y = halfSize.y;
-
-                        if (i != 0)
-                        {
-                            var distanceToPrevious = Vector2.Distance(path.ResultPoints[i - 1], point);
-
-                            if (distanceToPrevious < 1)
-                            {
-                                path.ResultPoints.RemoveAt(i);
-                                i--;
-                            }
-                        }
-
-                        path.ResultPoints[i] = point;
-
-                        // if (point.x < -halfSize.x ||
-                        //     point.y < -halfSize.y ||
-                        //     point.x > halfSize.x ||
-                        //     point.y > halfSize.y)
-                        // {
-                        //     path.ResultPoints.RemoveAt(i);
-                        //     i--;
-                        // }
-                    }
-                }
-            }
+            // var maxPointDistance = _options.PointsDensity / 2f;
+            //
+            // foreach (var area in rawAreas)
+            // {
+            //     foreach (var path in area.Paths)
+            //     {
+            //         for (var i = 0; i < path.ResultPoints.Count; i++)
+            //         {
+            //             var halfSize = _options.RectSize / 2f;
+            //             var point = path.ResultPoints[i];
+            //
+            //             if (point.x < -halfSize.x)
+            //                 point.x = -halfSize.x;
+            //
+            //             if (point.y < -halfSize.y)
+            //                 point.y = -halfSize.y;
+            //
+            //             if (point.x > halfSize.x)
+            //                 point.x = halfSize.x;
+            //
+            //             if (point.y > halfSize.y)
+            //                 point.y = halfSize.y;
+            //
+            //             path.ResultPoints[i] = point;
+            //         }
+            //     }
+            // }
+            //
+            // foreach (var area in rawAreas)
+            // {
+            //     foreach (var path in area.Paths)
+            //     {
+            //         for (var i = 0; i < path.ResultPoints.Count; i++)
+            //         {
+            //             var point = path.ResultPoints[i];
+            //
+            //             if (i != 0)
+            //             {
+            //                 var distanceToPrevious = Vector2.Distance(path.ResultPoints[i - 1], point);
+            //
+            //                 if (distanceToPrevious > 5)
+            //                 {
+            //                     path.ResultPoints.RemoveAt(i);
+            //                     i = 0;
+            //                 }
+            //             }
+            //
+            //             path.ResultPoints[i] = point;
+            //         }
+            //     }
+            // }
 
             foreach (var area in rawAreas)
             {
@@ -257,9 +264,9 @@ namespace GamePlay.Levels
             var inkscapePath = rootPath + _options.InkscapePath;
 
             var content = File.ReadAllText(inputFilePath);
-            content = content.Replace("<rect width=\"1200\" height=\"1200\" fill=\"black\"/>", "");
+            content = content.Replace("<rect width=\"1080\" height=\"1080\" fill=\"black\"/>", "");
             content = content.Replace(
-                "<rect width=\"1200\" height=\"1200\" transform=\"translate(0 0.5)\" fill=\"black\"/>", "");
+                "<rect width=\"1080\" height=\"1080\" transform=\"translate(0 0.5)\" fill=\"black\"/>", "");
 
             File.WriteAllText(inputFilePath, content);
 

@@ -64,7 +64,7 @@ public class BuildApi : IHostedService, IUpdateHandler
             }
             else
             {
-                var gameUrl = $"https://gradient-puzzle.noncasted.dev/";
+                var gameUrl = $"https://gradient-puzzle.nndd.dev/";
                 await _bot.AnswerCallbackQuery(callbackQuery.Id, url: gameUrl, cancellationToken: cancellationToken);
             }
         }
