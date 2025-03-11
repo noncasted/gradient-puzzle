@@ -89,7 +89,7 @@ namespace Global.Systems
 
         private void Dispose()
         {
-            _completion.TrySetResult();
+            _completion.TrySetCanceled();
         }
 
         protected abstract void Setup(IReadOnlyLifetime lifetime, IUpdater updater);
