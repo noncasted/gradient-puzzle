@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using VContainer.Diagnostics;
 using VContainer.Internal;
 
@@ -68,7 +67,7 @@ namespace VContainer
         readonly CompositeDisposable disposables = new CompositeDisposable();
         readonly Func<Registration, Lazy<object>> createInstance;
 
-        internal ScopedContainer(
+        public ScopedContainer(
             Registry registry,
             IObjectResolver root,
             IScopedObjectResolver parent = null,
@@ -185,7 +184,7 @@ namespace VContainer
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal bool TryFindRegistration(Type type, out Registration registration)
+        public bool TryFindRegistration(Type type, out Registration registration)
         {
             IScopedObjectResolver scope = this;
             while (scope != null)
@@ -213,7 +212,7 @@ namespace VContainer
         readonly CompositeDisposable disposables = new CompositeDisposable();
         readonly Func<Registration, Lazy<object>> createInstance;
 
-        internal Container(Registry registry, object applicationOrigin = null)
+        public Container(Registry registry, object applicationOrigin = null)
         {
             this.registry = registry;
             rootScope = new ScopedContainer(registry, this, applicationOrigin: applicationOrigin);
@@ -273,7 +272,6 @@ namespace VContainer
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetRegistration(Type type, out Registration registration)
             => registry.TryGet(type, out registration);
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispose()

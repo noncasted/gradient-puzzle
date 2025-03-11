@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace VContainer.Unity
+namespace VContainer.Internal
 {
-    static class UnityEngineObjectListBuffer<T> where T : UnityEngine.Object
+    public static class ListPool<T>
     {
         const int DefaultCapacity = 32;
 
-        [ThreadStatic] 
-        private static Stack<List<T>> _pool = new Stack<List<T>>(4);
+        private static readonly Stack<List<T>> _pool = new Stack<List<T>>(4);
         
         /// <summary>
         /// BufferScope supports releasing a buffer with using clause.
         /// </summary>
-        public struct BufferScope : IDisposable
+        public readonly struct BufferScope : IDisposable
         {
             private readonly List<T> _buffer;
 
@@ -34,12 +33,15 @@ namespace VContainer.Unity
         /// <returns></returns>
         public static List<T> Get()
         {
-            if (_pool.Count == 0)
+            lock (_pool)
             {
-                return new List<T>(DefaultCapacity);
-            }
+                if (_pool.Count == 0)
+                {
+                    return new List<T>(DefaultCapacity);
+                }
 
-            return _pool.Pop();
+                return _pool.Pop();
+            }
         }
 
         /// <summary>
@@ -60,7 +62,10 @@ namespace VContainer.Unity
         public static void Release(List<T> buffer)
         {
             buffer.Clear();
-            _pool.Push(buffer);
+            lock (_pool)
+            {
+                _pool.Push(buffer);
+            }
         }
     }
 }

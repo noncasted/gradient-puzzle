@@ -7,10 +7,10 @@ namespace VContainer
     public class RegistrationBuilder
     {
         public readonly Type ImplementationType;
-        protected internal readonly Lifetime Lifetime;
+        public readonly Lifetime Lifetime;
 
-        protected internal List<Type> InterfaceTypes;
-        protected internal List<IInjectParameter> Parameters;
+        public List<Type> InterfaceTypes;
+        public List<IInjectParameter> Parameters;
 
         public RegistrationBuilder(Type implementationType, Lifetime lifetime)
         {
@@ -81,6 +81,7 @@ namespace VContainer
             {
                 AddInterfaceType(interfaceType);
             }
+
             return this;
         }
 
@@ -90,7 +91,7 @@ namespace VContainer
             Parameters.Add(new NamedParameter(name, value));
             return this;
         }
-        
+
         public RegistrationBuilder WithParameter(string name, Func<IObjectResolver, object> value)
         {
             Parameters = Parameters ?? new List<IInjectParameter>();
@@ -104,7 +105,7 @@ namespace VContainer
             Parameters.Add(new TypedParameter(type, value));
             return this;
         }
-        
+
         public RegistrationBuilder WithParameter(Type type, Func<IObjectResolver, object> value)
         {
             Parameters = Parameters ?? new List<IInjectParameter>();
@@ -116,12 +117,12 @@ namespace VContainer
         {
             return WithParameter(typeof(TParam), value);
         }
-        
+
         public RegistrationBuilder WithParameter<TParam>(Func<IObjectResolver, TParam> value)
         {
             return WithParameter(typeof(TParam), resolver => value(resolver));
         }
-        
+
         public RegistrationBuilder WithParameter<TParam>(Func<TParam> value)
         {
             return WithParameter(typeof(TParam), _ => value());
@@ -131,11 +132,13 @@ namespace VContainer
         {
             if (!interfaceType.IsAssignableFrom(ImplementationType))
             {
-                throw new VContainerException(interfaceType, $"{ImplementationType} is not assignable from {interfaceType}");
+                throw new VContainerException(interfaceType,
+                    $"{ImplementationType} is not assignable from {interfaceType}");
             }
+
             InterfaceTypes = InterfaceTypes ?? new List<Type>();
             if (!InterfaceTypes.Contains(interfaceType))
                 InterfaceTypes.Add(interfaceType);
         }
-   }
+    }
 }

@@ -6,12 +6,6 @@ namespace VContainer.Internal
     {
         readonly object implementationInstance;
 
-        public InstanceRegistrationBuilder(object implementationInstance)
-            : base(implementationInstance.GetType(), Lifetime.Singleton)
-        {
-            this.implementationInstance = implementationInstance;
-        }
-        
         public InstanceRegistrationBuilder(object implementationInstance, Lifetime lifetime)
             : base(implementationInstance.GetType(), lifetime)
         {

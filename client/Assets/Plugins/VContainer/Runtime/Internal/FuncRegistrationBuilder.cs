@@ -2,7 +2,7 @@ using System;
 
 namespace VContainer.Internal
 {
-    public sealed class FuncRegistrationBuilder : RegistrationBuilder
+    sealed class FuncRegistrationBuilder : RegistrationBuilder
     {
         readonly Func<IObjectResolver, object> implementationProvider;
 
