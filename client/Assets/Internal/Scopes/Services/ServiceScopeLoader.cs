@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Object = UnityEngine.Object;
 
 namespace Internal
 {
@@ -20,72 +20,74 @@ namespace Internal
 
         public IAssetEnvironment Assets => _assets;
 
-        public async UniTask<ILoadedScope> Load(ILoadedScope parent, ServiceScopeData data, ConstructCallback construct)
+        public async UniTask<ILoadedScope> Load(ScopeLoadOptions options)
         {
             var profiler = new ProfilingScope("ServiceScopeLoader");
 
             var sceneLoader = new ServiceScopeSceneLoader(_sceneLoader);
-            var builder = await CreateBuilder(sceneLoader, parent, data);
+            var servicesScene = await sceneLoader.Load(options.ServiceScene);
 
-            await construct.Invoke(builder);
-            BuildContainer(builder, parent.Container);
+            var builder = CreateBuilder();
 
-            var eventLoop = builder.Container.Container.Resolve<IEventLoop>();
-            await eventLoop.RunConstruct(builder.Lifetime);
+            var containerObject = new GameObject("ScopeLifetime");
+            var container = containerObject.AddComponent<LifetimeScope>();
+            builder.Binder.MoveToModules(container);
+            
+            await options.ConstructCallback.Invoke(builder);
+            
+            BuildContainer();
 
-            var disposer = new ServiceScopeDisposer(
-                builder.Lifetime,
-                eventLoop,
-                sceneLoader.Results,
-                builder.Container);
+            var eventLoop = container.Container.Resolve<IEventLoop>();
+            await eventLoop.RunConstruct(builder.ScopeLifetime);
+
 
             var loadResult = new ScopeLoadResult(
-                builder.Container,
-                builder.Lifetime,
+                container,
+                builder.ScopeLifetime,
                 eventLoop,
-                disposer);
+                sceneLoader.Results);
 
             profiler.Dispose();
 
             return loadResult;
-        }
 
-        private async UniTask<ScopeBuilder> CreateBuilder(
-            ISceneLoader sceneLoader,
-            ILoadedScope parent,
-            ServiceScopeData scopeData)
-        {
-            var servicesScene = await sceneLoader.Load(scopeData.ServicesScene);
-            var binder = new ServiceScopeBinder(servicesScene.Instance);
-            var scope = Object.Instantiate(scopeData.ScopePrefab);
-            binder.MoveToModules(scope.gameObject);
-            var lifetime = parent.Lifetime.Child();
-            var services = new ServiceCollection();
-
-            return new ScopeBuilder(services, _assets, sceneLoader, binder, scope, lifetime, parent, scopeData.IsMock);
-        }
-
-        private void BuildContainer(ScopeBuilder builder, LifetimeScope parent)
-        {
-            var scope = builder.Container;
-
-            using (LifetimeScope.EnqueueParent(parent))
+            ScopeBuilder CreateBuilder()
             {
-                using (LifetimeScope.Enqueue(Register))
-                {
-                    scope.Build();
-                }
+                var binder = new ServiceScopeBinder(servicesScene.Instance);
+                var lifetime = options.Parent.Lifetime.Child();
+                var services = new ServiceCollection();
+                
+                return new ScopeBuilder(
+                    services,
+                    _assets,
+                    sceneLoader,
+                    binder,
+                    lifetime,
+                    options.Parent,
+                    new ScopeEventListeners(),
+                    options.IsMock);
             }
-
-            builder.ServicesInternal.Resolve(scope.Container);
-            return;
-
-            void Register(IContainerBuilder container)
+            
+            void BuildContainer()
             {
-                container.AddEvents();
-                container.Register<IViewInjector, ViewInjector>(VContainer.Lifetime.Scoped);
-                builder.Events.Register(container);
-                builder.ServicesInternal.PassRegistrations(container);
+                using (LifetimeScope.EnqueueParent(options.Parent.Container))
+                {
+                    using (LifetimeScope.Enqueue(Register))
+                    {
+                        container.Build();
+                    }
+                }
+
+                builder.ServicesInternal.Resolve(container.Container);
+                return;
+
+                void Register(IContainerBuilder containerBuilder)
+                {
+                    builder.AddEvents();
+                    builder.Register<IViewInjector, ViewInjector>(VContainer.Lifetime.Scoped);
+                    builder.Events.Register(containerBuilder);
+                    builder.ServicesInternal.PassRegistrations(containerBuilder);
+                }
             }
         }
     }

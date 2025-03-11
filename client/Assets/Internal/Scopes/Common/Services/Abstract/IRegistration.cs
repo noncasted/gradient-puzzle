@@ -6,5 +6,6 @@ namespace Internal
     {
         IServiceCollection ServiceCollection { get; }
         RegistrationBuilder Registration { get; }
+        IBuilder Builder { get; }
     }
 }

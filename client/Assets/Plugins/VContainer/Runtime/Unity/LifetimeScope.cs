@@ -52,7 +52,7 @@ namespace VContainer.Unity
         public ParentReference parentReference;
 
         [SerializeField]
-        public bool autoRun = true;
+        public bool autoRun = false;
 
         [SerializeField]
         protected List<GameObject> autoInjectGameObjects;

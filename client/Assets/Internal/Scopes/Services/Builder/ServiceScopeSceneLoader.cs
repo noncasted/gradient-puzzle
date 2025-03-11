@@ -15,9 +15,9 @@ namespace Internal
 
         public IReadOnlyList<ILoadedScene> Results => _results;
 
-        public async UniTask<ILoadedScene> Load(SceneData sceneAsset)
+        public async UniTask<ILoadedScene> Load(SceneData sceneAsset, bool isMain = false)
         {
-            var result = await _sceneLoader.Load(sceneAsset);
+            var result = await _sceneLoader.Load(sceneAsset, isMain);
 
             _results.Add(result);
 

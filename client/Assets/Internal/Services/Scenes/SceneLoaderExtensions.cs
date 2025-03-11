@@ -23,9 +23,9 @@ namespace Internal
             throw new NullReferenceException($"Searched {typeof(T)} is not found");
         }
 
-        public static async UniTask<T> LoadTyped<T>(this ISceneLoader loader, SceneData data)
+        public static async UniTask<T> LoadTyped<T>(this ISceneLoader loader, SceneData data, bool isMain = false)
         {
-            var result = await loader.Load(data);
+            var result = await loader.Load(data, isMain);
 
             var rootObjects = result.Instance.Scene.GetRootGameObjects();
 
@@ -38,12 +38,12 @@ namespace Internal
             throw new NullReferenceException($"Searched {typeof(T)} is not found");
         }
 
-        public static async UniTask<T> FindOrLoadScene<T>(this IScopeBuilder utils, SceneData data)
+        public static async UniTask<T> FindOrLoadScene<T>(this IScopeBuilder utils, SceneData data, bool isMain = false)
             where T : MonoBehaviour
         {
 #if UNITY_EDITOR
             if (utils.IsMock != true || SceneManager.GetSceneByName(data.Value.editorAsset.name).IsValid() != true)
-                return await utils.SceneLoader.LoadTyped<T>(data);
+                return await utils.SceneLoader.LoadTyped<T>(data, isMain);
 
             var targets = Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
@@ -57,7 +57,7 @@ namespace Internal
 
             return Object.FindFirstObjectByType<T>();
 #else
-            return null;
+            return await utils.SceneLoader.LoadTyped<T>(data, isMain);
 #endif
         }
     }

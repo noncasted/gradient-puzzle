@@ -36,7 +36,9 @@ namespace Internal
                 var optionsRegistry = _config.AssetsStorage.Options[_config.Platform];
                 optionsRegistry.CacheRegistry();
                 optionsRegistry.AddOptions(new PlatformOptions(_config.Platform, Application.isMobilePlatform));
-
+                
+                _config.AssetsStorage.Cache();
+                
                 var assets = new AssetEnvironment(_config.AssetsStorage, optionsRegistry);
                 var scopeBuilder = new InternalScopeBuilder(assets, containerBuilder);
 

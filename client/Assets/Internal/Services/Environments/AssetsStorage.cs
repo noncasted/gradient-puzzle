@@ -9,12 +9,41 @@ namespace Internal
     [InlineEditor]
     public class AssetsStorage : ScriptableObject, IAssetsStorage
     {
-        [SerializeField] private AssetsDictionary _assets;
+        [SerializeField] private List<EnvAsset> _assets;
         [SerializeField] private OptionsDictionary _options;
 
-        public IReadOnlyDictionary<string, List<EnvAsset>> Assets => _assets;
+        private readonly Dictionary<string, IReadOnlyList<EnvAsset>> _convertedAssets = new();
+
+        public IReadOnlyDictionary<string, IReadOnlyList<EnvAsset>> Assets => _convertedAssets;
         public IReadOnlyDictionary<PlatformType, OptionsRegistry> Options => _options;
-        
+
+        public void Cache()
+        {
+            _convertedAssets.Clear();
+            
+            foreach (var asset in _assets)
+            {
+                var key = GetKey();
+
+                if (_convertedAssets.TryGetValue(key, out var list) == false)
+                {
+                    list = new List<EnvAsset>();
+                    _convertedAssets.Add(key, list);
+                }
+
+                ((List<EnvAsset>)list).Add(asset);
+
+                string GetKey()
+                {
+                    if (asset is IEnvAssetKeyOverride keyOverride)
+                        return keyOverride.GetKeyOverride();
+
+                    return asset.GetType().FullName!;
+                }
+            }
+            
+        }
+
         [Button]
         public void Scan()
         {
@@ -22,49 +51,25 @@ namespace Internal
             _assets.Clear();
 
             UnityEditor.AssetDatabase.Refresh();
+            
             var all = GetAssets();
             var index = GetMaxIndex();
             var ids = new HashSet<int>();
 
             foreach (var asset in all)
             {
-                try
+                if (asset is IEnvAssetValidator validator)
+                    validator.OnValidation();
+
+                if (asset.Id == -1 || ids.Contains(asset.Id))
                 {
-                    var key = GetKey();
-                    
-                    if (_assets.TryGetValue(key, out var collection) == false)
-                    {
-                        collection = new List<EnvAsset>();
-                        _assets[key] = collection;
-                    }
-
-                    collection.Add(asset);
-                    
-                    if (asset is IEnvAssetValidator validator)
-                        validator.OnValidation();
-
-                    if (asset.Id == -1 || ids.Contains(asset.Id))
-                    {
-                        asset.SetId(index);
-                        index++;
-                    }
-                    
-                    ids.Add(asset.Id);
-
+                    asset.SetId(index);
+                    index++;
                     UnityEditor.EditorUtility.SetDirty(asset);
+                }
 
-                    string GetKey()
-                    {
-                        if (asset is IEnvAssetKeyOverride keyOverride)
-                            return keyOverride.GetKeyOverride();
-                        
-                        return asset.GetType().FullName!;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"Failed to process asset: {asset.name} : {e}");
-                }
+                ids.Add(asset.Id);
+                _assets.Add(asset);
             }
 
             UnityEditor.EditorUtility.SetDirty(this);
@@ -111,7 +116,7 @@ namespace Internal
             {
                 ScanAssets();
             }
-            
+
             [UnityEditor.MenuItem("Assets/Scan assets %w", priority = -1000)]
             public static void ScanAssets()
             {

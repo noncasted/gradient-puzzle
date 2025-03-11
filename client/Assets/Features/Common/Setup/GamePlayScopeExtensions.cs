@@ -14,8 +14,13 @@ namespace Common.Setup
     {
         public static async UniTask<ILoadedScope> ProcessGamePlay(this IServiceScopeLoader loader, ILoadedScope parent)
         {
-            var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
-            var scope = await loader.Load(parent, options.Default, Construct);
+            var options = new ScopeLoadOptions(
+                parent,
+                loader.Assets.GetAsset<GamePlayServicesScene>(),
+                Construct,
+                false);
+            
+            var scope = await loader.Load(options);
             await scope.Initialize();
 
             var loop = scope.Container.Container.Resolve<IGameLoop>();
@@ -37,8 +42,13 @@ namespace Common.Setup
 
         public static async UniTask<ILoadedScope> LoadGameMock(this IServiceScopeLoader loader, ILoadedScope parent)
         {
-            var options = loader.Assets.GetAsset<GamePlayScopeOptions>();
-            var scope = await loader.Load(parent, options.Mock, Construct);
+            var options = new ScopeLoadOptions(
+                parent,
+                loader.Assets.GetAsset<GamePlayServicesScene>(),
+                Construct,
+                false);
+
+            var scope = await loader.Load(options);
             await scope.Initialize();
 
             return scope;
@@ -60,7 +70,7 @@ namespace Common.Setup
 
         private static UniTask AddScene(this IScopeBuilder builder)
         {
-            return builder.FindOrLoadSceneWithServices<GamePlayScene>();
+            return builder.FindOrLoadSceneWithServices<GamePlayScene>(true);
         }
     }
 }

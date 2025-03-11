@@ -15,8 +15,13 @@ namespace Global.Setup
     {
         public static async UniTask<ILoadedScope> LoadGlobal(this IServiceScopeLoader loader, ILoadedScope parent)
         {
-            var options = loader.Assets.GetAsset<GlobalScopeOptions>();
-            var scope = await loader.Load(parent, options.Default, Construct);
+            var options = new ScopeLoadOptions(
+                parent,
+                loader.Assets.GetAsset<GlobalServicesScene>(),
+                Construct,
+                false);
+            
+            var scope = await loader.Load(options);
             await scope.Initialize();
 
             return scope;

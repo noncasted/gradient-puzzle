@@ -41,7 +41,7 @@ namespace Internal
             return registration;
         }
 
-        public static IContainerBuilder AddEvents(this IContainerBuilder builder)
+        public static IBuilder AddEvents(this IBuilder builder)
         {
             builder.Register<IEventLoop, EventLoop>(VContainer.Lifetime.Scoped);
 

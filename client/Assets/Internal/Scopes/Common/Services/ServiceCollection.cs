@@ -7,7 +7,6 @@ namespace Internal
     public class ServiceCollection : IServiceCollection
     {
         private readonly List<InstanceInjection> _injections = new();
-
         private readonly List<RegistrationBuilder> _selfResolvable = new();
         private readonly List<RegistrationBuilder> _builders = new();
 

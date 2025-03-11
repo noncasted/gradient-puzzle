@@ -2,12 +2,10 @@
 
 namespace Internal
 {
-    public interface IEntityBuilder
+    public interface IEntityBuilder : IBuilder
     {
-        IServiceCollection Services { get; }
         LifetimeScope Scope { get; }
-        ILifetime Lifetime { get; }
-        IAssetEnvironment Assets { get; }
+        ILifetime ScopeLifetime { get; }
         IScopeEntityView View { get; }
     }
 }

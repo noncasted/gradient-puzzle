@@ -53,7 +53,7 @@ namespace GamePlay.Paints
                     .AddStates();
 
                 builder.Register<Paint>() 
-                    .WithParameter(builder.Lifetime)
+                    .WithParameter(builder.ScopeLifetime)
                     .As<IPaint>();
             }
         }

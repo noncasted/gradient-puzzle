@@ -9,7 +9,6 @@ namespace GamePlay.Paints
         {
             builder.Register<PaintFactory>()
                 .WithAsset<PaintFactoryOptions>()
-                .WithParameter(builder.Container)
                 .As<IPaintFactory>();
 
             var platformOptions = builder.GetOptions<PlatformOptions>();

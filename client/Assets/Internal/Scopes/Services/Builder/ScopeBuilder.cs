@@ -9,9 +9,9 @@ namespace Internal
             IAssetEnvironment assets,
             ISceneLoader sceneLoader,
             IServiceScopeBinder binder,
-            LifetimeScope container,
-            ILifetime lifetime,
+            ILifetime scopeLifetime,
             ILoadedScope parent,
+            IScopeEventListeners events,
             bool isMock)
         {
             Services = services;
@@ -19,21 +19,19 @@ namespace Internal
             Assets = assets;
             SceneLoader = sceneLoader;
             Binder = binder;
-            Container = container;
-            Lifetime = lifetime;
+            ScopeLifetime = scopeLifetime;
             IsMock = isMock;
+            Events = events;
             Parent = parent;
-            Events = new ScopeEventListeners();
         }
-
         public IServiceCollection Services { get; }
         public IAssetEnvironment Assets { get; }
         public ISceneLoader SceneLoader { get; }
         public IServiceScopeBinder Binder { get; }
         public IScopeEventListeners Events { get; }
+        public IReadOnlyLifetime Lifetime => ScopeLifetime;
         public ILoadedScope Parent { get; }
-        public LifetimeScope Container { get; }
-        public ILifetime Lifetime { get; }
+        public ILifetime ScopeLifetime { get; }
         public bool IsMock { get; }
         
         public ServiceCollection ServicesInternal { get; }

@@ -2,16 +2,11 @@
 
 namespace Internal
 {
-    public interface IScopeBuilder
+    public interface IScopeBuilder : IBuilder
     {
-        IServiceCollection Services { get; }
-        IAssetEnvironment Assets { get; }
         ISceneLoader SceneLoader { get; }
         IServiceScopeBinder Binder { get; }
-        IScopeEventListeners Events { get; }
-        ILoadedScope Parent { get; }
-        LifetimeScope Container { get; }
-        ILifetime Lifetime { get; }
+        ILifetime ScopeLifetime { get; }
         bool IsMock { get; }
     }
 }

@@ -29,9 +29,9 @@ namespace Internal
             BuildContainer(builder, parent);
 
             var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
-            await eventLoop.RunConstruct(builder.Lifetime);
+            await eventLoop.RunConstruct(builder.ScopeLifetime);
 
-            return new EntityScopeResult(view.Scope, builder.Lifetime);
+            return new EntityScopeResult(view.Scope, builder.ScopeLifetime);
         }
 
         public async UniTask<IEntityScopeResult> Load(
@@ -48,16 +48,16 @@ namespace Internal
             BuildContainer(builder, parent);
 
             var eventLoop = builder.Scope.Container.Resolve<IEventLoop>();
-            await eventLoop.RunConstruct(builder.Lifetime);
+            await eventLoop.RunConstruct(builder.ScopeLifetime);
 
-            return new EntityScopeResult(view.Scope, builder.Lifetime);
+            return new EntityScopeResult(view.Scope, builder.ScopeLifetime);
         }
 
         private EntityBuilder CreateBuilder(IReadOnlyLifetime parentLifetime, IScopeEntityView view)
         {
             var lifetime = parentLifetime.Child();
             var services = new ServiceCollection();
-            var builder = new EntityBuilder(services, view, lifetime, _assets);
+            var builder = new EntityBuilder(services, view, lifetime, _assets, new ScopeEventListeners());
 
             return builder;
         }
@@ -78,8 +78,8 @@ namespace Internal
 
             void Register(IContainerBuilder container)
             {
-                container.AddEvents();
-                container.Register<IViewInjector, ViewInjector>(VContainer.Lifetime.Scoped);
+                builder.AddEvents();
+                builder.Register<IViewInjector, ViewInjector>(VContainer.Lifetime.Scoped);
 
                 builder.InternalServices.PassRegistrations(container);
             }

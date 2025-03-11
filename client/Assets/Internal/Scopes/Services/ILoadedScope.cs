@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using VContainer.Unity;
+using VContainer;
 
 namespace Internal
 {
@@ -10,5 +11,13 @@ namespace Internal
 
         UniTask Initialize();
         UniTask Dispose();
+    }
+    
+    public static class ServiceLoadResultExtensions
+    {
+        public static T Get<T>(this ILoadedScope loadResult)
+        {
+            return loadResult.Container.Container.Resolve<T>();
+        }
     }
 }
