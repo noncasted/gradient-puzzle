@@ -12,8 +12,6 @@ namespace Tools
 {
     public class LinkerGenerator : IPreprocessBuildWithReport
     {
-        private const string _sourcesFolder = "/Features/";
-
         public int callbackOrder { get; }
 
         public void OnPreprocessBuild(BuildReport report)
@@ -33,7 +31,7 @@ namespace Tools
                                           $"No directory in file name {linkXmlFilePath}"));
 
             var assembliesToPreserve = Enumerable.Empty<string>()
-                .Concat(GetDllAssemblyNames(assetsDir + _sourcesFolder))
+                .Concat(GetDllAssemblyNames(assetsDir))
                 .Distinct()
                 .OrderBy(s => s);
 
@@ -54,9 +52,17 @@ namespace Tools
 
         private static IEnumerable<string> GetDllAssemblyNames(string assetsDir)
         {
-            return Directory.EnumerateFiles(assetsDir, "*.asmdef", SearchOption.AllDirectories)
+            var allAssemblies = Directory.EnumerateFiles(assetsDir, "*.asmdef", SearchOption.AllDirectories)
                 .Distinct()
-                .Select(Path.GetFileNameWithoutExtension);
+                .ToList();
+
+            var toRemove = allAssemblies.Where(t => t.Contains("Editor") || t.Contains("Tests") || t.Contains("Test"))
+                .ToList();
+
+            foreach (var removed in toRemove)
+                allAssemblies.Remove(removed);
+
+            return allAssemblies.Select(Path.GetFileNameWithoutExtension);
         }
     }
 

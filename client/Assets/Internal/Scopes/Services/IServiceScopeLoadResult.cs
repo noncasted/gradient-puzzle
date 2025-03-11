@@ -8,6 +8,6 @@ namespace Internal
         LifetimeScope Scope { get; }
         ILifetime Lifetime { get; }
         IEventLoop EventLoop { get; }
-        IReadOnlyList<ISceneLoadResult> Scenes { get; }
+        IReadOnlyList<ILoadedScene> Scenes { get; }
     }
 }

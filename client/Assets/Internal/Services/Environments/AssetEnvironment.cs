@@ -21,6 +21,7 @@ namespace Internal
         public T GetAsset<T>() where T : ScriptableObject
         {
             var type = typeof(T);
+            
             var assetCollection = _assetsStorage.Assets[type.FullName];
 
             if (assetCollection.Count != 1)

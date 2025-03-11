@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Internal;
-using UnityEditor;
 using UnityEngine;
 
 namespace Services
@@ -19,16 +18,16 @@ namespace Services
         protected override void OnReload()
         {
 #if UNITY_EDITOR
-            var folderPath = AssetDatabase.GetAssetPath(this).Replace($"{name}.asset", "") + "Materials";
-            var guids = AssetDatabase.FindAssets("t:Material", new[] { folderPath });
+            var folderPath = UnityEditor.AssetDatabase.GetAssetPath(this).Replace($"{name}.asset", "") + "Materials";
+            var guids = UnityEditor.AssetDatabase.FindAssets("t:Material", new[] { folderPath });
 
             var areaMaterials = new List<Material>();
             var contentMaterials = new List<Material>();
 
             foreach (var guid in guids)
             {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                var material = AssetDatabase.LoadAssetAtPath<Material>(assetPath);
+                var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>(assetPath);
 
                 if (material == null)
                     continue;
@@ -53,7 +52,7 @@ namespace Services
             for (var i = 0; i < _datas.Length; i++)
                 _datas[i].SetIndex(i + 1);
 
-            EditorUtility.SetDirty(this);
+            UnityEditor.EditorUtility.SetDirty(this);
 
             int ExtractIndex(string materialName)
             {

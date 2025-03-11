@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace Internal
@@ -7,9 +8,9 @@ namespace Internal
     {
         private readonly Scene _scene;
 
-        public ServiceScopeBinder(Scene scene)
+        public ServiceScopeBinder(SceneInstance scene)
         {
-            _scene = scene;
+            _scene = scene.Scene;
         }
 
         public void MoveToModules(MonoBehaviour service)

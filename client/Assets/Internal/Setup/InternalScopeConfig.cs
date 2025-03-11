@@ -13,6 +13,5 @@ namespace Internal
         public PlatformType Platform => _platform;
         public InternalScope Scope => _scope;
         public IAssetsStorage AssetsStorage => _assetsStorage;
-
     }
 }

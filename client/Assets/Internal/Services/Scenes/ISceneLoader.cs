@@ -4,6 +4,6 @@ namespace Internal
 {
     public interface ISceneLoader
     {
-        UniTask<ISceneLoadResult> Load(SceneData data);
+        UniTask<ILoadedScene> Load(SceneData data);
     }
 }

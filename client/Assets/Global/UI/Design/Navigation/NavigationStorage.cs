@@ -2,7 +2,6 @@
 using System.Linq;
 using Internal;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
 namespace Global.UI
@@ -80,7 +79,7 @@ namespace Global.UI
 
                 current.Setup(dictionary);
 #if UNITY_EDITOR
-                EditorUtility.SetDirty(current);
+                UnityEditor.EditorUtility.SetDirty(current);
 #endif
             }
         }

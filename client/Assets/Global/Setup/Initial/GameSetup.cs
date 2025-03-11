@@ -1,7 +1,9 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Global.GameLoops;
 using Internal;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 namespace Global.Setup
@@ -10,9 +12,6 @@ namespace Global.Setup
     public class GameSetup : MonoBehaviour
     {
         [SerializeField] private InternalScopeConfig _internal;
-        [SerializeField] private SetupLoadingScreen _loading;
-        
-        private ILoadedScope _internalScope;
 
         private void Awake()
         {
@@ -23,22 +22,18 @@ namespace Global.Setup
         {
             var profiler = new ProfilingScope("GameSetup");
             var internalScopeLoader = new InternalScopeLoader(_internal);
+            var startScene = gameObject.scene;
 
-            _internalScope = internalScopeLoader.Load();
+            var internalScope = internalScopeLoader.Load();
 
-            var scopeLoader = _internalScope.Container.Container.Resolve<IServiceScopeLoader>();
-            var globalScope = await scopeLoader.LoadGlobal(_internalScope);
+            var scopeLoader = internalScope.Container.Container.Resolve<IServiceScopeLoader>();
+            var globalScope = await scopeLoader.LoadGlobal(internalScope);
+
+            await SceneManager.UnloadSceneAsync(startScene);
 
             var gamePlayLoader = globalScope.Get<IGamePlayLoader>();
             await gamePlayLoader.Initialize(globalScope);
-
-            _loading.Dispose();
             profiler.Dispose();
-        }
-        
-        private void OnDestroy()
-        {
-            _internalScope.Dispose().Forget();
         }
     }
 }

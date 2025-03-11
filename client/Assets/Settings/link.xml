@@ -1,6 +1,20 @@
 <linker>
 
+    <assembly fullname="ADF-RBG.Mulligan" preserve="all" />
     <assembly fullname="Features" preserve="all" />
-    <assembly fullname="GamePlay.Areas.Editor" preserve="all" />
+    <assembly fullname="Global" preserve="all" />
+    <assembly fullname="Internal" preserve="all" />
+    <assembly fullname="MPUIKit" preserve="all" />
+    <assembly fullname="NaughtyAttributes.Core" preserve="all" />
+    <assembly fullname="Sirenix.OdinInspector.Modules.Unity.Addressables" preserve="all" />
+    <assembly fullname="Sirenix.OdinInspector.Modules.UnityMathematics" preserve="all" />
+    <assembly fullname="Tools.Scene" preserve="all" />
+    <assembly fullname="UniTask" preserve="all" />
+    <assembly fullname="UniTask.Addressables" preserve="all" />
+    <assembly fullname="UniTask.DOTween" preserve="all" />
+    <assembly fullname="UniTask.Linq" preserve="all" />
+    <assembly fullname="UniTask.TextMeshPro" preserve="all" />
+    <assembly fullname="VContainer" preserve="all" />
+    <assembly fullname="WebGLFullscreen" preserve="all" />
 
 </linker>

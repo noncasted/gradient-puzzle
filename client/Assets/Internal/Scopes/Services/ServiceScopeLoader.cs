@@ -9,17 +9,14 @@ namespace Internal
     {
         public ServiceScopeLoader(
             IAssetEnvironment assets,
-            ISceneLoader sceneLoader,
-            ISceneUnloader sceneUnloader)
+            ISceneLoader sceneLoader)
         {
             _assets = assets;
             _sceneLoader = sceneLoader;
-            _sceneUnloader = sceneUnloader;
         }
 
         private readonly IAssetEnvironment _assets;
         private readonly ISceneLoader _sceneLoader;
-        private readonly ISceneUnloader _sceneUnloader;
 
         public IAssetEnvironment Assets => _assets;
 
@@ -40,7 +37,6 @@ namespace Internal
                 builder.Lifetime,
                 eventLoop,
                 sceneLoader.Results,
-                _sceneUnloader,
                 builder.Container);
 
             var loadResult = new ScopeLoadResult(
@@ -60,7 +56,7 @@ namespace Internal
             ServiceScopeData scopeData)
         {
             var servicesScene = await sceneLoader.Load(scopeData.ServicesScene);
-            var binder = new ServiceScopeBinder(servicesScene.Scene);
+            var binder = new ServiceScopeBinder(servicesScene.Instance);
             var scope = Object.Instantiate(scopeData.ScopePrefab);
             binder.MoveToModules(scope.gameObject);
             var lifetime = parent.Lifetime.Child();

@@ -6,22 +6,8 @@ namespace Internal
     {
         public static IInternalScopeBuilder AddScenes(this IInternalScopeBuilder builder)
         {
-            if (builder.Assets.GetOptions<AssetsOptions>().UseAddressables == true)
-            {
-                builder.Container.Register<AddressablesSceneLoader>(VContainer.Lifetime.Singleton)
-                    .As<ISceneLoader>();
-
-                builder.Container.Register<AddressablesScenesUnloader>(VContainer.Lifetime.Singleton)
-                    .As<ISceneUnloader>();
-            }
-            else
-            {
-                builder.Container.Register<NativeSceneLoader>(VContainer.Lifetime.Singleton)
-                    .As<ISceneLoader>();
-
-                builder.Container.Register<NativeSceneUnloader>(VContainer.Lifetime.Singleton)
-                    .As<ISceneUnloader>();
-            }
+            builder.Container.Register<SceneLoader>(VContainer.Lifetime.Singleton)
+                .As<ISceneLoader>();
 
             return builder;
         }

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: LoadingScreenScene
   m_EditorClassIdentifier: 
   _assetId: 40
-  _scene:
-    m_SceneAsset: {fileID: 102900000, guid: 81db3772e20060e4fa843bd53ffd6f6b, type: 3}
-    m_SceneName: UI_LoadingScreen
+  _value:
+    m_AssetGUID: 81db3772e20060e4fa843bd53ffd6f6b
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1

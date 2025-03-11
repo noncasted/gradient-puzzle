@@ -10,12 +10,12 @@ namespace Internal
             _sceneLoader = sceneLoader;
         }
 
-        private readonly List<ISceneLoadResult> _results = new();
+        private readonly List<ILoadedScene> _results = new();
         private readonly ISceneLoader _sceneLoader;
 
-        public IReadOnlyList<ISceneLoadResult> Results => _results;
+        public IReadOnlyList<ILoadedScene> Results => _results;
 
-        public async UniTask<ISceneLoadResult> Load(SceneData sceneAsset)
+        public async UniTask<ILoadedScene> Load(SceneData sceneAsset)
         {
             var result = await _sceneLoader.Load(sceneAsset);
 

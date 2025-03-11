@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -14,12 +13,12 @@ namespace Internal
 #if UNITY_EDITOR
 
             var objects = new List<T>();
-            var guids = AssetDatabase.FindAssets($"t:{typeof(T)}");
+            var guids = UnityEditor.AssetDatabase.FindAssets($"t:{typeof(T)}");
 
             foreach (var guid in guids)
             {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
                 if (asset == null)
                     continue;
@@ -37,12 +36,12 @@ namespace Internal
 #if UNITY_EDITOR
 
             var objects = new List<T>();
-            var guids = AssetDatabase.FindAssets($"t:{typeof(T)}");
+            var guids = UnityEditor.AssetDatabase.FindAssets($"t:{typeof(T)}");
 
             foreach (var guid in guids)
             {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
                 if (asset == null)
                     continue;

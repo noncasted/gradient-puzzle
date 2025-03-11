@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Internal
 {
     public abstract class SceneData : EnvAsset
     {
-        [SerializeField] private SceneField _scene;
+        [SerializeField] private AssetReference _value;
 
-        public SceneField Scene => _scene;
+        public AssetReference Value => _value;
     }
 }

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: GamePlayScene
   m_EditorClassIdentifier: 
   _assetId: 23
-  _scene:
-    m_SceneAsset: {fileID: 102900000, guid: 4b636264c7ac7224aa40de5dc5ec86f3, type: 3}
-    m_SceneName: GamePlay
+  _value:
+    m_AssetGUID: 4b636264c7ac7224aa40de5dc5ec86f3
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1

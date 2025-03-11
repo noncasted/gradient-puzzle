@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Internal;
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
 namespace GamePlay.Levels
@@ -41,7 +40,7 @@ namespace GamePlay.Levels
         private void AddPoint()
         {
 #if UNITY_EDITOR
-            var point = PrefabUtility.InstantiatePrefab(_pointPrefab, transform) as AreaColorPoint;
+            var point = UnityEditor.PrefabUtility.InstantiatePrefab(_pointPrefab, transform) as AreaColorPoint;
             point.transform.localPosition = RandomExtensions.RandomPosition(-300, 300);
             _points.Add(point, Color.white);
 #endif

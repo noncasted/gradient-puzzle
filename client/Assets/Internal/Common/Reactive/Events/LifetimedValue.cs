@@ -29,17 +29,15 @@ namespace Internal
 
         public void Set(T value)
         {
+            if (_value?.Equals(value) == true)
+                return;
+
             _lifetime?.Terminate();
 
             _lifetime = new Lifetime();
             _value = value;
 
             _eventSource.Invoke(_lifetime, value);
-        }
-
-        public void InvokeAdvices()
-        {
-            _eventSource.Invoke(_lifetime, _value);
         }
 
         public void Dispose()

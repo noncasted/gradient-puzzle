@@ -14,7 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 45cf82c0db71f3c4da48d3a1eef7b651
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 4b636264c7ac7224aa40de5dc5ec86f3
+    m_Address: GamePlay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81db3772e20060e4fa843bd53ffd6f6b
+    m_Address: UI_LoadingScreen
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8cf087558b3f9d4f9791bd93ed518af
+    m_Address: GamePlay_Services
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa9902c71b5f7cd4f98e1a5c19e15def
+    m_Address: Services_Global
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cabbebe4a78d18f4f97cff54284923ca, type: 2}
   m_SchemaSet:

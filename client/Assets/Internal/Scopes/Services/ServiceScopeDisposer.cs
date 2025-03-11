@@ -9,28 +9,25 @@ namespace Internal
         public ServiceScopeDisposer(
             ILifetime lifetime,
             IEventLoop loop,
-            IReadOnlyList<ISceneLoadResult> scenes,
-            ISceneUnloader sceneUnloader,
+            IReadOnlyList<ILoadedScene> scenes,
             LifetimeScope container)
         {
             _lifetime = lifetime;
             _loop = loop;
             _scenes = scenes;
-            _sceneUnloader = sceneUnloader;
             _container = container;
         }
 
         private readonly ILifetime _lifetime;
         private readonly IEventLoop _loop;
-        private readonly IReadOnlyList<ISceneLoadResult> _scenes;
-        private readonly ISceneUnloader _sceneUnloader;
+        private readonly IReadOnlyList<ILoadedScene> _scenes;
         private readonly LifetimeScope _container;
 
         public async UniTask Dispose()
         {
             await _loop.RunDispose();
             _lifetime.Terminate();
-            await _sceneUnloader.Unload(_scenes);
+            await _scenes.InvokeAsync(scene => scene.Unload());
             _container.Dispose();
         }
     }

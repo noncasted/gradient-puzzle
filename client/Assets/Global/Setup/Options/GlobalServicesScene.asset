@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: GlobalServicesScene
   m_EditorClassIdentifier: 
   _assetId: 37
-  _scene:
-    m_SceneAsset: {fileID: 102900000, guid: fa9902c71b5f7cd4f98e1a5c19e15def, type: 3}
-    m_SceneName: Services_Global
+  _value:
+    m_AssetGUID: fa9902c71b5f7cd4f98e1a5c19e15def
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1

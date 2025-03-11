@@ -8,11 +8,11 @@ namespace Internal
 {
     public static class SceneLoaderExtensions
     {
-        public static async UniTask<(ISceneLoadResult, T)> LoadTypedResult<T>(this ISceneLoader loader, SceneData data)
+        public static async UniTask<(ILoadedScene, T)> LoadTypedResult<T>(this ISceneLoader loader, SceneData data)
         {
             var result = await loader.Load(data);
 
-            var rootObjects = result.Scene.GetRootGameObjects();
+            var rootObjects = result.Instance.Scene.GetRootGameObjects();
 
             foreach (var rootObject in rootObjects)
             {
@@ -27,7 +27,7 @@ namespace Internal
         {
             var result = await loader.Load(data);
 
-            var rootObjects = result.Scene.GetRootGameObjects();
+            var rootObjects = result.Instance.Scene.GetRootGameObjects();
 
             foreach (var rootObject in rootObjects)
             {
@@ -41,20 +41,24 @@ namespace Internal
         public static async UniTask<T> FindOrLoadScene<T>(this IScopeBuilder utils, SceneData data)
             where T : MonoBehaviour
         {
-            if (utils.IsMock != true || SceneManager.GetSceneByName(data.Scene.SceneName).IsValid() != true)
+#if UNITY_EDITOR
+            if (utils.IsMock != true || SceneManager.GetSceneByName(data.Value.editorAsset.name).IsValid() != true)
                 return await utils.SceneLoader.LoadTyped<T>(data);
 
             var targets = Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (var target in targets)
             {
-                if (target.gameObject.scene.name != data.Scene.SceneName)
+                if (target.gameObject.scene.name != data.Value.editorAsset.name)
                     continue;
 
                 return target;
             }
 
             return Object.FindFirstObjectByType<T>();
+#else
+            return null;
+#endif
         }
     }
 }

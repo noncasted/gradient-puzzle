@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf39813222cc3c04fba5e79100bd754a, type: 3}
   m_Name: Options_Release_Assets
   m_EditorClassIdentifier: 
-  _useAddressables: 0
+  _useAddressables: 1

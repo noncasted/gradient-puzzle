@@ -35,12 +35,12 @@ namespace Internal
             return UniTask.WhenAll(tasks);
         }
         
-        public static void Invoke<T>(this IReadOnlyList<T> listeners, Action<T> invoker)
+        public static void Invoke<T>(this IReadOnlyList<T> collection, Action<T> invoker)
         {
-            var count = listeners.Count;
+            var count = collection.Count;
 
             for (var i = 0; i < count; i++)
-                invoker.Invoke(listeners[i]);
+                invoker.Invoke(collection[i]);
         }
 
         public static void Sort<T, TKey>(this List<T> source, Func<T, TKey> comparator)

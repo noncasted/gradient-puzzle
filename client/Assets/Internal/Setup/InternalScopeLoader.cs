@@ -17,13 +17,19 @@ namespace Internal
         {
             var profiler = new ProfilingScope("InternalScopeLoader");
             var container = Object.Instantiate(_config.Scope);
+            container.name = "Internal_Scope";
+            
+            Object.DontDestroyOnLoad(container);
 
             using (LifetimeScope.Enqueue(Register))
                 container.Build();
 
             profiler.Dispose();
 
-            return new InternalLoadedScope(container, new Lifetime());
+            var result = new InternalLoadedScope(container, new Lifetime());
+            container.AttachScope(result);
+
+            return result;
 
             void Register(IContainerBuilder containerBuilder)
             {
@@ -36,7 +42,6 @@ namespace Internal
 
                 scopeBuilder
                     .AddScenes()
-                    .AddLogs()
                     .AddScopeLoaders();
 
                 containerBuilder.RegisterInstance(assets)

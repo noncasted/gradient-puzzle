@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -395,7 +396,7 @@ GameObject:
   - component: {fileID: 931884588}
   - component: {fileID: 931884589}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: Internal_Setup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,7 +430,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _internal: {fileID: 11400000, guid: 406935e01522cc441bd92868777d3e67, type: 2}
-  _loading: {fileID: 1702663823}
 --- !u!1 &1463152578
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +522,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702663822}
-  - component: {fileID: 1702663823}
   m_Layer: 0
   m_Name: Loading
   m_TagString: Untagged
@@ -547,21 +546,6 @@ Transform:
   - {fileID: 437017677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1702663823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702663821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae8cab651d7040a7b3a3a0215f93c24f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _disposeTime: 1
-  _startTime: 0.2
-  _group: {fileID: 437017681}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
