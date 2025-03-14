@@ -71,9 +71,11 @@ namespace Internal
             var config = FindAsset<InternalScopeConfig>();
 
             var optionsRegistry = config.AssetsStorage.Options[config.Platform];
+            
             optionsRegistry.CacheRegistry();
             optionsRegistry.AddOptions(new PlatformOptions(config.Platform, Application.isMobilePlatform));
-
+            config.AssetsStorage.Cache();
+            
             var assets = new AssetEnvironment(config.AssetsStorage, optionsRegistry);
             return assets;
 #endif

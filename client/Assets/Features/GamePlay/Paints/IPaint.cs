@@ -7,6 +7,7 @@ namespace GamePlay.Paints
     public interface IPaint
     {
         Color Color { get; }
+        GameObject GameObject { get; }
         
         void Construct(Color color);
         

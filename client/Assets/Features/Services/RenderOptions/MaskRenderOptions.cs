@@ -15,6 +15,11 @@ namespace Services
             return _datas[index];
         }
 
+        public RenderMaskData GetFromBack(int index)
+        {
+            return _datas[_datas.Length - index - 1];
+        }
+
         protected override void OnReload()
         {
 #if UNITY_EDITOR

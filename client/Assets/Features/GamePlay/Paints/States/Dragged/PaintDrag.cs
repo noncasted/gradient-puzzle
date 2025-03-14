@@ -16,6 +16,8 @@ namespace GamePlay.Paints
             IPaintInterceptor interceptor,
             IPaintDrop drop,
             IPaintReturn @return,
+            IGameContext gameContext,
+            IPaintMerging merging,
             PaintDragDefinition definition)
         {
             Definition = definition;
@@ -24,6 +26,8 @@ namespace GamePlay.Paints
             _input = input;
             _drop = drop;
             _return = @return;
+            _gameContext = gameContext;
+            _merging = merging;
             _stateMachine = stateMachine;
             _interceptor = interceptor;
         }
@@ -33,6 +37,8 @@ namespace GamePlay.Paints
         private readonly IGameInput _input;
         private readonly IPaintDrop _drop;
         private readonly IPaintReturn _return;
+        private readonly IGameContext _gameContext;
+        private readonly IPaintMerging _merging;
         private readonly IStateMachine _stateMachine;
         private readonly IPaintInterceptor _interceptor;
 
@@ -50,6 +56,7 @@ namespace GamePlay.Paints
             start.PaintHandle.Lock();
             _interceptor.Detach();
 
+            _merging.Show(lifetime, _gameContext.Targets);
             _mover.FollowCursor(lifetime, start).Forget();
             await _input.Action.WaitFalse(lifetime);
             start.PaintHandle.Unlock();

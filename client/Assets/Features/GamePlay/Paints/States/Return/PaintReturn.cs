@@ -12,12 +12,14 @@ namespace GamePlay.Paints
             IPaintInterceptor interceptor,
             IPaintDrop drop,
             IPaintMover mover,
+            IPaintMerging merging,
             PaintReturnDefinition definition)
         {
             _stateMachine = stateMachine;
             _interceptor = interceptor;
             _drop = drop;
             _mover = mover;
+            _merging = merging;
             Definition = definition;
         }
 
@@ -25,6 +27,7 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly IPaintDrop _drop;
         private readonly IPaintMover _mover;
+        private readonly IPaintMerging _merging;
 
         public IStateDefinition Definition { get; }
 
@@ -37,10 +40,11 @@ namespace GamePlay.Paints
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
             target.PaintHandle.Lock();
-            await _mover.TransitTo(lifetime, target.CenterTransform, _interceptor.Current);
+            _merging.Show(lifetime, target);
+            await _mover.TransitTo(lifetime, target.RootCenter, _interceptor.Current);
             _interceptor.Attach(target);
             target.PaintHandle.Unlock();
-            
+
             _drop.Enter(target);
         }
     }

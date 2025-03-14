@@ -6,7 +6,7 @@ namespace GamePlay.Levels
     public class ExtractedArea
     {
         public ExtractedArea(
-            IReadOnlyList<IReadOnlyList<Vector2>> contours,
+            IReadOnlyList<Contour> contours,
             Color color,
             int order,
             string name)
@@ -17,9 +17,21 @@ namespace GamePlay.Levels
             Name = name;
         }
 
-        public IReadOnlyList<IReadOnlyList<Vector2>> Contours { get; }
+        public IReadOnlyList<Contour> Contours { get; }
         public Color Color { get; }
         public int Order { get; }
         public string Name { get; }
+
+        public class Contour
+        {
+            public Contour(IReadOnlyList<Vector2> points, IReadOnlyList<Vector2> centers)
+            {
+                Points = points;
+                Centers = centers;
+            }
+
+            public IReadOnlyList<Vector2> Points { get; }
+            public IReadOnlyList<Vector2> Centers { get; }
+        }
     }
 }

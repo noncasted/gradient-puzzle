@@ -10,6 +10,7 @@ namespace GamePlay.Paints
 
         public Vector2 RectPosition => _transform.anchoredPosition;
         public Vector2 WorldPosition => _transform.position;
+        public Transform Value => _transform;
 
         public void Register(IEntityBuilder builder)
         {

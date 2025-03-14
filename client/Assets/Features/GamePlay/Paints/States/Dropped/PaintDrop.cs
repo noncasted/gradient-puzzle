@@ -16,6 +16,7 @@ namespace GamePlay.Paints
             IStateMachine stateMachine,
             IPaintTransform transform,
             IPaintImage image,
+            IPaintMerging merging,
             PaintDropOptions options,
             PaintDropDefinition definition)
         {
@@ -23,6 +24,7 @@ namespace GamePlay.Paints
             _stateMachine = stateMachine;
             _transform = transform;
             _image = image;
+            _merging = merging;
             _options = options;
             Definition = definition;
         }
@@ -31,6 +33,7 @@ namespace GamePlay.Paints
         private readonly IStateMachine _stateMachine;
         private readonly IPaintTransform _transform;
         private readonly IPaintImage _image;
+        private readonly IPaintMerging _merging;
         private readonly PaintDropOptions _options;
 
         public IStateDefinition Definition { get; }
@@ -38,41 +41,17 @@ namespace GamePlay.Paints
         public async UniTask Enter(IPaintTarget target)
         {
             var handle = _stateMachine.CreateHandle(this);
+            var center = target.GetNearestCenter(_transform.Value);
+
+            var start = _transform.WorldPosition;
+            var end = center.Transform.position;
+
+            _merging.Show(handle.Lifetime, target);
             
-            switch (target)
-            {
-                case IPaintDock dock:
-                {
-                    _transform.AttachTo(dock.SelfTransform);
-                    _transform.SetRectPosition(Vector2.zero);
-                    var dockSize = dock.Size;
-                    _image.ResetMaterial();
-
-                    await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
-                        progress => { _image.SetSize(dockSize * 2 * progress); });
-                    
-                    _transform.SetRectPosition(dock.CenterTransform.anchoredPosition);
-                    break;
-                }
-                case IArea area:
-                {
-                    _transform.AttachTo(area.SelfTransform);
-                    _image.SetMaterial(area.MaskData.Content);
-
-                    await _updater.CurveProgression(handle.Lifetime, _options.AreaScaleCurve,
-                        progress =>
-                        {
-                            _image.SetSize(PaintExtensions.MaxRadius * progress);
-                        });
-                    
-                    _transform.SetRectPosition(area.CenterTransform.anchoredPosition);
-                    break;
-                }
-                default:
-                {
-                    throw new Exception();
-                }
-            }
+            await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
+                progress => _transform.SetWorldPosition(Vector2.Lerp(start, end, progress)));
+            
+            handle.Exit();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace Loop
             ICompletionUI completionUI,
             IUpdater updater,
             IPaintCollection paintCollection,
+            IGameContext gameContext,
             GameLoopCheats cheats)
         {
             _stateMachine = stateMachine;
@@ -48,6 +49,7 @@ namespace Loop
             _completionUI = completionUI;
             _updater = updater;
             _paintCollection = paintCollection;
+            _gameContext = gameContext;
             _cheats = cheats;
         }
 
@@ -66,6 +68,7 @@ namespace Loop
         private readonly ICompletionUI _completionUI;
         private readonly IUpdater _updater;
         private readonly IPaintCollection _paintCollection;
+        private readonly IGameContext _gameContext;
         private readonly GameLoopCheats _cheats;
 
         private ILifetime _currentLifetime;
@@ -142,6 +145,8 @@ namespace Loop
                 target.Add(dock);
                 paintToDock.Add(paint, dock);
             }
+            
+            _gameContext.Setup(level, docks);
 
             paints.Shuffle();
 

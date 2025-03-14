@@ -6,6 +6,7 @@ namespace GamePlay.Paints
     {
         Vector2 RectPosition { get; }
         Vector2 WorldPosition { get; }
+        Transform Value { get; }
         
         void AttachTo(Transform target);
         void SetRotation(float angle);

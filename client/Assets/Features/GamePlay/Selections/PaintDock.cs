@@ -1,15 +1,17 @@
-﻿using GamePlay.Common;
+﻿using System.Collections.Generic;
+using GamePlay.Common;
 using Global.UI;
 using Internal;
 using Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace GamePlay.Selections
 {
     [DisallowMultipleComponent]
-    public class PaintDock : 
-        MonoBehaviour, 
+    public class PaintDock :
+        MonoBehaviour,
         IPaintDock,
         IPointerEnterHandler,
         IPointerExitHandler,
@@ -18,17 +20,22 @@ namespace GamePlay.Selections
     {
         [SerializeField] private RectTransform _selfTransform;
         [SerializeField] private RectTransform _paintRoot;
+        [SerializeField] private AreaCenter _center;
+        [SerializeField] private MaskableGraphic _image;
 
         private readonly ViewableProperty<bool> _isTouched = new(false);
 
         private float _size;
+        private AreaCenter[] _centers;
+        private RenderMaskData _maskData;
 
         public IViewableProperty<bool> IsTouched => _isTouched;
         public Vector2 Position => _selfTransform.anchoredPosition;
         public RectTransform SelfTransform => _paintRoot;
-        public RectTransform CenterTransform => _paintRoot;
-        public RenderMaskData MaskData => null;
+        public RectTransform RootCenter => _paintRoot;
+        public RenderMaskData MaskData => _maskData;
         public IPaintHandle PaintHandle { get; } = new PaintHandle();
+        public IReadOnlyList<AreaCenter> Centers => _centers;
 
         public float Size => _size;
 
@@ -38,9 +45,12 @@ namespace GamePlay.Selections
             _selfTransform.SetAnchor(AnchorPresets.MiddleCenter, -halfSize, halfSize);
         }
 
-        public void Construct(float size)
+        public void Construct(float size, RenderMaskData maskData)
         {
+            _maskData = maskData;
             _size = size;
+            _centers = new[] { _center };
+            _image.material = maskData.Area;
         }
 
         public bool IsInside(Vector2 position)
@@ -59,7 +69,7 @@ namespace GamePlay.Selections
 
             if (distance < 0)
                 return 0;
-            
+
             return distance;
         }
 

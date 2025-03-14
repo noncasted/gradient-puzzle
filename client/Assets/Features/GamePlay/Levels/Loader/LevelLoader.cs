@@ -37,7 +37,7 @@ namespace GamePlay.Levels
                 
                 level.Areas[i].Setup(color, maskData, parent);
             }
-
+            
             return level;
         }
     }

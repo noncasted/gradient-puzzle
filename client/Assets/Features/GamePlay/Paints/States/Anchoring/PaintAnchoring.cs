@@ -11,12 +11,14 @@ namespace GamePlay.Paints
             IPaintInterceptor interceptor,
             IStateMachine stateMachine,
             IPaintDrop drop,
+            IPaintMerging merging,
             PaintAnchoringDefinition definition)
         {
             _mover = mover;
             _interceptor = interceptor;
             _stateMachine = stateMachine;
             _drop = drop;
+            _merging = merging;
             Definition = definition;
         }
 
@@ -24,6 +26,7 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly IStateMachine _stateMachine;
         private readonly IPaintDrop _drop;
+        private readonly IPaintMerging _merging;
 
         public IStateDefinition Definition { get; }
 
@@ -34,8 +37,9 @@ namespace GamePlay.Paints
 
             _interceptor.Detach();
             _interceptor.Attach(target);
-            
-            await _mover.TransitTo(handle.Lifetime, target.CenterTransform, from);
+
+            _merging.Show(handle.Lifetime, target);
+            await _mover.TransitTo(handle.Lifetime, target.RootCenter, from);
             await _drop.Enter(target);
         }
     }

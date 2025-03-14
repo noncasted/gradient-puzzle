@@ -13,12 +13,14 @@ namespace GamePlay.Levels
     public class Level : MonoBehaviour, ILevel
     {
         [SerializeField] private Area[] _areas;
+        [SerializeField] private RectTransform _transform;
 
         private IUpdater _updater;
         private IGameInput _input;
 
         public IReadOnlyList<IArea> Areas => _areas;
-
+        public RectTransform Transform => _transform;
+        
         private static readonly ViewableDelegate<Level> _constructorRequest = new();
 
         public static IViewableDelegate<Level> ConstructorRequest => _constructorRequest;

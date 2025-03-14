@@ -18,9 +18,10 @@ namespace GamePlay.Levels
         [SerializeField] private string _id;
 
         [SerializeField] private RectTransform _selfTransform;
-        [SerializeField] private RectTransform _centerTransform = new();
+        [SerializeField] private RectTransform _centerTransform;
 
         [SerializeField] private List<AreaShapeData> _shapes;
+        [SerializeField] private AreaCenter[] _centers;
 
         private readonly ViewableProperty<bool> _isTouched = new();
         private readonly ViewableProperty<bool> _isCompleted = new();
@@ -32,11 +33,12 @@ namespace GamePlay.Levels
 
         public Vector2 Position => _centerTransform.position;
         public RectTransform SelfTransform => _selfTransform;
-        public RectTransform CenterTransform => _centerTransform;
+        public RectTransform RootCenter => _centerTransform;
 
         public bool IsAnchor => _isAnchor;
         public RenderMaskData MaskData => _maskData;
         public IPaintHandle PaintHandle { get; } = new PaintHandle();
+        public IReadOnlyList<AreaCenter> Centers => _centers;
         public Color Color => _color;
         public AreaRenderer Renderer => _renderer;
         public IReadOnlyList<AreaShapeData> Shapes => _shapes;
@@ -68,6 +70,7 @@ namespace GamePlay.Levels
 
         public void Setup(Color color, RenderMaskData maskData, Transform outlineParent)
         {
+            _centers = GetComponentsInChildren<AreaCenter>(true);
             _centerTransform.SetAsLastSibling();
             _color = _renderer.Color;
             _maskData = maskData;

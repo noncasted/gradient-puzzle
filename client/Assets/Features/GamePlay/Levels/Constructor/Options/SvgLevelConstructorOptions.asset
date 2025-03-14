@@ -22,3 +22,5 @@ MonoBehaviour:
   - transform-reapply
   - object-to-path
   - transform-reapply
+  _centerCheckDistance: 40
+  _centerPrefab: {fileID: 99639845484591595, guid: fc847dfbf58825243b7f5322f78077c2, type: 3}

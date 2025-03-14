@@ -37,9 +37,7 @@ namespace GamePlay.Levels
         public void SetMaterial(Material material)
         {
             foreach (var areaRenderer in _renderers)
-            {
                 areaRenderer.material = material;
-            }
         }
 
         public void SetColor(Color color)

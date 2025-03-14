@@ -7,16 +7,16 @@ namespace GamePlay.Levels
     [Serializable]
     public class AreaShapeData
     {
-        public AreaShapeData(Vector2[] points, Vector2 center)
+        public AreaShapeData(Vector2[] points, Vector2[] centers)
         {
             _points = points;
-            _center = center;
+            _centers = centers;
         }
 
         [SerializeField] private Vector2[] _points;
-        [SerializeField] private Vector2 _center;
+        [SerializeField] private Vector2[] _centers;
 
         public IReadOnlyList<Vector2> Points => _points;
-        public Vector2 Center => _center;
+        public IReadOnlyList<Vector2> Centers => _centers;
     }
 }

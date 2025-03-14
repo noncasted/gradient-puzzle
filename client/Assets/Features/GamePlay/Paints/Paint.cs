@@ -16,8 +16,8 @@ namespace GamePlay.Paints
             IPaintDrop drop,
             IPaintReturn @return,
             IPaintAnchoring anchoring,
-            IPaintComplete complete, 
-            ILifetime lifetime, 
+            IPaintComplete complete,
+            ILifetime lifetime,
             IPaintGameObject gameObject)
         {
             _image = image;
@@ -46,6 +46,7 @@ namespace GamePlay.Paints
         private Color _color;
 
         public Color Color => _color;
+        public GameObject GameObject => _gameObject.GameObject;
 
         public void Construct(Color color)
         {
@@ -87,7 +88,7 @@ namespace GamePlay.Paints
         public async UniTask Destroy()
         {
             _lifetime.Terminate();
-            _gameObject.DestroySelf();            
+            _gameObject.DestroySelf();
         }
     }
 }

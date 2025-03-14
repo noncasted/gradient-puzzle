@@ -19,16 +19,21 @@ namespace GamePlay.Levels
 
             return minDistance;
         }
-
+        
         public static bool IsInside(this AreaShapeData shapeData, Vector2 position)
         {
-            if (shapeData.Points.Count < 3)
+            return shapeData.Points.IsInside(position);
+        }
+
+        public static bool IsInside(this IReadOnlyList<Vector2> points, Vector2 position)
+        {
+            if (points.Count < 3)
                 return false;
 
             var isInPolygon = false;
-            var lastVertex = shapeData.Points[^1];
+            var lastVertex = points[^1];
 
-            foreach (var vertex in shapeData.Points)
+            foreach (var vertex in points)
             {
                 if (position.y.IsBetween(lastVertex.y, vertex.y))
                 {
@@ -108,7 +113,7 @@ namespace GamePlay.Levels
             var centers = new List<Vector2>();
 
             foreach (var data in datas)
-                centers.Add(data.Center);
+                centers.AddRange(data.Centers);
 
             return GetCenter(centers);
         }

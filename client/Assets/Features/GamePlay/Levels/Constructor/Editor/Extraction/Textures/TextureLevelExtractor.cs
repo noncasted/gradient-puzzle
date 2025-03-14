@@ -42,7 +42,8 @@ namespace GamePlay.Levels
                 AreaShapeUtils.NormalizePointsToRect(contour, options.RectSize, textureSize);
             }
 
-            return new ExtractedArea(contours, Color.white, 0, "Area");
+            return null;
+            //return new ExtractedArea(contours, Color.white, 0, "Area");
         }
     }
 }

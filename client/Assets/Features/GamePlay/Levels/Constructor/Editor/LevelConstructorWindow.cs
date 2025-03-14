@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GamePlay.Common;
 using Internal;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
@@ -37,6 +38,8 @@ namespace GamePlay.Levels
         [SerializeField] [ShowIf(nameof(_isSvg))]
         private float _svgScale = 0.9f;
 
+        [SerializeField] private float _centerCheckDistance;
+        [SerializeField] private AreaCenter _centerPrefab;
         [SerializeField] private Area _prefab;
 
         private bool _isTexture => LevelExtractionUtils.Type == LevelExtractionType.Texture;
@@ -61,6 +64,8 @@ namespace GamePlay.Levels
             _svgScale = svgOptions.Scale;
 
             _prefab = textureOptions.Prefab;
+            _centerPrefab = svgOptions.CenterPrefab;
+            _centerCheckDistance = svgOptions.CenterCheckDistance;
         }
 
         [Button("Construct Level")]
@@ -80,6 +85,11 @@ namespace GamePlay.Levels
             if (extractedAreas.Count != existingAreas.Length)
                 Clear();
 
+            var centers = _level.GetComponentsInChildren<AreaCenter>(true);
+            
+            foreach (var center in centers)
+                DestroyImmediate(center.gameObject);
+
             foreach (var extracted in extractedAreas)
             {
                 var existing = existingAreas.FirstOrDefault(t => t.Id == extracted.Name);
@@ -90,9 +100,7 @@ namespace GamePlay.Levels
 
                 foreach (var contour in extracted.Contours)
                 {
-                    var center = AreaShapeDataExtensions.GetCenter(contour);
-                    var data = new AreaShapeData(contour.ToArray(), center);
-
+                    var data = new AreaShapeData(contour.Points.ToArray(), contour.Centers.ToArray());
                     shapesData.Add(data);
                 }
 
@@ -111,6 +119,30 @@ namespace GamePlay.Levels
                 }
 
                 spawnedAreas.Add(area);
+            }
+
+            foreach (var area in spawnedAreas)
+            {
+                foreach (var shape in area.Shapes)
+                {
+                    foreach (var center in shape.Centers)
+                    {
+                        var centerObject =
+                            PrefabUtility.InstantiatePrefab(_centerPrefab, area.SelfTransform) as AreaCenter;
+
+                        var size = 0f;
+
+                        foreach (var point in shape.Points)
+                        {
+                            var distance = Vector2.Distance(point, center);
+                            
+                            if (distance > size)
+                                size = distance;
+                        }
+                        
+                        centerObject.Setup(center, size * 2.5f);
+                    }
+                }
             }
 
             var orderedAreas = spawnedAreas.OrderByDescending(t => t.Order).ToList();
@@ -179,7 +211,8 @@ namespace GamePlay.Levels
                         _svgOffset,
                         _svgPointDensity,
                         _svgSimplifyAngle,
-                        _svgScale);
+                        _svgScale,
+                        _centerCheckDistance);
 
                     var extractor = new SvgLevelExtractor(options);
                     return extractor.Extract();

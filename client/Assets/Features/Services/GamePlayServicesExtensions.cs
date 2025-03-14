@@ -28,6 +28,9 @@ namespace Services
 
             builder.RegisterAsset<MaskRenderOptions>()
                 .As<IMaskRenderOptions>();
+
+            builder.Register<GameContext>()
+                .As<IGameContext>();
             
             return builder;
         }

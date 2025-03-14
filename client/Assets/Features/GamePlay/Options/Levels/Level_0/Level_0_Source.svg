@@ -1,17 +1,11 @@
-<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_59_315)">
-<rect width="1200" height="1200" fill="black"/>
-<circle cx="556.062" cy="1180.05" r="176.953" fill="#FECC04"/>
-<circle cx="675.479" cy="868.48" r="119.416" fill="#FEA904"/>
-<circle cx="729.758" cy="630.734" r="103.132" fill="#FF7E05"/>
-<circle cx="729.759" cy="429.898" r="82.5056" fill="#FF4D00"/>
-<circle cx="686.877" cy="262.172" r="70.0212" fill="#FF1500"/>
-<circle cx="643.453" cy="131.9" r="45.0524" fill="#FF0037"/>
-<circle cx="599.486" cy="35.8248" r="35.8248" fill="#FF008C"/>
-</g>
-<defs>
-<clipPath id="clip0_59_315">
-<rect width="1200" height="1200" fill="white"/>
-</clipPath>
-</defs>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" viewBox="0 0 1080 1080">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <path d="M342.8,1080.1h316.5c.7-5.9,1-11.9,1-18,0-88-71.3-159.3-159.3-159.3h.1c-88,0-159.3,71.3-159.3,159.3" fill="#fecc04"/>
+  <circle cx="608.5" cy="781.6" r="107.5" fill="#fea904"/>
+  <circle cx="657.4" cy="567.7" r="92.8" fill="#ff7e05"/>
+  <circle cx="657.4" cy="386.9" r="74.3" fill="#ff4d00"/>
+  <circle cx="618.8" cy="236" r="63" fill="#ff1500"/>
+  <circle cx="579.7" cy="118.7" r="40.5" fill="#ff0037"/>
+  <circle cx="540" cy="32.1" r="32.2" transform="translate(7.1 125.1) rotate(-13.3)" fill="#ff008c"/>
 </svg>

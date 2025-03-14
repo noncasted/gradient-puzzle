@@ -63,58 +63,6 @@ namespace GamePlay.Levels
                 }
             }
 
-            // var maxPointDistance = _options.PointsDensity / 2f;
-            //
-            // foreach (var area in rawAreas)
-            // {
-            //     foreach (var path in area.Paths)
-            //     {
-            //         for (var i = 0; i < path.ResultPoints.Count; i++)
-            //         {
-            //             var halfSize = _options.RectSize / 2f;
-            //             var point = path.ResultPoints[i];
-            //
-            //             if (point.x < -halfSize.x)
-            //                 point.x = -halfSize.x;
-            //
-            //             if (point.y < -halfSize.y)
-            //                 point.y = -halfSize.y;
-            //
-            //             if (point.x > halfSize.x)
-            //                 point.x = halfSize.x;
-            //
-            //             if (point.y > halfSize.y)
-            //                 point.y = halfSize.y;
-            //
-            //             path.ResultPoints[i] = point;
-            //         }
-            //     }
-            // }
-            //
-            // foreach (var area in rawAreas)
-            // {
-            //     foreach (var path in area.Paths)
-            //     {
-            //         for (var i = 0; i < path.ResultPoints.Count; i++)
-            //         {
-            //             var point = path.ResultPoints[i];
-            //
-            //             if (i != 0)
-            //             {
-            //                 var distanceToPrevious = Vector2.Distance(path.ResultPoints[i - 1], point);
-            //
-            //                 if (distanceToPrevious > 5)
-            //                 {
-            //                     path.ResultPoints.RemoveAt(i);
-            //                     i = 0;
-            //                 }
-            //             }
-            //
-            //             path.ResultPoints[i] = point;
-            //         }
-            //     }
-            // }
-
             foreach (var area in rawAreas)
             {
                 for (var i = 0; i < area.Paths.Count; i++)
@@ -129,7 +77,6 @@ namespace GamePlay.Levels
                 }
             }
 
-
             for (var i = 0; i < rawAreas.Count; i++)
             {
                 var area = rawAreas[i];
@@ -143,19 +90,85 @@ namespace GamePlay.Levels
 
             foreach (var area in rawAreas)
             {
+                var halfSize = _options.RectSize / 2f;
+
+                for (var x = -halfSize.x; x < halfSize.x; x += _options.CenterCheckDistance)
+                {
+                    for (var y = -halfSize.y; y < halfSize.y; y += _options.CenterCheckDistance)
+                    {
+                        var checkPosition = new Vector2(x, y);
+
+                        var shape = GetTargetShape();
+
+                        if (shape == null)
+                            continue;
+
+                        if (IsValid() == false)
+                            continue;
+
+                        area.Centers.Add(checkPosition);
+
+                        RawPathData GetTargetShape()
+                        {
+                            foreach (var check in area.Paths)
+                            {
+                                if (check.ResultPoints.IsInside(checkPosition) == false)
+                                    continue;
+
+                                return check;
+                            }
+
+                            return null;
+                        }
+
+                        bool IsValid()
+                        {
+                            foreach (var point in shape.ResultPoints)
+                            {
+                                var distance = Vector2.Distance(point, checkPosition);
+
+                                if (distance < _options.CenterCheckDistance)
+                                    return false;
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            foreach (var area in rawAreas)
+            {
                 foreach (var path in area.Paths)
                     path.ResultPoints.Simplify(_options.SimplifyAngle);
             }
 
             foreach (var area in rawAreas)
             {
-                var contours = new List<IReadOnlyList<Vector2>>();
+                var contours = new List<ExtractedArea.Contour>();
 
                 foreach (var path in area.Paths)
-                    contours.Add(path.ResultPoints);
+                {
+                    var centers = new List<Vector2>();
+                    
+                    foreach (var center in area.Centers)
+                    {
+                        if (path.ResultPoints.IsInside(center) == false)
+                            continue;
+                        
+                        centers.Add(center);
+                    }
+                    
+                    contours.Add(new ExtractedArea.Contour(path.ResultPoints, centers));
+                }
 
                 var order = area.Paths.Min(t => t.Order);
-                areas.Add(new ExtractedArea(contours, area.Color, order, area.Paths[0].Name));
+
+                areas.Add(new ExtractedArea(
+                    contours,
+                    area.Color,
+                    order,
+                    area.Paths[0].Name));
             }
 
             return areas;
@@ -323,13 +336,16 @@ namespace GamePlay.Levels
 
         public class RawAreaData
         {
-            public RawAreaData(List<RawPathData> paths, Color color)
+            public RawAreaData(
+                List<RawPathData> paths,
+                Color color)
             {
                 Paths = paths;
                 Color = color;
             }
 
             public List<RawPathData> Paths { get; }
+            public List<Vector2> Centers { get; } = new();
             public Color Color { get; }
         }
     }

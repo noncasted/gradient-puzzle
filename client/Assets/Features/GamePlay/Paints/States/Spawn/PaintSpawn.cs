@@ -17,6 +17,7 @@ namespace GamePlay.Paints
             IPaintInterceptor interceptor,
             IPaintTransform transform,
             IPaintImage image,
+            IPaintMerging merging,
             PaintSpawnOptions options,
             PaintSpawnDefinition definition)
         {
@@ -25,6 +26,7 @@ namespace GamePlay.Paints
             _interceptor = interceptor;
             _transform = transform;
             _image = image;
+            _merging = merging;
             _options = options;
             Definition = definition;
         }
@@ -34,6 +36,7 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly IPaintTransform _transform;
         private readonly IPaintImage _image;
+        private readonly IPaintMerging _merging;
         private readonly PaintSpawnOptions _options;
 
         public IStateDefinition Definition { get; }
@@ -49,13 +52,7 @@ namespace GamePlay.Paints
                 {
                     _transform.AttachTo(dock.SelfTransform);
                     _transform.SetRectPosition(Vector2.zero);
-                    var dockSize = dock.Size;
-                    _image.SetSize(_options.StartDockSize);
-
-                    await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve, progress =>
-                    {
-                        _image.SetSize(dockSize * 2 * progress);
-                    });
+                    _merging.Show(handle.Lifetime, target);
 
                     break;
                 }
