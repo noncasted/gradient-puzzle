@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using GamePlay.Levels;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GamePlay.Paints
@@ -8,35 +6,35 @@ namespace GamePlay.Paints
     [DisallowMultipleComponent]
     public class PaintMergingBody : MaskableGraphic
     {
-        [SerializeField] private AreaRendererData _data;
-        [SerializeField] private List<Vector2> _path;
+        private MergeHandle _handle;
 
-        public void Setup(Color bodyColor)
+        public void SetColor(Color bodyColor)
         {
             color = bodyColor;
         }
-        
+
         public void SetMaterial(Material bodyMaterial)
         {
             material = bodyMaterial;
         }
-        
-        public void UpdatePath(IReadOnlyList<Vector2> path)
+
+        public void UpdatePath(MergeHandle handle)
         {
-            _path = (List<Vector2>)path;
-            _data = path.GetAreaRenderData();
+            _handle = handle;
             SetAllDirty();
         }
 
         protected override void OnPopulateMesh(VertexHelper vh)
         {
-            if (_data == null || _data.Vertices.Count < 3)
-                return;
-
             base.OnPopulateMesh(vh);
             vh.Clear();
 
-            _data.Render(ref vh, color);
+            var path = _handle?.GetBodyPath();
+
+            if (path == null || path.Count < 3)
+                return;
+
+            path.RenderMergeBody(ref vh, color);
         }
     }
 }

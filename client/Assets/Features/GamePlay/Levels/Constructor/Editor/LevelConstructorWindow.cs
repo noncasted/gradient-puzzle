@@ -33,8 +33,11 @@ namespace GamePlay.Levels
         private Vector2 _svgOffset;
 
         [SerializeField] [ShowIf(nameof(_isSvg))]
-        private float _svgSimplifyAngle = 1f;
+        private float _renderSimplifyAngle;
 
+        [SerializeField] [ShowIf(nameof(_isSvg))]
+        private float _systemSimplifyAngle;
+        
         [SerializeField] [ShowIf(nameof(_isSvg))]
         private float _svgScale = 0.9f;
 
@@ -60,7 +63,8 @@ namespace GamePlay.Levels
             _textureColorEpsilon = textureOptions.ColorEpsilon;
 
             _svgPointDensity = svgOptions.PointsDensity;
-            _svgSimplifyAngle = svgOptions.SimplifyAngle;
+            _renderSimplifyAngle = svgOptions.RenderSimplifyAngle;
+            _systemSimplifyAngle = svgOptions.SystemSimplifyAngle;
             _svgScale = svgOptions.Scale;
 
             _prefab = textureOptions.Prefab;
@@ -86,7 +90,7 @@ namespace GamePlay.Levels
                 Clear();
 
             var centers = _level.GetComponentsInChildren<AreaCenter>(true);
-            
+
             foreach (var center in centers)
                 DestroyImmediate(center.gameObject);
 
@@ -100,7 +104,10 @@ namespace GamePlay.Levels
 
                 foreach (var contour in extracted.Contours)
                 {
-                    var data = new AreaShapeData(contour.Points.ToArray(), contour.Centers.ToArray());
+                    var data = new AreaShapeData(
+                        contour.RenderPoints.ToArray(),
+                        contour.SystemPoints.ToArray(),
+                        contour.Centers.ToArray());
                     shapesData.Add(data);
                 }
 
@@ -132,14 +139,14 @@ namespace GamePlay.Levels
 
                         var size = 0f;
 
-                        foreach (var point in shape.Points)
+                        foreach (var point in shape.RenderPoints)
                         {
                             var distance = Vector2.Distance(point, center);
-                            
+
                             if (distance > size)
                                 size = distance;
                         }
-                        
+
                         centerObject.Setup(center, size * 2.5f);
                     }
                 }
@@ -210,9 +217,10 @@ namespace GamePlay.Levels
                         size,
                         _svgOffset,
                         _svgPointDensity,
-                        _svgSimplifyAngle,
+                        _renderSimplifyAngle,
                         _svgScale,
-                        _centerCheckDistance);
+                        _centerCheckDistance,
+                        _systemSimplifyAngle);
 
                     var extractor = new SvgLevelExtractor(options);
                     return extractor.Extract();

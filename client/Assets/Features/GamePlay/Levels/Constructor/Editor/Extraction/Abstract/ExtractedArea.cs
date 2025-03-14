@@ -24,13 +24,18 @@ namespace GamePlay.Levels
 
         public class Contour
         {
-            public Contour(IReadOnlyList<Vector2> points, IReadOnlyList<Vector2> centers)
+            public Contour(
+                IReadOnlyList<Vector2> renderPoints,
+                IReadOnlyList<Vector2> systemPoints,
+                IReadOnlyList<Vector2> centers)
             {
-                Points = points;
+                RenderPoints = renderPoints;
+                SystemPoints = systemPoints;
                 Centers = centers;
             }
 
-            public IReadOnlyList<Vector2> Points { get; }
+            public IReadOnlyList<Vector2> RenderPoints { get; }
+            public IReadOnlyList<Vector2> SystemPoints { get; }
             public IReadOnlyList<Vector2> Centers { get; }
         }
     }

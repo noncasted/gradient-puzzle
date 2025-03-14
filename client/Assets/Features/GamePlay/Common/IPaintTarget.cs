@@ -17,7 +17,6 @@ namespace GamePlay.Common
         IReadOnlyList<AreaCenter> Centers { get; }
         
         bool IsInside(Vector2 position);
-        float GetMinDistanceToBorder(Vector2 position);
     }
     
     public static class PaintTargetExtensions

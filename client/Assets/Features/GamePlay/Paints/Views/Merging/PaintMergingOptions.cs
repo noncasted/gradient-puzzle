@@ -7,6 +7,7 @@ namespace GamePlay.Paints
     [InlineEditor]
     public class PaintMergingOptions : ScriptableObject
     {
+        [SerializeField] private float _minFillSize = 25;
         [SerializeField] private float _startDistance;
         [SerializeField] private float _step;
         [SerializeField] [CurveRange(0, -1, 1, 1)] private AnimationCurve _middlePointHeightCurve;
@@ -14,6 +15,7 @@ namespace GamePlay.Paints
         [SerializeField] [CurveRange] private AnimationCurve _targetPositionCurve;
         [SerializeField] [CurveRange] private AnimationCurve _targetSizeCurve;
 
+        public float MinFillSize => _minFillSize;
         public float StartDistance => _startDistance;
         public float Step => _step;
         public AnimationCurve MiddlePointHeightCurve => _middlePointHeightCurve;

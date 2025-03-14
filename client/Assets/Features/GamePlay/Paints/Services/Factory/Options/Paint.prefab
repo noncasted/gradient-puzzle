@@ -488,10 +488,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  _data:
-    _vertices: []
-    _triangles: 
-  _path: []
 --- !u!222 &23256453782912489
 CanvasRenderer:
   m_ObjectHideFlags: 0

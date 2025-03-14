@@ -5,56 +5,32 @@ namespace GamePlay.Levels
 {
     public static class AreaShapeDataExtensions
     {
-        public static float GetMinDistanceToBorder(this AreaShapeData shapeData, Vector2 position)
-        {
-            var minDistance = float.MaxValue;
-
-            foreach (var point in shapeData.Points)
-            {
-                var distance = Vector2.Distance(position, point);
-
-                if (distance < minDistance)
-                    minDistance = distance;
-            }
-
-            return minDistance;
-        }
-        
         public static bool IsInside(this AreaShapeData shapeData, Vector2 position)
         {
-            return shapeData.Points.IsInside(position);
+            return shapeData.SystemPoints.IsInside(position);
         }
 
         public static bool IsInside(this IReadOnlyList<Vector2> points, Vector2 position)
         {
-            if (points.Count < 3)
-                return false;
+            var count = points.Count;
+            
+            if (count < 3)
+                return false; 
 
-            var isInPolygon = false;
-            var lastVertex = points[^1];
-
-            foreach (var vertex in points)
+            var inside = false;
+            
+            for (int i = 0, j = count - 1; i < count; j = i++)
             {
-                if (position.y.IsBetween(lastVertex.y, vertex.y))
-                {
-                    double t = (position.y - lastVertex.y) / (vertex.y - lastVertex.y);
-                    var x = t * (vertex.x - lastVertex.x) + lastVertex.x;
-                    if (x >= position.x) isInPolygon = !isInPolygon;
-                }
-                else
-                {
-                    if (Mathf.Approximately(position.y, lastVertex.y) && position.x < lastVertex.x &&
-                        vertex.y > position.y)
-                        isInPolygon = !isInPolygon;
-                    if (Mathf.Approximately(position.y, vertex.y) && position.x < vertex.x &&
-                        lastVertex.y > position.y)
-                        isInPolygon = !isInPolygon;
-                }
+                var a = points[i];
+                var b = points[j];
 
-                lastVertex = vertex;
+                var intersect = (a.y > position.y) != (b.y > position.y) &&
+                                (position.x < (b.x - a.x) * (position.y - a.y) / (b.y - a.y) + a.x);
+
+                if (intersect)
+                    inside = !inside;
             }
-
-            return isInPolygon;
+            return inside;
         }
 
         public static Color GetInterpolatedColor(

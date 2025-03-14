@@ -19,9 +19,10 @@ namespace GamePlay.Paints
         private IPaintTransform _transform;
         private IPaintFill _fill;
 
-        private float _validSize;
         private IPaintTarget _currentArea;
         private AreaCenter _currentCenter;
+
+        private MergeHandle _handle;
 
         [Inject]
         private void Construct(
@@ -45,7 +46,7 @@ namespace GamePlay.Paints
         public void Show(IReadOnlyLifetime lifetime, IReadOnlyList<IPaintTarget> targets)
         {
             _areas = targets;
-            _body.Setup(_sourceImage.Color);
+            _body.SetColor(_sourceImage.Color);
             _fill.SetColor(_sourceImage.Color);
             _updater.Add(lifetime, this);
         }
@@ -58,17 +59,11 @@ namespace GamePlay.Paints
             {
                 _currentArea = null;
                 _currentCenter = null;
-                
-                _body.UpdatePath(new List<Vector2>());
-                _fill.ResetMaterial();
-                _fill.SetRectPosition(Vector2.zero);
-                _fill.SetSize(0);
-                _validSize = 0;
+                _handle?.Dispose();
+                _handle = null;
+
                 return;
             }
-
-            if (area != _currentArea)
-                _validSize = 0;
 
             if (area == _currentArea)
             {
@@ -81,112 +76,13 @@ namespace GamePlay.Paints
                 }
             }
 
+            if (_currentCenter != targetCenter)
+                _handle = new MergeHandle(_options, _body, _sourceImage, _transform, _fill, area, targetCenter);
+
             _currentCenter = targetCenter;
             _currentArea = area;
 
-            _transform.AttachTo(area.SelfTransform);
-
-            if (area.IsInside(_transform.RectPosition) == true)
-                _body.SetMaterial(area.MaskData?.Content);
-            else
-                _body.SetMaterial(null);
-
-            var targetSizeRange = new Vector2(10, targetCenter.Size);
-
-            var paintWorldCenter = _transform.WorldPosition;
-
-            var direction = ((Vector2)targetCenter.Transform.position - _transform.WorldPosition).normalized;
-            var distanceToArea = Vector2.Distance(targetCenter.Transform.position, _transform.WorldPosition);
-            var moveProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
-
-            var targetSize = Mathf.Lerp(
-                targetSizeRange.x,
-                targetSizeRange.y,
-                _options.TargetSizeCurve.Evaluate(moveProgress));
-
-            var targetPositionFactor = _options.TargetPositionCurve.Evaluate(moveProgress);
-
-            if (targetPositionFactor >= 1f)
-                _fill.SetMaterial(area.MaskData?.Content);
-            else
-                _fill.ResetMaterial();
-
-            var targetPosition = Vector2.Lerp(
-                paintWorldCenter,
-                targetCenter.Transform.position,
-                targetPositionFactor);
-
-            _fill.SetWorldPosition(new Vector2(targetPosition.x, targetPosition.y));
-            _fill.SetSize(targetSize);
-            
-            if (distanceToArea < 0.1f)
-                return;
-
-            var middlePointPositionFactor = _options.MiddlePointPositionCurve.Evaluate(moveProgress);
-
-            var middlePointPosition = Vector2.Lerp(
-                Vector2.zero,
-                _fill.RectPosition,
-                middlePointPositionFactor);
-
-            var circlePointOffset = (new Angle(direction.ToAngle() + 90f)).ToVector2() * 0.5f;
-
-            var pathB = _fill.RectPosition + circlePointOffset * targetSize;
-            var pathC = _fill.RectPosition + circlePointOffset * -targetSize;
-
-            var checkB = _transform.RectPosition + pathB;
-            var checkC = _transform.RectPosition + pathC;
-
-            if (area.IsInside(checkB) == true && area.IsInside(checkC) == true)
-            {
-                _validSize = targetSize;
-            }
-            else
-            {
-                pathB = _fill.RectPosition + circlePointOffset * _validSize;
-                pathC = _fill.RectPosition + circlePointOffset * -_validSize;
-            }
-
-            var middlePointHeight = _options.MiddlePointHeightCurve.Evaluate(moveProgress) * _validSize;
-
-            var path = new List<Vector2>();
-
-            var pathA = circlePointOffset * _sourceImage.Size;
-
-            var pathAB = middlePointPosition + circlePointOffset * middlePointHeight;
-
-            var pathCD = middlePointPosition + circlePointOffset * -middlePointHeight;
-
-            var pathD = circlePointOffset * -_sourceImage.Size;
-
-            path.Add(pathA);
-
-            path.AddRange(CalculateQuadraticBezier(pathA, pathAB, pathB));
-
-            path.Add(pathB);
-            path.Add(pathC);
-
-            path.AddRange(CalculateQuadraticBezier(pathC, pathCD, pathD));
-
-            path.Add(pathD);
-
-            _body.UpdatePath(path);
-        }
-
-        private List<Vector2> CalculateQuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2)
-        {
-            var points = new List<Vector2>();
-
-            for (float t = 0; t <= 1; t += _options.Step)
-            {
-                var oneMinusT = 1 - t;
-                var point = (oneMinusT * oneMinusT * p0) +
-                            (2 * oneMinusT * t * p1) +
-                            (t * t * p2);
-                points.Add(point);
-            }
-
-            return points;
+            _handle.Update(delta);
         }
 
         private (IPaintTarget, AreaCenter) GetClosestArea()
@@ -212,7 +108,7 @@ namespace GamePlay.Paints
 
             if (minDistance > _options.StartDistance)
                 return (null, null);
-            
+
 
             return (targetArea, targetCenter);
         }

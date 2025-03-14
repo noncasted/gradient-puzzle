@@ -8,6 +8,7 @@ namespace GamePlay.Levels
 
         public readonly int VertexIndex;
         public readonly Vector2 Point;
+        
         private readonly bool _isClockwise;
 
         public EarClipPoint Previous;

@@ -108,20 +108,6 @@ namespace GamePlay.Levels
             return CheckInside(position);
         }
 
-        public float GetMinDistanceToBorder(Vector2 position)
-        {
-            var minDistance = float.MaxValue;
-
-            foreach (var data in _shapes)
-            {
-                var distance = data.GetMinDistanceToBorder(position);
-
-                if (distance < minDistance)
-                    minDistance = distance;
-            }
-
-            return minDistance;
-        }
 
         public bool CheckTouch(Vector2 cursorPosition)
         {

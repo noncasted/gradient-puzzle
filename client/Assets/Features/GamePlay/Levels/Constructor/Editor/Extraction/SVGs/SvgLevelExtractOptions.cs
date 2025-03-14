@@ -11,9 +11,10 @@ namespace GamePlay.Levels
             Vector2 rectSize,
             Vector2 offset,
             float pointsDensity,
-            float simplifyAngle,
+            float renderSimplifyAngle,
             float svgScale,
-            float centerCheckDistance)
+            float centerCheckDistance,
+            float systemSimplifyAngle)
         {
             SvgPath = svgPath;
             InkscapePath = inkscapePath;
@@ -21,9 +22,10 @@ namespace GamePlay.Levels
             RectSize = rectSize;
             Offset = offset;
             PointsDensity = pointsDensity;
-            SimplifyAngle = simplifyAngle;
+            RenderSimplifyAngle = renderSimplifyAngle;
             SvgScale = svgScale;
             CenterCheckDistance = centerCheckDistance;
+            SystemSimplifyAngle = systemSimplifyAngle;
         }
 
         public string SvgPath { get; }
@@ -32,7 +34,8 @@ namespace GamePlay.Levels
         public Vector2 RectSize { get; }
         public Vector2 Offset { get; }
         public float PointsDensity { get; }
-        public float SimplifyAngle { get; }
+        public float RenderSimplifyAngle { get; }
+        public float SystemSimplifyAngle { get; }
         public float SvgScale { get; }
         public float CenterCheckDistance { get; }
     }

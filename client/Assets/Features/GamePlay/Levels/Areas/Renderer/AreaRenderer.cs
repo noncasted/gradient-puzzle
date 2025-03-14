@@ -27,7 +27,7 @@ namespace GamePlay.Levels
             {
 #if UNITY_EDITOR
                 var areaRenderer = UnityEditor.PrefabUtility.InstantiatePrefab(_prefab, transform) as AreaShapeRenderer;
-                areaRenderer.SetPoints(data.Points);
+                areaRenderer.SetPoints(data.RenderPoints);
 
                 _renderers.Add(areaRenderer);
 #endif
