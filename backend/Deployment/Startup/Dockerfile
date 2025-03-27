@@ -6,6 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+RUN pwd && ls -R
+
 COPY ["Deployment/Startup/Startup.csproj", "Deployment/Startup/"]
 COPY ["Aspire/ServiceDefaults/ServiceDefaults.csproj", "Aspire/ServiceDefaults/"]
 COPY ["Common/Extensions/Extensions.csproj", "Common/Extensions/"]
