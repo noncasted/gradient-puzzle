@@ -10,7 +10,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
       POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "7fhRncFqpEVKCrcK!J8nEl"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
       context: ../../
       dockerfile: /Deployment/Startup/Dockerfile
     environment:
-      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
     networks:
       - aspire-network
     depends_on:
@@ -36,7 +36,7 @@ services:
       dockerfile: /Orleans/Silo/Dockerfile
     environment:
       HTTP_PORTS: "9120"
-      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
     ports:
       - "9120:9120"
     restart: unless-stopped
@@ -61,7 +61,7 @@ services:
       BUILD_URL: ${BUILD_URL}
       ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
       HTTP_PORTS: "8080"
-      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
     ports:
       - "10000:8080"
       - "10001:8443"
