@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" viewBox="0 0 1080 1080">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <rect width="1080" height="1080"/>
+  <path d="M540,540l-215.3-124.8v-96.3h90.5l124.8,221.1Z" fill="#000e5e"/>
+  <path d="M761.1,318.9v96.3l-221.1,124.8,124.8-221.1h96.3Z" fill="#d2d5ff"/>
+  <path d="M540,540l-124.8,215.3h-90.5v-90.6l215.3-124.8Z" fill="#2036ff"/>
+  <path d="M761.1,664.8v90.5h-96.3l-124.8-215.3,221.1,124.8Z" fill="#808cff"/>
+  <path d="M415.2,318.9l124.8-215.3v436.5l-124.8-221.1Z" fill="#fff"/>
+  <path d="M664.8,318.9l-124.8-215.3v436.5l124.8-221.1Z" fill="#e3e5ff"/>
+  <path d="M415.2,755.3l124.8-215.3v436.5l-124.8-221.1Z" fill="#3e51ff"/>
+  <path d="M664.8,755.3l-124.8-215.3v436.5l124.8-221.1Z" fill="#606eff"/>
+  <path d="M761.1,415.2l215.3,124.8h-436.5l221.1-124.8Z" fill="#bfc6ff"/>
+  <path d="M761.1,664.8l215.3-124.8h-436.5l221.1,124.8Z" fill="#9fa9ff"/>
+  <path d="M324.7,415.2l215.3,124.8H103.5l221.1-124.8Z" fill="#021294"/>
+  <path d="M324.7,664.8l215.3-124.8H103.5l221.1,124.8Z" fill="#0018e4"/>
+</svg>

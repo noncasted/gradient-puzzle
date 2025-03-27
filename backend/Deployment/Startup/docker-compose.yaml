@@ -1,0 +1,73 @@
+networks:
+  aspire-network:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: "postgres"
+    image: "docker.io/library/postgres:17.0"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "7fhRncFqpEVKCrcK!J8nEl"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - aspire-network
+  
+  startup:
+    container_name: "startup"
+    build:
+      context: ../../
+      dockerfile: /Deployment/Startup/Dockerfile
+    environment:
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+    networks:
+      - aspire-network
+    depends_on:
+      - postgres
+  
+  silo:
+    container_name: "silo"
+    build:
+      context: ../../
+      dockerfile: /Orleans/Silo/Dockerfile
+    environment:
+      HTTP_PORTS: "9120"
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+    ports:
+      - "9120:9120"
+    restart: unless-stopped
+    depends_on:
+      startup:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9120/silo-health" ]
+      interval: 1s
+      retries: 10
+      start_period: 1s
+    networks:
+      - aspire-network
+  
+  gateway:
+    container_name: "gateway"
+    build:
+      context: ../../
+      dockerfile: /Gateway/Gateway/Dockerfile
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      BUILD_URL: ${BUILD_URL}
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=7fhRncFqpEVKCrcK!J8nEl"
+    ports:
+      - "10000:8080"
+      - "10001:8443"
+    depends_on:
+      silo:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - aspire-network
