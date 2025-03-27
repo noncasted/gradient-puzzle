@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Options_Release_Backend
   m_EditorClassIdentifier: 
   _assetId: 105
-  _environment: 0
-  _productionApiUrl: http://localhost:5062
+  _environment: 1
+  _productionApiUrl: https://api.gradients.ink
   _localApiUrl: http://localhost:10000

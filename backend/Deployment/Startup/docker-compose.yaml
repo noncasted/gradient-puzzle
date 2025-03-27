@@ -24,6 +24,7 @@ services:
       dockerfile: Deployment/Startup/Dockerfile
     environment:
       ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
+    restart: "no"
     networks:
       - aspire-network
     depends_on:
