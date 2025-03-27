@@ -21,7 +21,7 @@ services:
     container_name: "startup"
     build:
       context: ../../
-      dockerfile: /Deployment/Startup/Dockerfile
+      dockerfile: Deployment/Startup/Dockerfile
     environment:
       ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
     networks:
@@ -33,7 +33,7 @@ services:
     container_name: "silo"
     build:
       context: ../../
-      dockerfile: /Orleans/Silo/Dockerfile
+      dockerfile: Orleans/Silo/Dockerfile
     environment:
       HTTP_PORTS: "9120"
       ConnectionStrings__postgres: "Host=postgres;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD}"
@@ -55,7 +55,7 @@ services:
     container_name: "gateway"
     build:
       context: ../../
-      dockerfile: /Gateway/Gateway/Dockerfile
+      dockerfile: Gateway/Gateway/Dockerfile
     environment:
       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
       BUILD_URL: ${BUILD_URL}
