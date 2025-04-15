@@ -7,18 +7,14 @@ namespace GamePlay.Paints
 {
     public interface IPaintMerging
     {
-        void Show(IReadOnlyLifetime lifetime, IReadOnlyList<IPaintTarget> targets, bool showBody = true);
+        void Show(PaintMergingHandleOptions options);
     }
 
-    public static class PaintMergingExtensions
+    public class PaintMergingHandleOptions
     {
-        public static void Show(
-            this IPaintMerging merging,
-            IReadOnlyLifetime lifetime,
-            IPaintTarget target,
-            bool showBody = true)
-        {
-            merging.Show(lifetime, new[] { target }, showBody);
-        }
+        public IReadOnlyLifetime Lifetime { get; set; }
+        public IReadOnlyList<IPaintTarget> Targets { get; set; }
+        public bool WithInit { get; set; }
+        public bool ShowBody { get; set; }
     }
 }

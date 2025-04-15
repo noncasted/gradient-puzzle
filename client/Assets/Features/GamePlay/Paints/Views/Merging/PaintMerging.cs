@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GamePlay.Common;
+﻿using GamePlay.Common;
 using Global.Systems;
 using Internal;
 using UnityEngine;
@@ -15,7 +14,6 @@ namespace GamePlay.Paints
 
         private IPaintImage _sourceImage;
         private IUpdater _updater;
-        private IReadOnlyList<IPaintTarget> _areas;
         private IPaintTransform _transform;
         private IPaintFill _fill;
 
@@ -23,7 +21,7 @@ namespace GamePlay.Paints
         private Vector2 _currentCenter;
 
         private MergeHandle _handle;
-        private bool _showBody;
+        private PaintMergingHandleOptions _handleOptions;
 
         [Inject]
         private void Construct(
@@ -44,13 +42,12 @@ namespace GamePlay.Paints
                 .As<IPaintMerging>();
         }
 
-        public void Show(IReadOnlyLifetime lifetime, IReadOnlyList<IPaintTarget> targets, bool showBody = true)
+        public void Show(PaintMergingHandleOptions options)
         {
-            _showBody = showBody;
-            _areas = targets;
+            _handleOptions = options;
             _body.SetColor(_sourceImage.Color);
             _fill.SetColor(_sourceImage.Color);
-            _updater.Add(lifetime, this);
+            _updater.Add(options.Lifetime, this);
         }
 
         public void OnUpdate(float delta)
@@ -109,17 +106,17 @@ namespace GamePlay.Paints
                     _fill,
                     area,
                     targetCenter,
-                    _showBody);
+                    _handleOptions);
             }
         }
 
         private (IPaintTarget, Vector2) GetClosestArea()
         {
             var minDistance = float.MaxValue;
-            var targetArea = _areas[0];
+            var targetArea = _handleOptions.Targets[0];
             var targetCenter = Vector2.zero;
 
-            foreach (var area in _areas)
+            foreach (var area in _handleOptions.Targets)
             {
                 foreach (var center in area.InnerPoints)
                 {

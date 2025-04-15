@@ -5,8 +5,9 @@ using UnityEngine;
 namespace GamePlay.Paints
 {
     [InlineEditor]
-    public class PaintMergingOptions : ScriptableObject
+    public partial class PaintMergingOptions : ScriptableObject
     {
+        [SerializeField] private float _initTime = 0.5f;
         [SerializeField] private float _minFillSize = 25;
         [SerializeField] private float _startDistance;
         [SerializeField] private float _step;
@@ -16,6 +17,7 @@ namespace GamePlay.Paints
         [SerializeField] [CurveRange] private AnimationCurve _targetPositionCurve;
         [SerializeField] [CurveRange] private AnimationCurve _targetSizeCurve;
 
+        public float InitTime => _initTime;
         public float MinFillSize => _minFillSize;
         public float StartDistance => _startDistance;
         public float Step => _step;

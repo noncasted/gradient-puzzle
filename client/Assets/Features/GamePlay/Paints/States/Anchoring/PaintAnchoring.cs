@@ -37,7 +37,14 @@ namespace GamePlay.Paints
             _interceptor.Detach();
             _interceptor.Attach(target);
 
-            _merging.Show(handle.Lifetime, target, false);
+            _merging.Show(new PaintMergingHandleOptions()
+            {
+                Lifetime = handle.Lifetime,
+                Targets = new[] { target },
+                ShowBody = false,
+                WithInit = false
+            });
+
             await _mover.TransitTo(handle.Lifetime, target.RootCenter);
             await _drop.Enter(target);
         }

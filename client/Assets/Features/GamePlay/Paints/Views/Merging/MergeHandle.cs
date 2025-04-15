@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GamePlay.Common;
-using GamePlay.Selections;
 using Internal;
 using UnityEngine;
 
@@ -16,8 +15,9 @@ namespace GamePlay.Paints
             IPaintFill fill,
             IPaintTarget area,
             Vector2 center,
-            bool showBody)
+            PaintMergingHandleOptions handleOptions)
         {
+            _handleOptions = handleOptions;
             _options = options;
             _body = body;
             _sourceImage = sourceImage;
@@ -25,7 +25,6 @@ namespace GamePlay.Paints
             _fill = fill;
             _area = area;
             _center = center;
-            _showBody = showBody;
 
             _currentCenter = center;
         }
@@ -45,7 +44,8 @@ namespace GamePlay.Paints
         private Vector2 _currentCenter;
         private float _moveProgress;
         private float _timer;
-        private float _insideTimer;
+        private float _initTimer;
+        private PaintMergingHandleOptions _handleOptions;
 
         public void UpdateCenter(Vector2 center)
         {
@@ -54,22 +54,24 @@ namespace GamePlay.Paints
 
         public void Update(float delta)
         {
+            _initTimer += delta;
+            
+            if (_initTimer < _options.InitTime)
+                return;
+            
             _timer += delta;
             _transform.AttachTo(_area.SelfTransform);
 
             if (_area.IsInside(_transform.RectPosition) == true)
             {
-                _currentCenter = _transform.RectPosition;
                 _body.SetMaterial(_area.MaskData?.Content);
-                _insideTimer += delta;
             }
             else
             {
-                _currentCenter = _center;
                 _body.SetMaterial(null);
-                _insideTimer = 0f;
             }
 
+            _currentCenter = _center;
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
             _moveProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
 

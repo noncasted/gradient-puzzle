@@ -20,6 +20,8 @@ namespace Global.Backend
 
             using var webRequest = new UnityWebRequest(request.Uri, "POST", downloadHandlerBuffer, uploadHandler);
 
+            Debug.Log($"[Backend] Post: {request.Uri}");
+            
             foreach (var header in request.Headers)
                 webRequest.SetRequestHeader(header.Type, header.Value);
 
