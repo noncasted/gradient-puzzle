@@ -45,7 +45,13 @@ namespace GamePlay.Paints
             _transform.AttachTo(_moveArea.Transform);
             _transform.SetRectPosition(new Vector2(0f, _range.x));
             
-            _merging.Show(lifetime, _gameContext.Targets);
+            _merging.Show(new PaintMergingHandleOptions()
+            {
+                Lifetime = lifetime,
+                ShowBody = true,
+                Targets = _gameContext.Targets,
+                WithInit = false
+            });
         }
 
         private void Update()

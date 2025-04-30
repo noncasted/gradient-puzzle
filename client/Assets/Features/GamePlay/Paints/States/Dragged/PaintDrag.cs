@@ -67,7 +67,14 @@ namespace GamePlay.Paints
             if (start is IPaintDock)
                 targets.Add(start);
 
-            _merging.Show(lifetime, targets);
+            _merging.Show(new PaintMergingHandleOptions()
+            {
+                Lifetime = lifetime,
+                ShowBody = true,
+                Targets = targets,
+                WithInit = false
+            });
+            
             _mover.FollowCursor(lifetime).Forget();
             await _input.Action.WaitFalse(lifetime);
             start.PaintHandle.Unlock();

@@ -45,7 +45,13 @@ namespace GamePlay.Paints
             
             _image.Hide();
 
-            _merging.Show(handle.Lifetime, target);
+            _merging.Show(new PaintMergingHandleOptions()
+            {
+                Lifetime = handle.Lifetime,
+                ShowBody = true,
+                Targets = new[] { target },
+                WithInit = false
+            });
             
             await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
                 progress => _transform.SetRectPosition(Vector2.Lerp(start, end, progress)));

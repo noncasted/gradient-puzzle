@@ -40,7 +40,15 @@ namespace GamePlay.Paints
         private async UniTask Process(IReadOnlyLifetime lifetime, IPaintTarget target)
         {
             target.PaintHandle.Lock();
-            _merging.Show(lifetime, target, false);
+
+            _merging.Show(new PaintMergingHandleOptions()
+            {
+                Lifetime = lifetime,
+                ShowBody = false,
+                Targets = new[] { target },
+                WithInit = false
+            });
+            
             await _mover.TransitTo(lifetime, target.RootCenter);
             _interceptor.Attach(target);
             target.PaintHandle.Unlock();

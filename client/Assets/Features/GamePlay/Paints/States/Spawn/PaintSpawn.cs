@@ -52,7 +52,13 @@ namespace GamePlay.Paints
                 {
                     _transform.AttachTo(dock.RootCenter);
                     _transform.SetLocalPosition(Vector2.zero);
-                    _merging.Show(handle.Lifetime, target, false);
+                    _merging.Show(new PaintMergingHandleOptions()
+                    {
+                        Lifetime = handle.Lifetime,
+                        ShowBody = true,
+                        Targets = new[] { target },
+                        WithInit = false
+                    });
 
                     break;
                 }
