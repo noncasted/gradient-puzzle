@@ -17,7 +17,6 @@ namespace GamePlay.Paints
             Vector2 center,
             PaintMergingHandleOptions handleOptions)
         {
-            _handleOptions = handleOptions;
             _options = options;
             _body = body;
             _sourceImage = sourceImage;
@@ -25,6 +24,7 @@ namespace GamePlay.Paints
             _fill = fill;
             _area = area;
             _center = center;
+            _showBody = handleOptions.ShowBody;
 
             _currentCenter = center;
         }
@@ -36,16 +36,14 @@ namespace GamePlay.Paints
         private readonly IPaintFill _fill;
 
         private readonly IPaintTarget _area;
-
         private readonly List<UIVertex> _bodyPath = new();
+        private readonly bool _showBody;
 
         private Vector2 _center;
-        private readonly bool _showBody;
         private Vector2 _currentCenter;
         private float _moveProgress;
         private float _timer;
         private float _initTimer;
-        private PaintMergingHandleOptions _handleOptions;
 
         public void UpdateCenter(Vector2 center)
         {
@@ -79,7 +77,7 @@ namespace GamePlay.Paints
             //     _moveProgress = Mathf.Max(_moveProgress, _insideTimer / _options.Time);
 
             _moveProgress = Mathf.Clamp(_moveProgress, 0f, _timer / _options.Time);
-            var targetSizeRange = new Vector2(_options.MinFillSize, _area.Size * 3f);
+            var targetSizeRange = new Vector2(_options.MinFillSize, _area.Size * 4f);
 
             var targetSize = Mathf.Lerp(
                 targetSizeRange.x,

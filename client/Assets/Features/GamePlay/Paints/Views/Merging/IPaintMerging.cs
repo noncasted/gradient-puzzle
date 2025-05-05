@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GamePlay.Common;
-using GamePlay.Levels;
 using Internal;
 
 namespace GamePlay.Paints

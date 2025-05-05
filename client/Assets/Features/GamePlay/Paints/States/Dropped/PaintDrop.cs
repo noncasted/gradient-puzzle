@@ -53,10 +53,10 @@ namespace GamePlay.Paints
                 WithInit = false
             });
             
-            await _updater.CurveProgression(handle.Lifetime, _options.DockScaleCurve,
+            await _updater.CurveProgression(
+                handle.Lifetime,
+                _options.DockScaleCurve,
                 progress => _transform.SetRectPosition(Vector2.Lerp(start, end, progress)));
-            
-            handle.Exit();
         }
     }
 }

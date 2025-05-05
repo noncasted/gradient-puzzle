@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74fc88d0430e4b39b5b475b99cc0257f, type: 3}
   m_Name: PaintMergingOptions
   m_EditorClassIdentifier: 
-  _initTime: 0.3
+  _initTime: 0.1
   _minFillSize: 25
   _startDistance: 200
   _step: 0.1

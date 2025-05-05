@@ -7299,7 +7299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}
       propertyPath: _innerPoints.Array.data[1].y
-      value: 490
+      value: 488.75
       objectReference: {fileID: 0}
     - target: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}
       propertyPath: _innerPoints.Array.data[2].x

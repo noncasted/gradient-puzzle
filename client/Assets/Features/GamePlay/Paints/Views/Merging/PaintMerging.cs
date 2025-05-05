@@ -22,14 +22,17 @@ namespace GamePlay.Paints
 
         private MergeHandle _handle;
         private PaintMergingHandleOptions _handleOptions;
+        private IPaintMoveArea _moveArea;
 
         [Inject]
         private void Construct(
             IUpdater updater,
             IPaintImage sourceImage,
             IPaintTransform transform,
+            IPaintMoveArea moveArea,
             IPaintFill fill)
         {
+            _moveArea = moveArea;
             _fill = fill;
             _transform = transform;
             _updater = updater;
@@ -60,6 +63,7 @@ namespace GamePlay.Paints
                 _currentCenter = Vector2.zero;
                 _handle?.Dispose();
                 _handle = null;
+                _transform.AttachTo(_moveArea.Transform);
 
                 return;
             }
