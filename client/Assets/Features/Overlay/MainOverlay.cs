@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Global.UI;
 using Internal;
+using Menu.Sections;
 using Services;
 using UnityEngine;
 using VContainer;
@@ -14,28 +15,31 @@ namespace Overlay
         [SerializeField] private DesignButton _levels;
         [SerializeField] private DesignButton _reset;
 
-        private readonly ViewableDelegate<ILevelConfiguration> _levelSelected = new();
+        private readonly ViewableDelegate<ILevelData> _levelSelected = new();
 
         private IUIStateMachine _stateMachine;
         private ISettingsUI _settingsUI;
-        private ILevelSelectionUI _levelSelectionUI;
         private ICompletionUI _completion;
+        private ILevelSections _levelSections;
+        private IGameContext _gameContext;
 
         public IUIConstraints Constraints => new UIConstraints();
 
         public IViewableDelegate ResetClicked => _reset.Clicked;
-        public IViewableDelegate<ILevelConfiguration> LevelSelected => _levelSelected;
+        public IViewableDelegate<ILevelData> LevelSelected => _levelSelected;
 
         [Inject]
         private void Construct(
             IUIStateMachine stateMachine,
+            IGameContext gameContext,
             ISettingsUI settings,
-            ILevelSelectionUI levelSelection,
+            ILevelSections levelSections,
             ICompletionUI completion)
         {
+            _gameContext = gameContext;
+            _levelSections = levelSections;
             _completion = completion;
             _stateMachine = stateMachine;
-            _levelSelectionUI = levelSelection;
             _settingsUI = settings;
         }
 
@@ -44,7 +48,20 @@ namespace Overlay
             builder.RegisterComponent(this)
                 .As<IMainOverlay>();
         }
-        
+
+        public async UniTask ShowSections()
+        {
+            var result = await _stateMachine.ProcessStack(
+                this,
+                _levelSections,
+                stateHandle => _levelSections.Show(stateHandle, _gameContext.Level != null));
+
+            if (result == null)
+                return;
+
+            _levelSelected.Invoke(result);
+        }
+
         public void ShowReset()
         {
             _reset.gameObject.SetActive(true);
@@ -58,22 +75,7 @@ namespace Overlay
         public void OnEntered(IUIStateHandle handle)
         {
             _settings.ListenClick(handle, () => _stateMachine.Process(this, _settingsUI));
-            _levels.ListenClick(handle, () => HandleSelection().Forget());
-
-            return;
-
-            async UniTask HandleSelection()
-            {
-                var result = await _stateMachine.ProcessChild(
-                    this,
-                    _levelSelectionUI,
-                    stateHandle => _levelSelectionUI.Process(stateHandle));
-
-                if (result.IsSelected == false)
-                    return;
-
-                _levelSelected.Invoke(result.Level);
-            }
+            _levels.ListenClick(handle, () => ShowSections().Forget());
         }
     }
 }

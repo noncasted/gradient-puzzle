@@ -44,18 +44,12 @@ namespace GamePlay.Levels
                 Vector2 offset,
                 float scale,
                 float pointsDensity,
-                float centerRadiusStep,
-                float centerDistanceStep, 
-                float centerBorderDistance,
                 float innerOffset)
             {
                 _rectSize = rectSize;
                 _offset = offset;
                 _scale = scale;
                 _pointsDensity = pointsDensity;
-                _centerRadiusStep = centerRadiusStep;
-                _centerDistanceStep = centerDistanceStep;
-                _centerBorderDistance = centerBorderDistance;
                 _innerOffset = innerOffset;
             }
 
@@ -63,18 +57,12 @@ namespace GamePlay.Levels
             [SerializeField] private Vector2 _offset;
             [SerializeField] private float _scale;
             [SerializeField] private float _pointsDensity;
-            [SerializeField] private float _centerRadiusStep;
-            [SerializeField] private float _centerDistanceStep;
-            [SerializeField] private float _centerBorderDistance;
             [SerializeField] private float _innerOffset;
 
             public Vector2 RectSize => _rectSize;
             public Vector2 Offset => _offset;
             public float Scale => _scale;
             public float PointsDensity => _pointsDensity;
-            public float CenterRadiusStep => _centerRadiusStep;
-            public float CenterDistanceStep => _centerDistanceStep;
-            public float CenterBorderDistance => _centerBorderDistance;
             public float InnerOffset => _innerOffset;
         }
 

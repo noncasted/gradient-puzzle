@@ -17,13 +17,13 @@ namespace Overlay
             Level = null;
         }
         
-        public LevelSelectionResult(ILevelConfiguration level)
+        public LevelSelectionResult(ILevelData level)
         {
             IsSelected = true;
             Level = level;
         }
 
         public bool IsSelected { get; }
-        public ILevelConfiguration Level { get; }
+        public ILevelData Level { get; }
     }
 }

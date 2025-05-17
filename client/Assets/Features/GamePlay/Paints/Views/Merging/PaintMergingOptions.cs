@@ -8,6 +8,7 @@ namespace GamePlay.Paints
     public partial class PaintMergingOptions : ScriptableObject
     {
         [SerializeField] private float _initTime = 0.5f;
+        [SerializeField] private float _insideScaleTime = 1f;
         [SerializeField] private float _minFillSize = 25;
         [SerializeField] private float _startDistance;
         [SerializeField] private float _step;
@@ -18,6 +19,7 @@ namespace GamePlay.Paints
         [SerializeField] [CurveRange] private AnimationCurve _targetSizeCurve;
 
         public float InitTime => _initTime;
+        public float InsideScaleTime => _insideScaleTime;
         public float MinFillSize => _minFillSize;
         public float StartDistance => _startDistance;
         public float Step => _step;

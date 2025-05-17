@@ -12,7 +12,7 @@ namespace Shared
 
         public class Response
         {
-            public IReadOnlyList<string> PassedLevels { get; set; }
+            public Dictionary<int, int> PassedLevels { get; set; }
         }
     }
 }

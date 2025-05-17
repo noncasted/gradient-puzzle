@@ -6,7 +6,7 @@ namespace Global.Backend
 {
     public interface IUserBackend
     {
-        UniTask<IReadOnlyList<string>> GetProgress(IReadOnlyLifetime lifetime);
+        UniTask<IReadOnlyDictionary<int, int>> GetProgress(IReadOnlyLifetime lifetime);
         UniTask SaveProgress(IReadOnlyLifetime lifetime, string passedLevelId);
     }   
 }

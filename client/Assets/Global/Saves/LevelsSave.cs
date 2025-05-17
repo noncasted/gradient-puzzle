@@ -7,7 +7,7 @@ namespace Global.Saves
     [Serializable]
     public class LevelsSave
     {
-        public HashSet<string> Passed { get; set; } = new();
+        public Dictionary<int, int> Passed { get; set; } = new();
     }
 
     public class LevelsSaveSerializer : StorageEntrySerializer<LevelsSave>

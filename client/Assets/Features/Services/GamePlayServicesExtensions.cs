@@ -7,7 +7,7 @@ namespace Services
         public static IScopeBuilder AddGamePlayServices(this IScopeBuilder builder)
         {
             builder.Register<LevelsStorage>()
-                .WithAsset<LevelsStorageOptions>()
+                .WithAsset<LevelOptionsRegistry>()
                 .As<ILevelsStorage>()
                 .As<IScopeSetupAsync>();
 

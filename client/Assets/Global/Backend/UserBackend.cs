@@ -24,7 +24,7 @@ namespace Global.Backend
         private readonly IGlobalContext _globalContext;
         private readonly BackendOptions _backendOptions;
 
-        public async UniTask<IReadOnlyList<string>> GetProgress(IReadOnlyLifetime lifetime)
+        public async UniTask<IReadOnlyDictionary<int, int>> GetProgress(IReadOnlyLifetime lifetime)
         {
             var request = new GetUserProgress.Request()
             {
@@ -33,22 +33,14 @@ namespace Global.Backend
 
             var url = _backendOptions.Url + "/getProgress";
 
-            var test = new ASD()
-            {
-                BB = 912
-            };
-            
-            var testJson = JsonConvert.SerializeObject(test);
-            var testResult = JsonConvert.DeserializeObject<ASD>(testJson);
-            
-            Debug.Log($"[Backend] test: {testResult.BB}");
-            
             var bodyJson = JsonConvert.SerializeObject(request);
             Debug.Log($"[Backend] Get player progress: {bodyJson}");
 
-            var response = await _client.PostJson<GetUserProgress.Response>(lifetime, url, request);
-            
-            return response.PassedLevels;
+            // var response = await _client.PostJson<GetUserProgress.Response>(lifetime, url, request);
+            //
+            // return response.PassedLevels;
+
+            return new Dictionary<int, int>();
         }
 
         public UniTask SaveProgress(IReadOnlyLifetime lifetime, string passedLevelId)

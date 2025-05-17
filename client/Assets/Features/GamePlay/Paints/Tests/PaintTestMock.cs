@@ -15,7 +15,7 @@ namespace GamePlay.Paints
     [DisallowMultipleComponent]
     public class PaintTestMock : MonoBehaviour
     {
-        [SerializeField] private LevelConfiguration _level;
+        [SerializeField] private LevelOptions _level;
             
         private ILoadedScope _internalScope;
 

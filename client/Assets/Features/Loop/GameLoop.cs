@@ -85,7 +85,7 @@ namespace Loop
         private readonly GameLoopCheats _cheats;
 
         private ILifetime _currentLifetime;
-        private ILevelConfiguration _currentSelection;
+        private ILevelData _currentSelection;
         private IReadOnlyLifetime _parentLifetime;
 
         public async UniTask Process(IReadOnlyLifetime lifetime)
@@ -97,8 +97,8 @@ namespace Loop
             var progress = await _userBackend.GetProgress(lifetime);
             var levelSave = await _dataStorage.GetEntry<LevelsSave>();
 
-            foreach (var levelId in progress)
-                levelSave.Passed.Add(levelId);
+            foreach (var (sectionKey, index) in progress)
+                levelSave.Passed.Add(sectionKey, index);
             
             Debug.Log($"Progress received: {levelSave.Passed.Count}");
 
@@ -112,24 +112,26 @@ namespace Loop
             _overlay.LevelSelected.Advise(lifetime, LoadLevel);
             _overlay.ResetClicked.Advise(lifetime, () => LoadLevel(_currentSelection));
 
-            LoadLevel(_levelsStorage.Get(0));
+            _overlay.ShowSections().Forget();
+
+            //  LoadLevel(_levelsStorage.Get(LevelSectionType.Basic, 0));
         }
 
-        private void LoadLevel(ILevelConfiguration configuration)
+        private void LoadLevel(ILevelData data)
         {
             _currentLifetime?.Terminate();
             _currentLifetime = _parentLifetime.Child();
-            _currentSelection = configuration;
+            _currentSelection = data;
             HandleLevel(_currentLifetime, _currentSelection).Forget();
         }
 
-        private async UniTask HandleLevel(IReadOnlyLifetime lifetime, ILevelConfiguration configuration)
+        private async UniTask HandleLevel(IReadOnlyLifetime lifetime, ILevelData data)
         {
             _overlay.HideReset();
 
             await _paintCollection.Initialize();
             
-            var level = _levelLoader.Load(configuration);
+            var level = _levelLoader.Load(data);
 
             var colors = new List<Color>();
             var colorToPaint = new Dictionary<Color, IPaint>();
@@ -245,11 +247,11 @@ namespace Loop
             await UniTask.WhenAll(completionTasks);
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
-            _levelsStorage.OnLevelPassed(configuration);
+            _levelsStorage.OnLevelPassed(data);
 
             await _stateMachine.ProcessChild(_overlay, _completionUI);
 
-            LoadLevel(_levelsStorage.GetNext(configuration));
+            LoadLevel(_levelsStorage.GetNext(data));
         }
     }
 }

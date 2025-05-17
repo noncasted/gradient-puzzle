@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.gradient-puzzle.shared": "file:P:/noncasted/gradient-puzzle/backend/Shared/Protocol",
-    "com.unity.addressables": "2.4.3",
+    "com.unity.addressables": "2.4.6",
     "com.unity.burst": "1.8.21",
     "com.unity.collections": "2.5.3",
     "com.unity.device-simulator.devices": "1.0.0",

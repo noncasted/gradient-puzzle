@@ -136,6 +136,7 @@ namespace Internal
         {
             var asset = registration.Builder.GetAsset<T1>();
             registration.WithParameter(asset.Objects);
+            registration.WithParameter<IScriptableRegistry<T2>>(asset);
             return registration;
         }
 

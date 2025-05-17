@@ -41,7 +41,7 @@ namespace Overlay
             for (var i = 0; i < _levelsStorage.Count(); i++)
             {
                 var entry = Instantiate(_prefab, _scaler.transform);
-                entry.Construct(lifetime, _levelsStorage.Configurations[i]);
+//                entry.Construct(lifetime, _levelsStorage.Sections[i]);
                 var index = i;
 
                 entry.Clicked.Advise(lifetime, () => { _selected.TrySetResult(index); });
@@ -72,7 +72,7 @@ namespace Overlay
                 if (level == -1)
                     return;
 
-                completion.TrySetResult(new LevelSelectionResult(_levelsStorage.Get(level)));
+//                completion.TrySetResult(new LevelSelectionResult(_levelsStorage.Get(level)));
             }
 
             async UniTask HandleCancel()

@@ -44,6 +44,7 @@ namespace GamePlay.Paints
         private float _moveProgress;
         private float _timer;
         private float _initTimer;
+        private float _insideScaleTimer;
 
         public void UpdateCenter(Vector2 center)
         {
@@ -62,16 +63,31 @@ namespace GamePlay.Paints
 
             if (_area.IsInside(_transform.RectPosition) == true)
             {
+                _insideScaleTimer += delta;
+                
+                if (_insideScaleTimer > _options.InsideScaleTime)
+                    _insideScaleTimer = _options.InsideScaleTime;
+                
                 _body.SetMaterial(_area.MaskData?.Content);
             }
             else
             {
+                _insideScaleTimer -= delta;
+                
+                if (_insideScaleTimer < 0)
+                    _insideScaleTimer = 0;
+                
                 _body.SetMaterial(null);
             }
+            
+            var insideScaleProgress = _insideScaleTimer / _options.InsideScaleTime;
 
             _currentCenter = _center;
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
             _moveProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
+            
+            if (_moveProgress < insideScaleProgress)
+                _moveProgress = insideScaleProgress;
 
             // if (_area.IsInside(_transform.RectPosition) == true)
             //     _moveProgress = Mathf.Max(_moveProgress, _insideTimer / _options.Time);
@@ -93,7 +109,7 @@ namespace GamePlay.Paints
 
             _fill.SetSize(targetSize);
 
-            if (_area.IsInside(_transform.RectPosition) == false && _showBody == true)
+            if (_showBody == true)
             {
                 var fillPosition = Vector2.Lerp(
                     _transform.RectPosition,
@@ -102,11 +118,6 @@ namespace GamePlay.Paints
 
                 _fill.SetRectPosition(fillPosition);
                 _body.UpdatePath(this);
-            }
-            else
-            {
-                _fill.SetRectPosition(Vector2.zero);
-                _body.UpdatePath(null);
             }
         }
 

@@ -15,11 +15,11 @@ namespace Overlay
 
         public IViewableDelegate Clicked => _button.Clicked;
 
-        public void Construct(IReadOnlyLifetime lifetime, ILevelConfiguration configuration)
+        public void Construct(IReadOnlyLifetime lifetime, ILevelData data)
         {
-            _text.text = configuration.Index.ToString();
+            _text.text = data.Index.ToString();
             
-            configuration.IsUnlocked.View(lifetime, isUnlocked =>
+            data.IsUnlocked.View(lifetime, isUnlocked =>
             {
                 if (isUnlocked == true)
                     _button.Unlock();

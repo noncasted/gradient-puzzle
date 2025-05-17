@@ -11,20 +11,21 @@ namespace GamePlay.Paints
         public PaintTest(
             ILevelLoader levelLoader,
             IPaintFactory paintFactory,
-            LevelConfiguration levelConfiguration)
+            LevelOptions levelOptions)
         {
             _levelLoader = levelLoader;
             _paintFactory = paintFactory;
-            _levelConfiguration = levelConfiguration;
+            _levelOptions = levelOptions;
         }
 
         private readonly ILevelLoader _levelLoader;
         private readonly IPaintFactory _paintFactory;
-        private readonly LevelConfiguration _levelConfiguration;
+        private readonly LevelOptions _levelOptions;
 
         public async UniTask Run(IReadOnlyLifetime lifetime)
         {
-            var level = _levelLoader.Load(_levelConfiguration);
+            var levelData = new LevelData(_levelOptions, 0);
+            var level = _levelLoader.Load(levelData);
 
             var area = level.Areas.First();
             var paint = await _paintFactory.Create(lifetime, area.Color);

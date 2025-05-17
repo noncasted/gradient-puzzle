@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Global.Backend;
 using Global.Publisher;
@@ -12,49 +14,108 @@ namespace Services
         public LevelsStorage(
             IDataStorage dataStorage,
             IUserBackend userBackend,
-            LevelsStorageOptions options)
+            LevelOptionsRegistry optionsRegistry)
         {
+            _optionsRegistry = optionsRegistry;
             _dataStorage = dataStorage;
             _userBackend = userBackend;
-            _configurations = options.Objects;
         }
 
         private readonly IDataStorage _dataStorage;
         private readonly IUserBackend _userBackend;
-        private readonly IReadOnlyList<LevelConfiguration> _configurations;
 
         private LevelsSave _save;
         private IReadOnlyLifetime _lifetime;
+        private readonly Dictionary<LevelSectionType, IReadOnlyList<ILevelData>> _sections = new();
+        private LevelOptionsRegistry _optionsRegistry;
 
-        public IReadOnlyList<ILevelConfiguration> Configurations => _configurations;
+        public IReadOnlyDictionary<LevelSectionType, IReadOnlyList<ILevelData>> Sections => _sections;
 
         public async UniTask OnSetupAsync(IReadOnlyLifetime lifetime)
         {
             _lifetime = lifetime;
             _save = await _dataStorage.GetEntry<LevelsSave>();
-            _save.Passed = new HashSet<string>();
 
-            for (var i = 0; i < _configurations.Count; i++)
-                _configurations[i].Setup(i + 1);
+            var sections = new Dictionary<LevelSectionType, List<ILevelData>>();
 
-            for (var i = 0; i < _configurations.Count; i++)
+            var sectionTypes = Enum.GetValues(typeof(LevelSectionType)).Cast<LevelSectionType>();
+
+            foreach (var sectionType in sectionTypes)
+                sections.Add(sectionType, new List<ILevelData>());
+
+            foreach (var level in _optionsRegistry.Objects)
             {
-                // if (i >= _save.Unlocked)
-                //     break;
+                var list = sections[level.SectionType];
+                var data = new LevelData(level, list.Count);
+                list.Add(data);
+            }
 
-                var configuration = _configurations[i];
-                configuration.OnUnlocked();
+            foreach (var (type, list) in sections)
+                _sections.Add(type, list);
+
+            foreach (var (type, list) in sections)
+            {
+                var sectionKey = (int)type;
+
+                if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
+                    continue;
+
+                foreach (var data in list)
+                {
+                    if (data.Index > index)
+                        continue;
+
+                    data.Unlock();
+                }
             }
         }
 
-        public void OnLevelPassed(ILevelConfiguration configuration)
+        public void OnLevelPassed(ILevelData data)
         {
-            var index = configuration.Index;
-            _configurations[index].OnUnlocked();
+            if (data.IsUnlocked.Value == true)
+                return;
 
-            _save.Passed.Add(configuration.Id);
+            _sections[data.SectionType][data.Index].OnPassed();
+            _save.Passed[(int)data.SectionType] = data.Index;
             _dataStorage.Save(_save).Forget();
-            _userBackend.SaveProgress(_lifetime, configuration.Id).Forget();
+            _userBackend.SaveProgress(_lifetime, data.Id).Forget();
+            
+            RecalculateUnlocks().Forget();
+        }
+
+        public async UniTask RecalculateUnlocks()
+        {
+            _save = await _dataStorage.GetEntry<LevelsSave>();
+
+            foreach (var (type, list) in _sections)
+            {
+                var sectionKey = (int)type;
+
+                if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
+                    continue;
+
+                foreach (var data in list)
+                {
+                    if (data.Index > index)
+                        continue;
+
+                    data.OnPassed();
+                }
+            }
+
+            foreach (var (type, list) in _sections)
+            {
+                var sectionKey = (int)type;
+
+                if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
+                    continue;
+
+                if (index < list.Count - 1)
+                {
+                    var next = list[index + 1];
+                    next.Unlock();
+                }
+            }
         }
     }
 }

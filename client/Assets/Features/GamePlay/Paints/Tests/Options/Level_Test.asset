@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assetId: 104
   _prefab: {fileID: 3773022174831353029, guid: aad5323867f140f2ad3042fab83263ea, type: 3}
+  _sectionType: 10

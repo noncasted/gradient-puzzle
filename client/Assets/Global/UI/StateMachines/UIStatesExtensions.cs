@@ -61,6 +61,19 @@ namespace Global.UI
             handle.Exit();
         }
 
+        public static async UniTask<T> ProcessStack<T>(
+            this IUIStateMachine stateMachine,
+            IUIState parent,
+            IUIState state,
+            Func<IUIStateHandle, UniTask<T>> action)
+        {
+            var handle = stateMachine.CreateStackChild(parent, state);
+            var result = await action.Invoke(handle);
+            handle.Exit();
+
+            return result;
+        }
+
         public static UniTask Process(
             this IUIStateMachine stateMachine,
             IUIState parent,

@@ -22,10 +22,10 @@ namespace GamePlay.Levels
         private readonly IViewInjector _injector;
         private readonly IMaskRenderOptions _maskRenderOptions;
 
-        public ILevel Load(ILevelConfiguration configuration)
+        public ILevel Load(ILevelData data)
         {
             _objectFactory.DestroyAll();
-            var level = _objectFactory.Create(configuration.Prefab);
+            var level = _objectFactory.Create(data.Prefab);
 
             _injector.Inject(level);
             var parent = level.transform;

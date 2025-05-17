@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 1200">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <defs>
+    <clipPath id="clippath">
+      <rect width="1200" height="1200" fill="none"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clippath)">
+    <g>
+      <circle cx="677.42" cy="274.36" r="162.36" fill="#ffc7ee"/>
+      <path d="M600,1088l-176.13-599.52h352.26l-176.13,599.52Z" fill="#733835"/>
+      <path d="M811.2,550.01c8.76-24.03,13.54-49.97,13.54-77.02,0-124.12-100.62-224.75-224.75-224.75s-224.75,100.62-224.75,224.75c0,27.06,4.78,53,13.54,77.02h422.41Z" fill="#f37db2" fill-rule="evenodd"/>
+      <path d="M360.21,584.69c0-25.55,20.71-46.26,46.26-46.26h387.05c25.55,0,46.26,20.71,46.26,46.26s-20.71,46.26-46.26,46.26h-32.52c-2.13,23.57-21.94,42.04-46.07,42.04s-43.94-18.47-46.07-42.04h-6.37v49.4c0,25.55-20.71,46.26-46.26,46.26s-46.26-20.71-46.26-46.26v-49.4h-163.51c-25.55,0-46.26-20.71-46.26-46.26Z" fill="#ce598f" fill-rule="evenodd"/>
+      <circle cx="537.61" cy="330.6" r="162.36" fill="#ff9fd1"/>
+    </g>
+  </g>
+</svg>

@@ -4,6 +4,6 @@ namespace GamePlay.Levels
 {
     public interface ILevelLoader
     {
-        ILevel Load(ILevelConfiguration configuration);
+        ILevel Load(ILevelData data);
     }
 }
