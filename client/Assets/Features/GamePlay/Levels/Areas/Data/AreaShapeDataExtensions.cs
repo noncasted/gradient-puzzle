@@ -13,12 +13,12 @@ namespace GamePlay.Levels
         public static bool IsInside(this IReadOnlyList<Vector2> points, Vector2 position)
         {
             var count = points.Count;
-            
+
             if (count < 3)
-                return false; 
+                return false;
 
             var inside = false;
-            
+
             for (int i = 0, j = count - 1; i < count; j = i++)
             {
                 var a = points[i];
@@ -30,6 +30,7 @@ namespace GamePlay.Levels
                 if (intersect)
                     inside = !inside;
             }
+
             return inside;
         }
 
@@ -78,7 +79,44 @@ namespace GamePlay.Levels
 
             return new Vector2(centerX, centerY);
         }
-        
+
+        public static Vector2 GetCenterOfMass(this IReadOnlyList<Vector2> points)
+        {
+            if (points == null || points.Count == 0)
+                return Vector2.zero;
+
+            if (points[0] != points[^1])
+            {
+                var pointsCopy = new List<Vector2>(points);
+                pointsCopy.Add(points[0]);
+                points = pointsCopy;
+            }
+
+            float signedArea = 0;
+            float cx = 0;
+            float cy = 0;
+
+            for (var i = 0; i < points.Count - 1; i++)
+            {
+                var x0 = points[i].x;
+                var y0 = points[i].y;
+                var x1 = points[i + 1].x;
+                var y1 = points[i + 1].y;
+
+                var a = x0 * y1 - x1 * y0;
+                signedArea += a;
+                cx += (x0 + x1) * a;
+                cy += (y0 + y1) * a;
+            }
+
+            signedArea *= 0.5f;
+            cx /= (6.0f * signedArea);
+            cy /= (6.0f * signedArea);
+
+            return new Vector2(cx, cy);
+        }
+
+
         public static (Vector2, Vector2) GetBounds(this IReadOnlyList<Vector2> points)
         {
             if (points == null || points.Count == 0)
@@ -99,11 +137,11 @@ namespace GamePlay.Levels
 
             return (new Vector2(minX, minY), new Vector2(maxX, maxY));
         }
-        
+
         public static Vector2 GetSize(this IReadOnlyList<Vector2> points)
         {
             var (min, max) = points.GetBounds();
-            
+
             var size = max - min;
             return size;
         }

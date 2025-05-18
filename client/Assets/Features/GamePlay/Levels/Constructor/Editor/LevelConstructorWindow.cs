@@ -152,7 +152,7 @@ namespace GamePlay.Levels
             var stage = PrefabStageUtility.GetPrefabStage(_level.gameObject);
             var folderPath = Path.GetDirectoryName(stage.assetPath);
             var levelName = _level.name;
-            return Path.GetFullPath(Path.Combine(folderPath, $"{levelName}.svg"));
+            return Path.GetFullPath(Path.Combine(folderPath, $"{levelName.Replace("View", "Image")}.svg"));
         }
     }
 }

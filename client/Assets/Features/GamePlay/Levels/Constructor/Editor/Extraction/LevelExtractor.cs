@@ -63,7 +63,7 @@ namespace GamePlay.Levels
 
                     foreach (var point in toRemove)
                         ((List<Vector2>)contour.InnerPoints).Remove(point);
-
+                    
                     try
                     {
                         ((List<Vector2>)contour.InnerPoints).SimplifyBackwards(_options.Optimizations.System);
@@ -98,14 +98,24 @@ namespace GamePlay.Levels
             var properties = new SvgPathProperties.SvgPath(pathData.D);
             var length = properties.Length;
 
+            var previousPoint = Vector2.zero;
+
             for (var i = 0f; i < length; i += _options.Geometries.PointsDensity)
             {
                 var point = properties.GetPointAtLength(i);
 
                 var convertedPoint = new Vector2((float)point.X, (float)point.Y);
+                
+                var distance = Vector2.Distance(previousPoint, convertedPoint);
+                
+                if (distance < _options.Geometries.MinDistance)
+                    continue;
+                
+                previousPoint = convertedPoint;
+                
                 convertedPoint.y *= -1f;
                 convertedPoint *= _options.Geometries.Scale;
-
+                
                 renderPoints.Add(convertedPoint);
             }
 
@@ -128,29 +138,31 @@ namespace GamePlay.Levels
             renderPoints.SimplifyForward(_options.Optimizations.Render);
             systemPoints.SimplifyBackwards(_options.Optimizations.System);
 
-            var innerSize = innerPoints.GetSize();
-            var halfSize = Mathf.Min(innerSize.x, innerSize.y);
-            var offset = Mathf.Min(_options.Geometries.InnerOffset, halfSize);
-            var targetSize = innerSize - Vector2.one * offset;
-            var scale = targetSize / innerSize;
-            var previousInnerCenter = systemPoints.GetCenter();
+            var innerCenter = innerPoints.GetCenterOfMass();
+            var innerSize = innerPoints.GetSize() / 2f;
+            var innerOffset = _options.Geometries.InnerOffset;
+            innerOffset *= Mathf.Clamp01(innerSize.magnitude / innerOffset);
 
             for (var i = 0; i < innerPoints.Count; i++)
             {
                 var point = innerPoints[i];
 
-                point.x *= scale.x;
-                point.y *= scale.y;
+                var offset = point - innerCenter;
 
-                innerPoints[i] = point;
+                var xDistance = Mathf.Abs(offset.x);
+                var yDistance = Mathf.Abs(offset.y);
+
+                var xOffset = innerOffset * Mathf.Clamp01(xDistance / innerSize.x);
+                var yOffset = innerOffset * Mathf.Clamp01(yDistance / innerSize.y);
+
+                var xMultiplier = (xDistance - xOffset) / xDistance;
+                var yMultiplier = (yDistance - yOffset) / yDistance;
+
+                offset *= new Vector2(xMultiplier, yMultiplier);
+
+                innerPoints[i] = innerCenter + offset;
             }
-
-            var currentInnerCenter = innerPoints.GetCenter();
-            var innerOffset = (previousInnerCenter - currentInnerCenter);
-
-            for (var i = 0; i < innerPoints.Count; i++)
-                innerPoints[i] += innerOffset;
-
+            
             var contour = new ExtractedArea.Contour(renderPoints, systemPoints, innerPoints);
             return contour;
         }

@@ -23,9 +23,10 @@ MonoBehaviour:
   _geometry:
     _rectSize: {x: 1080, y: 1080}
     _offset: {x: 0, y: 0}
-    _scale: 1
+    _scale: 0.9
     _pointsDensity: 0.1
-    _innerOffset: 100
+    _innerOffset: 50
+    _minDistance: 1.5
   _render:
     _render:
       _iterations: 1
