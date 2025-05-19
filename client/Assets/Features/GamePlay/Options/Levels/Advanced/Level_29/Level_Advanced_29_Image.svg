@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   version="1.2"
+   viewBox="0 0 1200 1201"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs18" />
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <path
+     id="polygon1"
+     style="fill:#ef6a5b"
+     d="M 600,220.22 434.29,315.14 600,410.08 Z" />
+  <path
+     id="polygon2"
+     style="fill:#97435b"
+     d="M 268.58,410.06 434.29,505 V 315.14 Z" />
+  <path
+     id="polygon3"
+     style="fill:#bc424d"
+     d="M 600,410.06 434.29,315.14 V 505 Z" />
+  <path
+     id="polygon4"
+     style="fill:#4e348d"
+     d="m 268.58,790.36 165.71,94.93 V 695.97 Z" />
+  <path
+     id="polygon5"
+     style="fill:#4875b9"
+     d="M 600,790.9 434.29,695.97 v 189.32 z" />
+  <path
+     id="polygon6"
+     style="fill:#4696b9"
+     d="m 600,980.22 v 0 -189.32 l -165.71,94.38 z" />
+  <path
+     id="polygon7"
+     style="fill:#804273"
+     d="M 268.58,602.61 434.29,505 268.58,410.06 Z" />
+  <path
+     id="polygon8"
+     style="fill:#5f2560"
+     d="m 268.58,602.61 165.71,93.36 V 505 Z" />
+  <path
+     id="polygon9"
+     style="fill:#3d2561"
+     d="M 268.58,790.37 434.29,695.97 268.58,602.61 Z" />
+  <path
+     id="polygon10"
+     style="fill:#f07959"
+     d="M 600,220.22 V 410.08 L 765.71,315.14 Z" />
+  <path
+     id="polygon11"
+     style="fill:#f7cd57"
+     d="m 931.42,410.06 v 0 L 765.71,315.14 V 505 Z" />
+  <path
+     id="polygon12"
+     style="fill:#f79856"
+     d="M 765.71,315.14 600,410.06 765.71,505 Z" />
+  <path
+     id="polygon13"
+     style="fill:#2ab572"
+     d="m 931.42,790.36 v 0 L 765.71,695.97 v 189.32 z" />
+  <path
+     id="polygon14"
+     style="fill:#47a79c"
+     d="M 765.71,695.97 600,790.9 765.71,885.29 Z" />
+  <path
+     id="polygon15"
+     style="fill:#33a6b9"
+     d="m 600,980.22 v 0 L 765.71,885.28 600,790.9 Z" />
+  <path
+     id="polygon16"
+     style="fill:#fae91d"
+     d="M 931.42,602.61 V 410.06 L 765.71,505 Z" />
+  <path
+     id="polygon17"
+     style="fill:#d5df28"
+     d="m 931.42,602.61 v 0 L 765.71,505 v 190.97 z" />
+  <path
+     id="polygon18"
+     style="fill:#8cc540"
+     d="M 931.42,790.37 V 602.61 l -165.71,93.36 z" />
+</svg>

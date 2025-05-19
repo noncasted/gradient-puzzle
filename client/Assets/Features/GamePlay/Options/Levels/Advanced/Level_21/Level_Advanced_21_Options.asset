@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941767b204d74cb78cdde64f3476bad0, type: 3}
+  m_Name: Level_Advanced_21_Options
+  m_EditorClassIdentifier: 
+  _assetId: 762
+  _prefab: {fileID: 502891511736078154, guid: f8d4ceb4509397e47b7de2f26ae1d318, type: 3}
+  _sectionType: 30
+  _image: {fileID: 102900000, guid: 923b37ecb498b7f47a0c92e99dc47780, type: 3}
+  _preview: {fileID: 21300000, guid: f58d5d971b66edd4b981c52dfcb190ce, type: 3}
