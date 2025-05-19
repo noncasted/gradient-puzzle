@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941767b204d74cb78cdde64f3476bad0, type: 3}
+  m_Name: Level_Medium_7_Options
+  m_EditorClassIdentifier: 
+  _assetId: 718
+  _prefab: {fileID: 8201213298658736883, guid: b8cbeb8179fb1d046bfa707767b228f4, type: 3}
+  _sectionType: 20
+  _image: {fileID: 102900000, guid: 8871ff9e5b6bf394996a8e2e47872799, type: 3}
+  _preview: {fileID: 21300000, guid: 67825a8e919c4dc4f9df51771db5df2f, type: 3}

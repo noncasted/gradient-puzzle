@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   version="1.2"
+   viewBox="0 0 1200 1201"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs5" />
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <path
+     d="m 600,195.44 c -178.38,0 -322.99,144.61 -322.99,322.99 V 719.49 H 922.99 V 518.43 C 922.99,340.05 778.38,195.44 600,195.44 Z"
+     fill="#e7ebff"
+     id="path1" />
+  <path
+     id="rect1"
+     style="fill:#405ce7"
+     d="m 277.01001,910.12 h 645.97998 v 95.32 H 277.01001 Z" />
+  <path
+     id="rect2"
+     style="fill:#6e83ef"
+     d="m 277.01001,814.81 h 645.97998 v 95.32 H 277.01001 Z" />
+  <path
+     id="rect3"
+     style="fill:#aab9ff"
+     d="m 277.01001,719.48999 h 645.97998 v 95.32 H 277.01001 Z" />
+  <path
+     id="polygon3"
+     style="fill:#ffffff"
+     d="M 713.6,910.13 566.02,600.44 v 309.69 z" />
+  <path
+     id="circle3"
+     style="fill:#ffbd43"
+     d="m 735,435.63 a 135,135 0 0 1 -135,135 135,135 0 0 1 -135,-135 135,135 0 0 1 135,-135 135,135 0 0 1 135,135 z" />
+  <path
+     id="circle4"
+     style="fill:#ffd68b"
+     d="M 671.87,435.63 A 71.870003,71.870003 0 0 1 600,507.50001 71.870003,71.870003 0 0 1 528.13,435.63 71.870003,71.870003 0 0 1 600,363.76 a 71.870003,71.870003 0 0 1 71.87,71.87 z" />
+  <path
+     id="polygon4"
+     style="fill:#dfe2f0"
+     d="M 830.57,814.81 739.56,623.84 v 190.97 z" />
+  <path
+     id="polygon5"
+     style="fill:#cdd3ed"
+     d="M 490.19,719.33 433.53,600.44 v 118.89 z" />
+</svg>

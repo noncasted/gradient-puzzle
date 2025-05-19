@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" viewBox="0 0 1200 1201">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <ellipse cx="440.28" cy="440.84" rx="84.79" ry="225.89" transform="translate(-182.77 440.44) rotate(-45)" fill="#cea800"/>
+  <ellipse cx="759.73" cy="760.29" rx="84.79" ry="225.89" transform="translate(-315.09 759.89) rotate(-45)" fill="#ea6247"/>
+  <ellipse cx="759.72" cy="440.84" rx="225.89" ry="84.79" transform="translate(-89.2 666.32) rotate(-45)" fill="#de4050"/>
+  <ellipse cx="440.27" cy="760.29" rx="225.89" ry="84.79" transform="translate(-408.65 534) rotate(-45)" fill="#e98b26"/>
+  <ellipse cx="600" cy="403.6" rx="73.93" ry="196.95" fill="#ffe260"/>
+  <ellipse cx="600" cy="797.51" rx="73.93" ry="196.95" fill="#ff9681"/>
+  <ellipse cx="796.95" cy="600.56" rx="196.95" ry="73.93" fill="#ff6c6f"/>
+  <ellipse cx="403.05" cy="600.56" rx="196.95" ry="73.93" fill="#ffc07d"/>
+  <ellipse cx="514.68" cy="515.25" rx="45.29" ry="120.66" transform="translate(-213.59 514.85) rotate(-45)" fill="#ffe5c9"/>
+  <ellipse cx="685.32" cy="685.89" rx="45.29" ry="120.66" transform="translate(-284.27 685.49) rotate(-45)" fill="#ffc9ca"/>
+  <ellipse cx="685.32" cy="515.25" rx="120.66" ry="45.29" transform="translate(-163.61 635.51) rotate(-45)" fill="#fff5c9"/>
+  <ellipse cx="514.68" cy="685.89" rx="120.66" ry="45.29" transform="translate(-334.25 564.83) rotate(-45)" fill="#ffd2c9"/>
+  <path d="M642.49,563.8l-29.31.68c-2.31.05-4.58-.56-6.56-1.76l-25.04-15.24c-8.15-4.96-18.57,1.05-18.35,10.59l.68,29.31c.05,2.31-.56,4.58-1.76,6.56l-15.24,25.04c-4.96,8.15,1.05,18.57,10.59,18.35l29.31-.68c2.31-.05,4.58.56,6.56,1.76l25.04,15.24c8.15,4.96,18.57-1.05,18.35-10.59l-.68-29.31c-.05-2.31.56-4.58,1.76-6.56l15.24-25.04c4.96-8.15-1.05-18.57-10.59-18.35Z" fill="#fff"/>
+</svg>
