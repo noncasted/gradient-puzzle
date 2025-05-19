@@ -119,6 +119,10 @@ namespace GamePlay.Paints
                 _fill.SetRectPosition(fillPosition);
                 _body.UpdatePath(this);
             }
+            else
+            {
+                _body.UpdatePath(null);
+            }
         }
 
         public List<UIVertex> GetBodyPath()

@@ -70,7 +70,7 @@ namespace GamePlay.Paints
             _merging.Show(new PaintMergingHandleOptions()
             {
                 Lifetime = lifetime,
-                ShowBody = true,
+                ShowBody = _interceptor.Current is not IPaintDock,
                 Targets = targets,
                 WithInit = false
             });
