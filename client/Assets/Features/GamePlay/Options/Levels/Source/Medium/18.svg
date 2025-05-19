@@ -1,23 +1,17 @@
-<svg width="1200" height="1201" viewBox="0 0 1200 1201" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_235_234)">
-<rect width="1200" height="1200" transform="translate(0 0.558594)" fill="black"/>
-<ellipse cx="440.276" cy="440.838" rx="84.7923" ry="225.888" transform="rotate(-45 440.276 440.838)" fill="#CEA800"/>
-<ellipse cx="759.73" cy="760.291" rx="84.7923" ry="225.888" transform="rotate(-45 759.73 760.291)" fill="#EA6247"/>
-<ellipse cx="759.724" cy="440.835" rx="84.7923" ry="225.888" transform="rotate(45 759.724 440.835)" fill="#DE4050"/>
-<ellipse cx="440.27" cy="760.29" rx="84.7923" ry="225.888" transform="rotate(45 440.27 760.29)" fill="#E98B26"/>
-<ellipse cx="599.998" cy="403.605" rx="73.9307" ry="196.953" fill="#FFE260"/>
-<ellipse cx="599.998" cy="797.511" rx="73.9307" ry="196.953" fill="#FF9681"/>
-<ellipse cx="796.953" cy="600.562" rx="73.9307" ry="196.953" transform="rotate(90 796.953 600.562)" fill="#FF6C6F"/>
-<ellipse cx="403.048" cy="600.563" rx="73.9307" ry="196.953" transform="rotate(90 403.048 600.563)" fill="#FFC07D"/>
-<ellipse cx="514.683" cy="515.246" rx="45.2925" ry="120.66" transform="rotate(-45 514.683 515.246)" fill="#FFE5C9"/>
-<ellipse cx="685.322" cy="685.885" rx="45.2925" ry="120.66" transform="rotate(-45 685.322 685.885)" fill="#FFC9CA"/>
-<ellipse cx="685.321" cy="515.247" rx="45.2925" ry="120.66" transform="rotate(45 685.321 515.247)" fill="#FFF5C9"/>
-<ellipse cx="514.683" cy="685.887" rx="45.2925" ry="120.66" transform="rotate(45 514.683 685.887)" fill="#FFD2C9"/>
-<path d="M642.492 563.796C652.033 563.575 658.046 573.99 653.085 582.143L637.843 607.186C636.643 609.159 636.033 611.434 636.086 613.742L636.764 643.051C636.985 652.593 626.57 658.606 618.417 653.644L593.374 638.402C591.402 637.202 589.126 636.592 586.818 636.646L557.509 637.324C547.968 637.544 541.955 627.129 546.916 618.977L562.158 593.933C563.358 591.961 563.968 589.686 563.915 587.377L563.237 558.068C563.016 548.527 573.431 542.514 581.584 547.476L606.627 562.717C608.599 563.918 610.875 564.527 613.183 564.474L642.492 563.796Z" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_235_234">
-<rect width="1200" height="1200" fill="white" transform="translate(0 0.558594)"/>
-</clipPath>
-</defs>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" viewBox="0 0 1200 1201">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <ellipse cx="440.28" cy="440.84" rx="84.79" ry="225.89" transform="translate(-182.77 440.44) rotate(-45)" fill="#cea800"/>
+  <ellipse cx="759.73" cy="760.29" rx="84.79" ry="225.89" transform="translate(-315.09 759.89) rotate(-45)" fill="#ea6247"/>
+  <ellipse cx="759.72" cy="440.84" rx="225.89" ry="84.79" transform="translate(-89.2 666.32) rotate(-45)" fill="#de4050"/>
+  <ellipse cx="440.27" cy="760.29" rx="225.89" ry="84.79" transform="translate(-408.65 534) rotate(-45)" fill="#e98b26"/>
+  <ellipse cx="600" cy="403.6" rx="73.93" ry="196.95" fill="#ffe260"/>
+  <ellipse cx="600" cy="797.51" rx="73.93" ry="196.95" fill="#ff9681"/>
+  <ellipse cx="796.95" cy="600.56" rx="196.95" ry="73.93" fill="#ff6c6f"/>
+  <ellipse cx="403.05" cy="600.56" rx="196.95" ry="73.93" fill="#ffc07d"/>
+  <ellipse cx="514.68" cy="515.25" rx="45.29" ry="120.66" transform="translate(-213.59 514.85) rotate(-45)" fill="#ffe5c9"/>
+  <ellipse cx="685.32" cy="685.89" rx="45.29" ry="120.66" transform="translate(-284.27 685.49) rotate(-45)" fill="#ffc9ca"/>
+  <ellipse cx="685.32" cy="515.25" rx="120.66" ry="45.29" transform="translate(-163.61 635.51) rotate(-45)" fill="#fff5c9"/>
+  <ellipse cx="514.68" cy="685.89" rx="120.66" ry="45.29" transform="translate(-334.25 564.83) rotate(-45)" fill="#ffd2c9"/>
+  <path d="M642.49,563.8l-29.31.68c-2.31.05-4.58-.56-6.56-1.76l-25.04-15.24c-8.15-4.96-18.57,1.05-18.35,10.59l.68,29.31c.05,2.31-.56,4.58-1.76,6.56l-15.24,25.04c-4.96,8.15,1.05,18.57,10.59,18.35l29.31-.68c2.31-.05,4.58.56,6.56,1.76l25.04,15.24c8.15,4.96,18.57-1.05,18.35-10.59l-.68-29.31c-.05-2.31.56-4.58,1.76-6.56l15.24-25.04c4.96-8.15-1.05-18.57-10.59-18.35Z" fill="#fff"/>
 </svg>
