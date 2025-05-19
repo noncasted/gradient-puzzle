@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Internal;
 using Services;
 using Sirenix.OdinInspector;
@@ -9,6 +9,7 @@ using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace GamePlay.Levels
 {
@@ -18,13 +19,13 @@ namespace GamePlay.Levels
         private const string SourcePath = "Assets/Features/GamePlay/Options/Levels/Source/";
         private const string DestinationPath = "Assets/Features/GamePlay/Options/Levels/";
 
+        [SerializeField] private LevelSectionType _sectionType = LevelSectionType.Beginner;
+
         [MenuItem("Tools/MyTool")]
         private static void OpenWindow()
         {
             GetWindow<LevelSourcesProcessor>().Show();
         }
-
-        [SerializeField] private LevelSectionType _sectionType = LevelSectionType.Beginner;
 
         [Button]
         private void ExtractSources()
@@ -45,15 +46,18 @@ namespace GamePlay.Levels
                 .ToList();
 
             for (var i = 0; i < sourceFiles.Count; i++)
+                ProcessLevel(i);
+
+            void ProcessLevel(int index)
             {
-                var levelFolderName = $"Level_{i}";
+                var levelFolderName = $"Level_{index}";
                 var destFolder = Path.Combine(destinationPath, levelFolderName);
-                var prefix = $"Level_{sectionName}_{i}";
+                var prefix = $"Level_{sectionName}_{index}";
 
                 if (!AssetDatabase.IsValidFolder(destFolder))
                     AssetDatabase.CreateFolder(destinationPath, levelFolderName);
 
-                var sourceFilePath = sourceFiles[i];
+                var sourceFilePath = sourceFiles[index];
 
                 if (!Directory.Exists(destFolder))
                     Directory.CreateDirectory(destFolder);
@@ -91,13 +95,59 @@ namespace GamePlay.Levels
 
                 var prefabAsset = AssetDatabase.LoadAssetAtPath<Level>(prefabPath);
                 var imageAsset = AssetDatabase.LoadAssetAtPath<DefaultAsset>(destFilePath);
+                var sprite = GeneratePreview(destFilePath, prefix);
 
-                levelOptions.Setup(prefabAsset, _sectionType, imageAsset);
-                
+                levelOptions.Setup(prefabAsset, _sectionType, imageAsset, sprite);
+
                 EditorUtility.SetDirty(levelOptions);
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+            }
+
+            Sprite GeneratePreview(string imagePath, string levelPrefix)
+            {
+                var sourceOptions = AssetsExtensions.FindAsset<LevelConstructorOptions>();
+                var rootPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+                var inkscapePath = rootPath + sourceOptions.InkscapePath;
+
+                ExecuteInkscape($"--export-type=\"png\" {imagePath}");
+
+                var previewPath = imagePath.Replace("svg", "png");
+                AssetDatabase.ImportAsset(previewPath);
+
+                var importer = (TextureImporter)AssetImporter.GetAtPath(previewPath);
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.maxTextureSize = 128;
+
+                importer.SaveAndReimport();
+
+                AssetDatabase.ImportAsset(previewPath, ImportAssetOptions.ForceUpdate);
+                AssetDatabase.RenameAsset(previewPath, $"{levelPrefix}_Preview");
+
+                var newPath = previewPath.Replace("Image", "Preview");
+                var preview = AssetDatabase.LoadAssetAtPath<Sprite>(newPath);
+
+                return preview;
+
+                void ExecuteInkscape(string arguments)
+                {
+                    var process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = inkscapePath,
+                            Arguments = $"{arguments} {arguments}",
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            CreateNoWindow = true
+                        }
+                    };
+
+                    process.Start();
+                    process.WaitForExit();
+                }
             }
         }
 
@@ -110,9 +160,9 @@ namespace GamePlay.Levels
             var prefabGuids = AssetDatabase.FindAssets("t:LevelOptions", new[] { destinationPath });
 
             var levels = prefabGuids
-                .Select(guid => AssetDatabase.GUIDToAssetPath(guid))
-                .Select(path => AssetDatabase.LoadAssetAtPath<LevelOptions>(path))
-                .Where(level => level != null)
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<LevelOptions>)
+                .Where(level => level is not null)
                 .ToList();
 
             foreach (var levelOptions in levels)
@@ -122,6 +172,7 @@ namespace GamePlay.Levels
         private void ConstructLevel(LevelOptions levelOptions, LevelConstructorOptions constructorOptions)
         {
             Debug.Log("Constructing level: " + levelOptions.name);
+
             var stage = PrefabStageUtility.OpenPrefab(AssetDatabase.GetAssetPath(levelOptions.Prefab));
             var spawnedAreas = new List<Area>();
             var level = stage.prefabContentsRoot.GetComponent<Level>();
@@ -195,8 +246,11 @@ namespace GamePlay.Levels
                 var sourceOptions = AssetsExtensions.FindAsset<LevelConstructorOptions>();
 
                 var options = new LevelCreateOptions(
-                    new LevelCreateOptions.Extraction(source, sourceOptions.InkscapePath,
-                        sourceOptions.InkscapeActions),
+                    new LevelCreateOptions.Extraction(
+                        source,
+                        sourceOptions.InkscapePath,
+                        sourceOptions.InkscapeActions,
+                        level.name.Replace("View", "")),
                     constructorOptions.Geometry,
                     constructorOptions.Render);
 

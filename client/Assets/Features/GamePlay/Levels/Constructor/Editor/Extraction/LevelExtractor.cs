@@ -106,15 +106,15 @@ namespace GamePlay.Levels
 
                 var convertedPoint = new Vector2((float)point.X, (float)point.Y);
                 
+                convertedPoint.y *= -1f;
+                convertedPoint *= _options.Geometries.Scale;
+                
                 var distance = Vector2.Distance(previousPoint, convertedPoint);
                 
                 if (distance < _options.Geometries.MinDistance)
                     continue;
                 
                 previousPoint = convertedPoint;
-                
-                convertedPoint.y *= -1f;
-                convertedPoint *= _options.Geometries.Scale;
                 
                 renderPoints.Add(convertedPoint);
             }

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941767b204d74cb78cdde64f3476bad0, type: 3}
   m_Name: Level_Beginner_2_Options
   m_EditorClassIdentifier: 
-  _assetId: 472
-  _prefab: {fileID: 3438666043419281310, guid: b26bf8fed340ab848b4aff1c4e601e0a, type: 3}
+  _assetId: 683
+  _prefab: {fileID: 5028355390198746460, guid: b26bf8fed340ab848b4aff1c4e601e0a, type: 3}
   _sectionType: 10
   _image: {fileID: 102900000, guid: 6c6302f9293455942818cae648a4b27e, type: 3}
+  _preview: {fileID: 21300000, guid: 2414138c671cbef4094ed3658f84036f, type: 3}

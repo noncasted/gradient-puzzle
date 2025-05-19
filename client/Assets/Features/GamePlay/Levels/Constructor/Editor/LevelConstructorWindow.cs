@@ -139,7 +139,11 @@ namespace GamePlay.Levels
             var sourceOptions = AssetsExtensions.FindAsset<LevelConstructorOptions>();
 
             var options = new LevelCreateOptions(
-                new LevelCreateOptions.Extraction(source, sourceOptions.InkscapePath, sourceOptions.InkscapeActions),
+                new LevelCreateOptions.Extraction(
+                    source,
+                    sourceOptions.InkscapePath,
+                    sourceOptions.InkscapeActions,
+                    _level.name.Replace("View", "")),
                 _geometry,
                 _optimization);
 

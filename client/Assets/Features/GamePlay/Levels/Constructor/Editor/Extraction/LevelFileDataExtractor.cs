@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,11 +16,11 @@ namespace GamePlay.Levels
         {
             _options = options;
         }
-        
+
         public List<AreaData> GetRawAreas()
         {
             ConvertToPaths();
-            
+
             var svgDocument = XDocument.Load(_options.Extract.SvgPath);
             var paths = new List<PathData>();
             var index = 0;
@@ -43,7 +42,7 @@ namespace GamePlay.Levels
 
                 paths.Add(data);
                 index++;
-                
+
                 Color ExtractColor()
                 {
                     var fill = pathElement.Attribute("style")?.Value;
@@ -88,43 +87,36 @@ namespace GamePlay.Levels
                 data.Order = order;
             }
 
-            
+
             return result.Values.ToList();
         }
 
         private void ConvertToPaths()
         {
-            var inputFilePath = _options.Extract.SvgPath;
+            var options = _options.Extract;
+            var svgPath = options.SvgPath;
             var rootPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
-            var inkscapePath = rootPath + _options.Extract.InkscapePath;
+            var inkscapePath = rootPath + options.InkscapePath;
 
-            var content = File.ReadAllText(inputFilePath);
-            content = content.Replace("<rect width=\"1080\" height=\"1080\"/>", "");
-            content = content.Replace("<rect width=\"1080\" height=\"1080\" fill=\"none\"/>", "");
+            ExecuteInkscape($"--export-plain-svg --export-overwrite --actions={options.InkscapeActions} {svgPath}");
 
-            File.WriteAllText(inputFilePath, content);
-
-            var arguments =
-                $"{inkscapePath} --export-plain-svg --actions={_options.Extract.InkscapeActions} --export-overwrite {inputFilePath}";
-
-            var processStartInfo = new ProcessStartInfo
+            void ExecuteInkscape(string arguments)
             {
-                FileName = inkscapePath,
-                Arguments = arguments,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = inkscapePath,
+                        Arguments = $"{arguments} {arguments}",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    }
+                };
 
-            try
-            {
-                using var process = Process.Start(processStartInfo)!;
+                process.Start();
                 process.WaitForExit();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error executing Inkscape: {ex.Message}");
             }
         }
 

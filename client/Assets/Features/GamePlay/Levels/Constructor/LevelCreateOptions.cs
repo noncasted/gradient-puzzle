@@ -24,16 +24,19 @@ namespace GamePlay.Levels
             public Extraction(
                 string svgPath,
                 string inkscapePath,
-                string inkscapeActions)
+                string inkscapeActions,
+                string levelName)
             {
                 SvgPath = svgPath;
                 InkscapePath = inkscapePath;
                 InkscapeActions = inkscapeActions;
+                LevelName = levelName;
             }
 
             public string SvgPath { get; }
             public string InkscapePath { get; }
             public string InkscapeActions { get; }
+            public string LevelName { get; }
         }
 
         [Serializable]

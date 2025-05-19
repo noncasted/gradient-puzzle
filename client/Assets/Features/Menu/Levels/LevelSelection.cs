@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Linq;
+using Cysharp.Threading.Tasks;
 using Global.UI;
 using Internal;
 using Services;
@@ -7,9 +8,9 @@ using VContainer;
 
 namespace Menu.Levels
 {
+    [DisallowMultipleComponent]
     public class LevelSelection : MonoBehaviour, ISceneService, ILevelSelection
     {
-        [SerializeField] private float _distanceBetweenEntries;
         [SerializeField] private LevelSelectionView _entryPrefab;
         [SerializeField] private Transform _root;
         [SerializeField] private DesignButton _back;
@@ -32,6 +33,8 @@ namespace Menu.Levels
         
         public UniTask<ILevelData> Show(IUIStateHandle handle, LevelSectionType sectionType)
         {
+            handle.AttachGameObject(gameObject);
+            
             var previous = GetComponentsInChildren<LevelSelectionView>();
             
             foreach (var view in previous)
@@ -42,12 +45,11 @@ namespace Menu.Levels
         
             _back.Clicked.Advise(handle.InnerLifetime, () => completion.TrySetResult(null));
 
-            for (var index = 0; index < levels.Count; index++)
+            for (var index = levels.Count - 1; index >= 0; index--)
             {
                 var level = levels[index];
-                var height = index * _distanceBetweenEntries;
                 var view = Instantiate(_entryPrefab, _root);
-                view.Setup(index, height, level);
+                view.Setup(index, level, index != 0);
 
                 view.Clicked.Advise(handle.InnerLifetime, () => completion.TrySetResult(level));
             }

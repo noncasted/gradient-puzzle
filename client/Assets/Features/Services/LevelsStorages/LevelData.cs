@@ -8,6 +8,7 @@ namespace Services
         public LevelData(LevelOptions options, int index)
         {
             Id = options.Id.ToString();
+            Options = options;
             Index = index;
             SectionType = options.SectionType;
             Prefab = options.Prefab;
@@ -25,6 +26,7 @@ namespace Services
 
         public LevelSectionType SectionType { get; }
         public Level Prefab { get; }
+        public LevelOptions Options { get; }
 
         public void OnPassed()
         {

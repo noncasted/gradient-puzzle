@@ -11,7 +11,7 @@ namespace Global.UI
             _parent = parent;
             State = state;
             Completion = new UniTaskCompletionSource();
-            
+
             _innerLifetime = parent.InnerLifetime.Child();
             _outerLifetime = _innerLifetime.Child();
 
@@ -27,7 +27,7 @@ namespace Global.UI
             {
                 if (_isVisible.Value == true)
                     constraintsStorage.Remove(State.Constraints);
-                
+
                 Completion.TrySetResult();
             });
         }

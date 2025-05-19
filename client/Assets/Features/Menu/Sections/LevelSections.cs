@@ -70,22 +70,14 @@ namespace Menu.Sections
                     this,
                     _levelSelection,
                     selectionHandle => _levelSelection.Show(selectionHandle, options.Type));
-
+                
                 if (selection == null)
-                {
-                    handle.Exit();
                     return;
-                }
-
+                
                 completion.TrySetResult(selection);
             }
 
             return completion.Task;
-        }
-
-        public UniTask OnEntered(IUIStateHandle handle)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

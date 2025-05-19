@@ -11,6 +11,7 @@ namespace Services
         LevelSectionType SectionType { get; }
         int Index { get; }
         Level Prefab { get; }
+        LevelOptions Options { get; }
 
         void OnPassed();
         void Unlock();
