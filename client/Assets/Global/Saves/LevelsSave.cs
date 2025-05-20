@@ -9,11 +9,4 @@ namespace Global.Saves
     {
         public Dictionary<int, int> Passed { get; set; } = new();
     }
-
-    public class LevelsSaveSerializer : StorageEntrySerializer<LevelsSave>
-    {
-        public LevelsSaveSerializer() : base("levels", new LevelsSave())
-        {
-        }
-    }
 }

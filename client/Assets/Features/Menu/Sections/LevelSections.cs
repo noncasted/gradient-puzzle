@@ -18,11 +18,12 @@ namespace Menu.Sections
         [SerializeField] private DesignButton _back;
 
         private readonly Dictionary<LevelSectionType, LevelSectionView> _sectionsViews = new();
-        
+
         private IScriptableRegistry<LevelSectionOptions> _sections;
         private IUIStateMachine _stateMachine;
         private ILevelSelection _levelSelection;
         private ILevelsStorage _levels;
+        private IBackground _background;
 
         public IUIConstraints Constraints => UIConstraints.Game;
 
@@ -31,8 +32,10 @@ namespace Menu.Sections
             IUIStateMachine stateMachine,
             ILevelSelection levelSelection,
             ILevelsStorage levels,
+            IBackground background,
             IScriptableRegistry<LevelSectionOptions> sections)
         {
+            _background = background;
             _levels = levels;
             _levelSelection = levelSelection;
             _stateMachine = stateMachine;
@@ -46,16 +49,16 @@ namespace Menu.Sections
                 .As<IScopeSetup>()
                 .WithScriptableRegistry<LevelSectionRegistry, LevelSectionOptions>();
         }
-        
+
         public void OnSetup(IReadOnlyLifetime lifetime)
         {
             var sections = _sections.Objects.OrderBy(t => (int)t.Type);
-            
+
             foreach (var options in sections)
             {
                 var view = Instantiate(_sectionPrefab, _root);
                 view.Setup(options);
-                
+
                 _sectionsViews.Add(options.Type, view);
             }
         }
@@ -70,7 +73,7 @@ namespace Menu.Sections
             _back.Clicked.Advise(handle.InnerLifetime, () => completion.TrySetResult(null));
 
             var progress = _levels.CalculateProgress();
-            
+
             foreach (var (type, view) in _sectionsViews)
             {
                 view.UpdateProgress(progress[type]);
@@ -79,14 +82,18 @@ namespace Menu.Sections
 
             async UniTask OnClicked(LevelSectionType sectionType)
             {
+                _background.ToLevels();
                 var selection = await _stateMachine.ProcessStack(
                     this,
                     _levelSelection,
                     selectionHandle => _levelSelection.Show(selectionHandle, sectionType));
-                
+
                 if (selection == null)
+                {
+                    _background.ToSections();
                     return;
-                
+                }
+
                 completion.TrySetResult(selection);
             }
 

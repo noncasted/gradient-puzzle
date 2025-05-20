@@ -4,7 +4,7 @@ namespace Global.Publisher
 {
     public interface IDataStorage
     {
-        UniTask<T> GetEntry<T>() where T : class;
+        T Get<T>() where T : class, new();
         UniTask Save<T>(T data);
     }
 }

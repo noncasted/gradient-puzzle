@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Internal;
 using Newtonsoft.Json;
@@ -9,21 +8,15 @@ namespace Global.Publisher.Itch
 {
     public class ItchDataStorage : IDataStorage, IScopeBaseSetup
     {
-        public ItchDataStorage(DataStorageEventLoop eventLoop, IReadOnlyList<IStorageEntrySerializer> entries)
+        public ItchDataStorage(DataStorageEventLoop eventLoop)
         {
             _eventLoop = eventLoop;
-            foreach (var entry in entries)
-            {
-                _typeToSerializer.Add(entry.ValueType, entry);
-                _keyToSerializer.Add(entry.SaveKey, entry);
-            }
         }
 
         private const string Key = "save";
         
+        private readonly Dictionary<string, string> _entries = new();
         private readonly DataStorageEventLoop _eventLoop;
-        private readonly Dictionary<Type, IStorageEntrySerializer> _typeToSerializer = new();
-        private readonly Dictionary<string, IStorageEntrySerializer> _keyToSerializer = new();
 
         public void OnBaseSetup(IReadOnlyLifetime lifetime)
         {
@@ -31,53 +24,31 @@ namespace Global.Publisher.Itch
             {
                 var raw = PlayerPrefs.GetString(Key);
                 var rawEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(raw);
-
-                foreach (var (key, rawData) in rawEntries)
-                    _keyToSerializer[key].Deserialize(rawData);
+                
+                foreach (var (key, rawEntry) in rawEntries)
+                    _entries.Add(key, rawEntry);
             }
             
             _eventLoop.OnDataStorageLoaded(lifetime, this).Forget();
         }
 
-        public UniTask<T> GetEntry<T>() where T : class
+        public T Get<T>() where T : class, new()
         {
-            var type = typeof(T);
-            var entry = _typeToSerializer[type].Get<T>();
-
-            return UniTask.FromResult(entry);
+            var key = typeof(T).FullName!; 
+            
+            if (_entries.TryGetValue(key, out var rawEntry) == false)
+                return new T();
+            
+            return JsonConvert.DeserializeObject<T>(rawEntry);
         }
 
         public UniTask Save<T>(T data)
         {
-            var type = typeof(T);
-            _typeToSerializer[type].Set(data);
-
-            var save = new Dictionary<string, string>();
-
-            foreach (var (key, entry) in _keyToSerializer)
-            {
-                var rawEntry = entry.Serialize();
-                save[key] = rawEntry;
-            }
-
-            var json = JsonConvert.SerializeObject(save);
-            PlayerPrefs.SetString(Key, json);
-
+            var key = typeof(T).FullName!;
+            var json = JsonConvert.SerializeObject(data);
+            _entries[key] = json;
+            PlayerPrefs.SetString(Key, JsonConvert.SerializeObject(_entries));
             return UniTask.CompletedTask;
-        }
-
-        private void OnEntryChanged(string _0, string _1)
-        {
-            var save = new Dictionary<string, string>();
-
-            foreach (var (key, entry) in _keyToSerializer)
-            {
-                var rawEntry = entry.Serialize();
-                save[key] = rawEntry;
-            }
-
-            var json = JsonConvert.SerializeObject(save);
-            PlayerPrefs.SetString(Key, json);
         }
     }
 }

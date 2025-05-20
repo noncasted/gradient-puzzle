@@ -7,7 +7,7 @@ namespace GamePlay.Paints
 {
     public interface IPaintMover
     {
-        UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target);
+        UniTask TransitTo(IReadOnlyLifetime lifetime, Vector2 target);
         UniTask FollowCursor(IReadOnlyLifetime lifetime);
     }
 }

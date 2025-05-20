@@ -50,7 +50,6 @@ namespace GamePlay.Paints
                 Lifetime = lifetime,
                 ShowBody = true,
                 Targets = _gameContext.Targets,
-                WithInit = false
             });
         }
 

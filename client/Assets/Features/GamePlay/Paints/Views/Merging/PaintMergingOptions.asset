@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74fc88d0430e4b39b5b475b99cc0257f, type: 3}
   m_Name: PaintMergingOptions
   m_EditorClassIdentifier: 
-  _initTime: 0.1
+  _centerMoveSpeed: 3
+  _progressSpeed: 30
   _minFillSize: 25
   _startDistance: 200
   _step: 0.1
@@ -88,7 +89,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.08517696
+      value: 0
       inSlope: 0.09447791
       outSlope: 0.09447791
       tangentMode: 0

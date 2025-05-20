@@ -1,4 +1,5 @@
-﻿using GamePlay.Common;
+﻿using System;
+using GamePlay.Common;
 using Global.Systems;
 using Internal;
 using UnityEngine;
@@ -7,7 +8,7 @@ using VContainer;
 namespace GamePlay.Paints
 {
     [DisallowMultipleComponent]
-    public class PaintMerging : MonoBehaviour, IPaintMerging, IUpdatable, IEntityComponent
+    public class PaintMerging : MonoBehaviour, IPaintMerging, IUpdatable, IEntityComponent, IScopeSetup
     {
         [SerializeField] private PaintMergingOptions _options;
         [SerializeField] private PaintMergingBody _body;
@@ -18,11 +19,11 @@ namespace GamePlay.Paints
         private IPaintFill _fill;
 
         private IPaintTarget _currentArea;
-        private Vector2 _currentCenter;
 
         private MergeHandle _handle;
         private PaintMergingHandleOptions _handleOptions;
         private IPaintMoveArea _moveArea;
+        private IReadOnlyLifetime _currentLifetimer;
 
         [Inject]
         private void Construct(
@@ -42,76 +43,51 @@ namespace GamePlay.Paints
         public void Register(IEntityBuilder builder)
         {
             builder.RegisterComponent(this)
-                .As<IPaintMerging>();
+                .As<IPaintMerging>()
+                .As<IScopeSetup>();
+        }
+
+        public void OnSetup(IReadOnlyLifetime lifetime)
+        {
+            _handle = new MergeHandle(
+                _options,
+                _body,
+                _sourceImage,
+                _transform,
+                _fill);
+
+            _updater.Add(lifetime, this);
         }
 
         public void Show(PaintMergingHandleOptions options)
         {
+            _fill.SetVisible(options.ShowFill);
+            
             _handleOptions = options;
             _body.SetColor(_sourceImage.Color);
             _fill.SetColor(_sourceImage.Color);
-            _updater.Add(options.Lifetime, this);
+            _handle.SetBody(options.ShowBody);
+            _currentLifetimer = options.Lifetime;
         }
 
         public void OnUpdate(float delta)
         {
+            if (_currentLifetimer == null || _handleOptions == null || _currentLifetimer.IsTerminated == true)
+                return;
+
             var (area, targetCenter) = GetClosestArea();
 
             if (area == null)
+                throw new Exception();
+
+            if (area != _currentArea)
             {
-                _currentArea = null;
-                _currentCenter = Vector2.zero;
-                _handle?.Dispose();
-                _handle = null;
-                _transform.AttachTo(_moveArea.Transform);
-
-                return;
-            }
-
-            if (area == _currentArea)
-            {
-                var distance = Vector2.Distance(_transform.RectPosition, _currentCenter);
-
-                if (area.IsInside(_transform.RectPosition) == false &&
-                    _currentCenter != targetCenter &&
-                    distance > _options.StartDistance)
-                {
-                    CreateHandle();
-                }
-
-                if (area.IsInside(_transform.RectPosition) == true)
-                {
-                    _handle?.UpdateCenter(targetCenter);
-                    _currentCenter = targetCenter;
-                }
-            }
-            else
-            {
-                if (_currentCenter != targetCenter)
-                {
-                    CreateHandle();
-                }
+                _currentArea = area;
+                _handle.SetArea(area);
+                _handle.UpdateCenter(targetCenter);
             }
 
             _handle?.Update(delta);
-
-            void CreateHandle()
-            {
-                _currentCenter = targetCenter;
-                _currentArea = area;
-
-                _handle?.Dispose();
-                
-                _handle = new MergeHandle(
-                    _options,
-                    _body,
-                    _sourceImage,
-                    _transform,
-                    _fill,
-                    area,
-                    targetCenter,
-                    _handleOptions);
-            }
         }
 
         private (IPaintTarget, Vector2) GetClosestArea()
@@ -134,9 +110,6 @@ namespace GamePlay.Paints
                     }
                 }
             }
-
-            if (minDistance > _options.StartDistance)
-                return (null, Vector2.zero);
 
             return (targetArea, targetCenter);
         }

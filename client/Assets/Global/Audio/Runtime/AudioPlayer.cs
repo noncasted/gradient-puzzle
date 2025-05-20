@@ -17,19 +17,19 @@ namespace Global.Audio
 
         private readonly Dictionary<AudioLine, float> _values = new();
         private readonly ViewableProperty<bool> _isMuted = new();
-        
+
         public IReadOnlyDictionary<AudioLine, float> Values => _values;
         public IViewableProperty<bool> IsMuted => _isMuted;
 
         public async UniTask OnDataStorageLoaded(IReadOnlyLifetime lifetime, IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
-            var save = await _dataStorage.GetEntry<VolumeSave>();
-            
+            var save = _dataStorage.Get<VolumeSave>();
+
             _values[AudioLine.Music] = save.Values[AudioLine.Music];
             _values[AudioLine.SFX] = save.Values[AudioLine.SFX];
         }
- 
+
         public void Mute()
         {
             _musicSource.volume = 0f;
