@@ -24,7 +24,7 @@ public static class UserEndpoints
 
         var response = new GetUserProgress.Response
         {
-            PassedLevels = state.PassedLevels.ToList()
+            PassedLevels = state.PassedLevels
         };
 
         return response;
@@ -35,6 +35,6 @@ public static class UserEndpoints
         [FromServices] IGrainFactory grains)
     {
         var userProgress = grains.GetGrain<IUserProgress>(request.UserId);
-        return userProgress.OnLevelPassed(request.LevelId);
+        return userProgress.OnLevelPassed(request.Stage, request.Level);
     }
 }

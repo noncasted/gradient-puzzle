@@ -3,5 +3,5 @@
 public interface IUserProgress : IGrainWithGuidKey
 {
     Task<UserProgressState> GetProgress();
-    Task OnLevelPassed(string levelId);
+    Task OnLevelPassed(int stage, int level);
 }

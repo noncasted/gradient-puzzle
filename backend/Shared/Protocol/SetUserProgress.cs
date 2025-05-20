@@ -7,7 +7,8 @@ namespace Shared
         public class Request
         {
             public Guid UserId { get; set; }
-            public string LevelId { get; set; }
+            public int Stage { get; set; }
+            public int Level { get; set; }
         }
     }
 }

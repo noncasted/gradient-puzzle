@@ -3,10 +3,13 @@
 [GenerateSerializer]
 public class UserProgressState
 {
-    [Id(0)] public HashSet<string> PassedLevels { get; } = new();
+    [Id(0)] public Dictionary<int, int> PassedLevels { get; } = new();
 
-    public void OnPassed(string levelId)
+    public void OnPassed(int stage, int level)
     {
-        PassedLevels.Add(levelId);
+        if (PassedLevels.TryGetValue(stage, out var currentLevel) && currentLevel > level)
+            return;
+        
+        PassedLevels[stage] = level;
     }
 }

@@ -16,9 +16,9 @@ public class UserProgress : Grain, IUserProgress
         return Task.FromResult(_state.State);
     }
 
-    public Task OnLevelPassed(string levelId)
+    public Task OnLevelPassed(int stage, int level)
     {
-        _state.State.OnPassed(levelId);
+        _state.State.OnPassed(stage, level);
         return _state.WriteStateAsync();
     }
 }

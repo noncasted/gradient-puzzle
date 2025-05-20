@@ -20,11 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Aspire\ServiceDefaults\ServiceDefaults.csproj" />
-        <ProjectReference Include="..\..\Common\Extensions\Extensions.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="PostgreSQL-Main.sql" />
         <Content Include="..\..\.dockerignore">
           <Link>.dockerignore</Link>
@@ -44,6 +39,11 @@
         <Content Include="PostgreSQL-Clustering-3.7.0.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\Extensions\Extensions.csproj" />
+      <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
 </Project>

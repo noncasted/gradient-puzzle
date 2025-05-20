@@ -5,6 +5,8 @@ USER $APP_UID
 WORKDIR /app
 EXPOSE 9120
 
+ENV ConnectionStrings__postgres=${DB_CONNECTION_STRING}
+
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
