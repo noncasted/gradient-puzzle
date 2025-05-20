@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Global.UI;
 using Internal;
@@ -10,12 +11,14 @@ using VContainer;
 namespace Menu.Sections
 {
     [DisallowMultipleComponent]
-    public class LevelSections : MonoBehaviour, ILevelSections, ISceneService
+    public class LevelSections : MonoBehaviour, ILevelSections, ISceneService, IScopeSetup
     {
         [SerializeField] private LevelSectionView _sectionPrefab;
         [SerializeField] private Transform _root;
         [SerializeField] private DesignButton _back;
 
+        private readonly Dictionary<LevelSectionType, LevelSectionView> _sectionsViews = new();
+        
         private IScriptableRegistry<LevelSectionOptions> _sections;
         private IUIStateMachine _stateMachine;
         private ILevelSelection _levelSelection;
@@ -40,7 +43,21 @@ namespace Menu.Sections
         {
             builder.RegisterComponent(this)
                 .As<ILevelSections>()
+                .As<IScopeSetup>()
                 .WithScriptableRegistry<LevelSectionRegistry, LevelSectionOptions>();
+        }
+        
+        public void OnSetup(IReadOnlyLifetime lifetime)
+        {
+            var sections = _sections.Objects.OrderBy(t => (int)t.Type);
+            
+            foreach (var options in sections)
+            {
+                var view = Instantiate(_sectionPrefab, _root);
+                view.Setup(options);
+                
+                _sectionsViews.Add(options.Type, view);
+            }
         }
 
         public UniTask<ILevelData> Show(IUIStateHandle handle, bool withBackOptions)
@@ -53,23 +70,19 @@ namespace Menu.Sections
             _back.Clicked.Advise(handle.InnerLifetime, () => completion.TrySetResult(null));
 
             var progress = _levels.CalculateProgress();
-
-            var sections = _sections.Objects.OrderBy(t => (int)t.Type);
             
-            foreach (var options in sections)
+            foreach (var (type, view) in _sectionsViews)
             {
-                var view = Instantiate(_sectionPrefab, _root);
-                view.Setup(options, progress[options.Type]);
-
-                view.Clicked.Advise(handle.InnerLifetime, () => OnClicked(options).Forget());
+                view.UpdateProgress(progress[type]);
+                view.Clicked.Advise(handle.InnerLifetime, () => OnClicked(type).Forget());
             }
 
-            async UniTask OnClicked(LevelSectionOptions options)
+            async UniTask OnClicked(LevelSectionType sectionType)
             {
                 var selection = await _stateMachine.ProcessStack(
                     this,
                     _levelSelection,
-                    selectionHandle => _levelSelection.Show(selectionHandle, options.Type));
+                    selectionHandle => _levelSelection.Show(selectionHandle, sectionType));
                 
                 if (selection == null)
                     return;

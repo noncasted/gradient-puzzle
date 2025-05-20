@@ -11,6 +11,7 @@ namespace Overlay
     [DisallowMultipleComponent]
     public class MainOverlay : MonoBehaviour, IMainOverlay, IUIStateEnterHandler, ISceneService
     {
+        [SerializeField] private GameObject _navigation;
         [SerializeField] private DesignButton _settings;
         [SerializeField] private DesignButton _levels;
         [SerializeField] private DesignButton _reset;
@@ -51,11 +52,15 @@ namespace Overlay
 
         public async UniTask ShowSections()
         {
+            _navigation.SetActive(false);
+            
             var result = await _stateMachine.ProcessStack(
                 this,
                 _levelSections,
                 stateHandle => _levelSections.Show(stateHandle, _gameContext.Level != null));
 
+            _navigation.SetActive(true);
+            
             if (result == null)
                 return;
 

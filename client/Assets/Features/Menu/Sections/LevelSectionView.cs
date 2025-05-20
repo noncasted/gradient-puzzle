@@ -19,15 +19,19 @@ namespace Menu.Sections
 
         public IViewableDelegate Clicked => _button.Clicked;
 
-        public void Setup(LevelSectionOptions options, int progress)
+        public void Setup(LevelSectionOptions options)
         {
             _preview.sprite = options.Preview;
             _title.text = options.Type.ToName();
-            _progress.text = $"{progress} %";
             
             var effect = _plate.GradientEffect;
             effect.Gradient = options.PreviewGradient;
             _plate.GradientEffect = effect;
+        }
+        
+        public void UpdateProgress(float progress)
+        {
+            _progress.text = $"{progress} %";
         }
     }
 }

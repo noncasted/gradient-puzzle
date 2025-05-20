@@ -94,10 +94,9 @@ namespace GamePlay.Levels
                 DestroyImmediate(prefabInstance.gameObject);
 
                 var prefabAsset = AssetDatabase.LoadAssetAtPath<Level>(prefabPath);
-                var imageAsset = AssetDatabase.LoadAssetAtPath<DefaultAsset>(destFilePath);
                 var sprite = GeneratePreview(destFilePath, prefix);
 
-                levelOptions.Setup(prefabAsset, _sectionType, imageAsset, sprite);
+                levelOptions.Setup(prefabAsset, _sectionType, sprite);
 
                 EditorUtility.SetDirty(levelOptions);
 
@@ -242,7 +241,7 @@ namespace GamePlay.Levels
 
             IReadOnlyList<ExtractedArea> Extract()
             {
-                var source = levelOptions.ImagePath;
+                var source = AssetDatabase.GetAssetPath(levelOptions).Replace("View.prefab", "Image.svg");
                 var sourceOptions = AssetsExtensions.FindAsset<LevelConstructorOptions>();
 
                 var options = new LevelCreateOptions(

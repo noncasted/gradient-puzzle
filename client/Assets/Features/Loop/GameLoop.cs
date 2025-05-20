@@ -39,7 +39,7 @@ namespace Loop
             IPaintCollection paintCollection,
             IGameContext gameContext,
             IGlobalContext globalContext,
-            IUserBackend userBackend, 
+            IUserBackend userBackend,
             IDataStorage dataStorage,
             GameLoopCheats cheats)
         {
@@ -92,18 +92,21 @@ namespace Loop
         {
             Debug.Log("Start game loop");
             await _globalContext.Init(lifetime);
-         
+
             Debug.Log("Get progress from backend");
             var progress = await _userBackend.GetProgress(lifetime);
             var levelSave = await _dataStorage.GetEntry<LevelsSave>();
 
             foreach (var (sectionKey, index) in progress)
-                levelSave.Passed.Add(sectionKey, index);
-            
-            Debug.Log($"Progress received: {levelSave.Passed.Count}");
+            {
+                Debug.Log($"Progress received: {sectionKey} {index}");
+                levelSave.Passed[sectionKey] = index;
+            }
 
             await _dataStorage.Save(levelSave);
-            
+
+            await _levelsStorage.RecalculateUnlocks();
+
             _parentLifetime = lifetime;
             _cameraProvider.SetCamera(_gameCamera.Camera);
 
@@ -130,7 +133,7 @@ namespace Loop
             _overlay.HideReset();
 
             await _paintCollection.Initialize();
-            
+
             var level = _levelLoader.Load(data);
 
             var colors = new List<Color>();
@@ -172,9 +175,9 @@ namespace Loop
                 target.Add(dock);
                 paintToDock.Add(paint, dock);
             }
-            
+
             _gameContext.Setup(level, docks);
-            
+
             await UniTask.Yield();
             await UniTask.Yield();
             await UniTask.Yield();

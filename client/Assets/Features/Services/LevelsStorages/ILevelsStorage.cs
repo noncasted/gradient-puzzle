@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Services
 {
@@ -28,6 +29,7 @@ namespace Services
         public static ILevelData GetNext(this ILevelsStorage storage, ILevelData from)
         {
             var section = storage.Sections[from.SectionType];
+            Debug.Log($"Search index in section: {from.SectionType} {from.Index}");
             var index = GetIndex();
 
             if (index == storage.Sections.Count - 1)
@@ -37,7 +39,7 @@ namespace Services
 
             int GetIndex()
             {
-                for (var i = 0; i < storage.Sections.Count; i++)
+                for (var i = 0; i < section.Count; i++)
                 {
                     var check = section[i];
 

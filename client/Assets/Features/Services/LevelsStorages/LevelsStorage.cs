@@ -78,7 +78,7 @@ namespace Services
             _sections[data.SectionType][data.Index].OnPassed();
             _save.Passed[(int)data.SectionType] = data.Index;
             _dataStorage.Save(_save).Forget();
-            _userBackend.SaveProgress(_lifetime, data.Id).Forget();
+            _userBackend.SaveProgress(_lifetime, (int)data.SectionType, data.Index).Forget();
             
             RecalculateUnlocks().Forget();
         }
