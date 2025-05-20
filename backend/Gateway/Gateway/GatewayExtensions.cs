@@ -51,30 +51,23 @@ public static class GatewayExtensions
         {
             options.AddPolicy("cors", policy =>
             {
-                var url = Environment.GetEnvironmentVariable("BUILD_URL")!;
+                if (builder.Environment.IsDevelopment() == true)
+                {
+                    policy.SetIsOriginAllowed(origin =>
+                            Uri.TryCreate(origin, UriKind.Absolute, out var uri) && uri.Host == "localhost")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                }
+                else
+                {
+                    var url = Environment.GetEnvironmentVariable("BUILD_URL")!;
 
-                policy.WithOrigins(url)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
-                //
-                // if (builder.Environment.IsDevelopment() == true)
-                // {
-                //     policy.SetIsOriginAllowed(origin =>
-                //             Uri.TryCreate(origin, UriKind.Absolute, out var uri) && uri.Host == "localhost")
-                //         .AllowAnyMethod()
-                //         .AllowAnyHeader()
-                //         .AllowCredentials();
-                // }
-                // else
-                // {
-                //     var url = Environment.GetEnvironmentVariable("BUILD_URL")!;
-                //
-                //     policy.WithOrigins(url)
-                //         .AllowAnyMethod()
-                //         .AllowAnyHeader()
-                //         .AllowCredentials();
-                // }
+                    policy.WithOrigins(url)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                }
             });
         });
     }
