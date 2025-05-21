@@ -60,7 +60,6 @@ namespace GamePlay.Paints
                         Lifetime = mergeLifetime,
                         ShowBody = false,
                         Targets = new[] { target },
-                        WithInit = false
                     });
                     
                     await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: handle.Lifetime.Token);

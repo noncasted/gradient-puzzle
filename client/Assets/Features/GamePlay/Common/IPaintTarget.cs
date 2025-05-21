@@ -45,5 +45,27 @@ namespace GamePlay.Common
             
             return nearestCenter;
         }
+        
+        public static Vector2 GetNearestCenter(this IPaintTarget target, Vector2 rectPosition, Vector2 exclude)
+        {
+            var minDistance = float.MaxValue;
+            var nearestCenter = Vector2.zero;
+            
+            foreach (var point in target.InnerPoints)
+            {
+                if (point == exclude)
+                    continue;
+                
+                var distance = Vector2.Distance(point, rectPosition);
+                
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestCenter = point;
+                }
+            }
+            
+            return nearestCenter;
+        }
     }
 }

@@ -2,6 +2,7 @@
 {
     public enum LevelSectionType
     {
+        Test = 0,
         Beginner = 10,
         Medium = 20,
         Advanced = 30,

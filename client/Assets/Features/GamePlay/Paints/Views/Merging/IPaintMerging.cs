@@ -13,7 +13,7 @@ namespace GamePlay.Paints
     {
         public IReadOnlyLifetime Lifetime { get; set; }
         public IReadOnlyList<IPaintTarget> Targets { get; set; }
-        public bool WithInit { get; set; }
         public bool ShowBody { get; set; }
+        public bool ShowFill { get; set; } = true;
     }
 }

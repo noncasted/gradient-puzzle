@@ -12,5 +12,6 @@ namespace GamePlay.Paints
         void SetWorldPosition(Vector2 position);
         void SetRectPosition(Vector2 position);
         void SetSize(float size);
+        void SetVisible(bool isVisible);
     }
 }

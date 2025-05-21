@@ -12,6 +12,7 @@ namespace GamePlay.Paints
             IStateMachine stateMachine,
             IPaintDrop drop,
             IPaintMerging merging,
+            IPaintTransform transform,
             PaintAnchoringDefinition definition)
         {
             _mover = mover;
@@ -19,6 +20,7 @@ namespace GamePlay.Paints
             _stateMachine = stateMachine;
             _drop = drop;
             _merging = merging;
+            _transform = transform;
             Definition = definition;
         }
 
@@ -27,6 +29,7 @@ namespace GamePlay.Paints
         private readonly IStateMachine _stateMachine;
         private readonly IPaintDrop _drop;
         private readonly IPaintMerging _merging;
+        private readonly IPaintTransform _transform;
 
         public IStateDefinition Definition { get; }
 
@@ -42,10 +45,9 @@ namespace GamePlay.Paints
                 Lifetime = handle.Lifetime,
                 Targets = new[] { target },
                 ShowBody = false,
-                WithInit = false
             });
 
-            await _mover.TransitTo(handle.Lifetime, target.RootCenter);
+            await _mover.TransitTo(handle.Lifetime, target.GetNearestCenter(_transform.RectPosition));
             await _drop.Enter(target);
         }
     }

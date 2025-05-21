@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using GamePlay.Common;
 using Internal;
+using UnityEngine;
 
 namespace GamePlay.Paints
 {
@@ -13,6 +14,7 @@ namespace GamePlay.Paints
             IPaintDrop drop,
             IPaintMover mover,
             IPaintMerging merging,
+            IPaintTransform transform,
             PaintReturnDefinition definition)
         {
             _stateMachine = stateMachine;
@@ -20,6 +22,7 @@ namespace GamePlay.Paints
             _drop = drop;
             _mover = mover;
             _merging = merging;
+            _transform = transform;
             Definition = definition;
         }
 
@@ -28,6 +31,7 @@ namespace GamePlay.Paints
         private readonly IPaintDrop _drop;
         private readonly IPaintMover _mover;
         private readonly IPaintMerging _merging;
+        private readonly IPaintTransform _transform;
 
         public IStateDefinition Definition { get; }
 
@@ -45,11 +49,12 @@ namespace GamePlay.Paints
             {
                 Lifetime = lifetime,
                 ShowBody = false,
+                ShowFill = false,
                 Targets = new[] { target },
-                WithInit = false
             });
-            
-            await _mover.TransitTo(lifetime, target.RootCenter);
+
+            var nearestCenter = target.GetNearestCenter(_transform.RectPosition);
+            await _mover.TransitTo(lifetime, nearestCenter);
             _interceptor.Attach(target);
             target.PaintHandle.Unlock();
 

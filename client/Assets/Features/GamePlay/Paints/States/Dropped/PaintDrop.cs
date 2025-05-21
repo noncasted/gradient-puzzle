@@ -50,7 +50,6 @@ namespace GamePlay.Paints
                 Lifetime = handle.Lifetime,
                 ShowBody = false,
                 Targets = new[] { target },
-                WithInit = false
             });
             
             await _updater.CurveProgression(

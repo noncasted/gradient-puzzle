@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 941767b204d74cb78cdde64f3476bad0, type: 3}
-  m_Name: Level_Beginner_0_Options
+  m_Name: Level_Test
   m_EditorClassIdentifier: 
-  _assetId: 681
-  _prefab: {fileID: 175474780533736741, guid: 5f0c41f09c4d54f46b76ab9b8b9d63e7, type: 3}
-  _sectionType: 10
-  _preview: {fileID: 21300000, guid: 32e3d1467d92c31458911209e76bfea2, type: 3}
+  _assetId: 771
+  _prefab: {fileID: 3773022174831353029, guid: aad5323867f140f2ad3042fab83263ea, type: 3}
+  _sectionType: 0
+  _preview: {fileID: 21300000, guid: 4fad3698c38b890448e547b6cfd3fd6a, type: 3}

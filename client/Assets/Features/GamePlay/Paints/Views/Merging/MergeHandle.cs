@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GamePlay.Common;
+using GamePlay.Selections;
 using Internal;
 using UnityEngine;
 
@@ -12,21 +13,13 @@ namespace GamePlay.Paints
             PaintMergingBody body,
             IPaintImage sourceImage,
             IPaintTransform transform,
-            IPaintFill fill,
-            IPaintTarget area,
-            Vector2 center,
-            PaintMergingHandleOptions handleOptions)
+            IPaintFill fill)
         {
             _options = options;
             _body = body;
             _sourceImage = sourceImage;
             _transform = transform;
             _fill = fill;
-            _area = area;
-            _center = center;
-            _showBody = handleOptions.ShowBody;
-
-            _currentCenter = center;
         }
 
         private readonly PaintMergingOptions _options;
@@ -35,66 +28,64 @@ namespace GamePlay.Paints
         private readonly IPaintTransform _transform;
         private readonly IPaintFill _fill;
 
-        private readonly IPaintTarget _area;
         private readonly List<UIVertex> _bodyPath = new();
-        private readonly bool _showBody;
 
-        private Vector2 _center;
-        private Vector2 _currentCenter;
+        private IPaintTarget _area;
+        private bool _showBody;
         private float _moveProgress;
         private float _timer;
-        private float _initTimer;
-        private float _insideScaleTimer;
+
+        private Vector2 _targetCenter;
+        private Vector2 _currentCenter;
 
         public void UpdateCenter(Vector2 center)
         {
-            _center = center;
+            _targetCenter = center;
+            _currentCenter = center;
+        }
+
+        public void SetBody(bool showBody)
+        {
+            _showBody = showBody;
+
+            if (showBody == false)
+                _body.UpdatePath(null);
+        }
+
+        public void SetArea(IPaintTarget area)
+        {
+            _area = area;
+            _body.SetColor(_sourceImage.Color);
+            _fill.SetColor(_sourceImage.Color);
+            _timer = 0f;
         }
 
         public void Update(float delta)
         {
-            _initTimer += delta;
-
             if (_showBody == false)
                 _body.UpdatePath(null);
-
-            if (_initTimer < _options.InitTime)
-                return;
 
             _timer += delta;
             _transform.AttachTo(_area.SelfTransform);
 
             if (_area.IsInside(_transform.RectPosition) == true)
-            {
-                _insideScaleTimer += delta;
-
-                if (_insideScaleTimer > _options.InsideScaleTime)
-                    _insideScaleTimer = _options.InsideScaleTime;
-
                 _body.SetMaterial(_area.MaskData?.Content);
-            }
             else
-            {
-                _insideScaleTimer -= delta;
-
-                if (_insideScaleTimer < 0)
-                    _insideScaleTimer = 0;
-
                 _body.SetMaterial(null);
-            }
 
-            var insideScaleProgress = _insideScaleTimer / _options.InsideScaleTime;
-
-            _currentCenter = _center;
+            RecalculateTarget();
+            
+            _currentCenter = Vector2.Lerp(_currentCenter, _targetCenter, delta * _options.CenterMoveSpeed);
+            
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
-            var targtProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
+            var targetProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
 
-            _moveProgress = Mathf.Lerp(_moveProgress, targtProgress, delta * _options.ProgressSpeed);
+            if (_area.IsInside(_transform.RectPosition) == true)
+                targetProgress = 1f;
 
-            if (_moveProgress < insideScaleProgress)
-                _moveProgress = insideScaleProgress;
-
+            _moveProgress = Mathf.Lerp(_moveProgress, targetProgress, delta * _options.ProgressSpeed);
             _moveProgress = Mathf.Clamp(_moveProgress, 0f, _timer / _options.Time);
+
             var targetSizeRange = new Vector2(_options.MinFillSize, _area.Size * 4f);
 
             var targetSize = Mathf.Lerp(
@@ -103,7 +94,6 @@ namespace GamePlay.Paints
                 _options.TargetSizeCurve.Evaluate(_moveProgress));
 
             var targetPositionFactor = _options.TargetPositionCurve.Evaluate(_moveProgress);
-            Debug.Log($"Progress: {_moveProgress} | Target: {targetPositionFactor}");
 
             if (targetPositionFactor >= 1f)
                 _fill.SetMaterial(_area.MaskData?.Content);
@@ -121,6 +111,29 @@ namespace GamePlay.Paints
 
                 _fill.SetRectPosition(fillPosition);
                 _body.UpdatePath(this);
+            }
+        }
+
+        private void RecalculateTarget()
+        {
+            if (_area is IPaintDock)
+                return;
+            
+            var firstNearest = _area.GetNearestCenter(_transform.RectPosition);
+            var secondNearest = _area.GetNearestCenter(_transform.RectPosition, firstNearest);
+
+            var distanceToFirst = Vector2.Distance(_transform.RectPosition, firstNearest);
+            var distanceToSecond = Vector2.Distance(_transform.RectPosition, secondNearest);
+
+            if (distanceToFirst < distanceToSecond)
+            {
+                var lerp = distanceToFirst / distanceToSecond;
+                _targetCenter = Vector2.Lerp(firstNearest, secondNearest, lerp);
+            }
+            else
+            {
+                var lerp = distanceToSecond / distanceToFirst;
+                _targetCenter = Vector2.Lerp(secondNearest, firstNearest, lerp);
             }
         }
 
@@ -237,14 +250,6 @@ namespace GamePlay.Paints
 
                 return (checkSizeB, checkSizeC);
             }
-        }
-
-        public void Dispose()
-        {
-            _body.UpdatePath(null);
-            _fill.ResetMaterial();
-            _fill.SetRectPosition(Vector2.zero);
-            _fill.SetSize(0);
         }
     }
 }
