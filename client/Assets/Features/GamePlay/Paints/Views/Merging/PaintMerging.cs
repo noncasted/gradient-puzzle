@@ -7,7 +7,7 @@ using VContainer;
 namespace GamePlay.Paints
 {
     [DisallowMultipleComponent]
-    public class PaintMerging : MonoBehaviour, IPaintMerging, IUpdatable, IEntityComponent
+    public class PaintMerging : MonoBehaviour, IPaintMerging, IUpdatable, IEntityComponent, IScopeSetup
     {
         [SerializeField] private PaintMergingOptions _options;
         [SerializeField] private PaintMergingBody _body;
@@ -23,6 +23,7 @@ namespace GamePlay.Paints
         private MergeHandle _handle;
         private PaintMergingHandleOptions _handleOptions;
         private IPaintMoveArea _moveArea;
+        private IReadOnlyLifetime _currentLifetimer;
 
         [Inject]
         private void Construct(
@@ -42,19 +43,29 @@ namespace GamePlay.Paints
         public void Register(IEntityBuilder builder)
         {
             builder.RegisterComponent(this)
-                .As<IPaintMerging>();
+                .As<IPaintMerging>()
+                .As<IScopeSetup>();
+        }
+        
+        public void OnSetup(IReadOnlyLifetime lifetime)
+        {
+            _updater.Add(lifetime, this);   
         }
 
         public void Show(PaintMergingHandleOptions options)
         {
             _handleOptions = options;
+            _currentArea = null;
             _body.SetColor(_sourceImage.Color);
             _fill.SetColor(_sourceImage.Color);
-            _updater.Add(options.Lifetime, this);
+            _currentLifetimer = options.Lifetime;
         }
 
         public void OnUpdate(float delta)
         {
+            if (_currentLifetimer.IsTerminated == true)
+                return;
+            
             var (area, targetCenter) = GetClosestArea();
 
             if (area == null)
@@ -97,6 +108,7 @@ namespace GamePlay.Paints
 
             void CreateHandle()
             {
+                Debug.Log($"New handle:{targetCenter}");
                 _currentCenter = targetCenter;
                 _currentArea = area;
 
@@ -135,8 +147,8 @@ namespace GamePlay.Paints
                 }
             }
 
-            if (minDistance > _options.StartDistance)
-                return (null, Vector2.zero);
+            // if (minDistance > _options.StartDistance)
+            //     return (null, Vector2.zero);
 
             return (targetArea, targetCenter);
         }

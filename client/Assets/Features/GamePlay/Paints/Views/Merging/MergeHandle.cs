@@ -54,43 +54,45 @@ namespace GamePlay.Paints
         public void Update(float delta)
         {
             _initTimer += delta;
-            
+
+            if (_showBody == false)
+                _body.UpdatePath(null);
+
             if (_initTimer < _options.InitTime)
                 return;
-            
+
             _timer += delta;
             _transform.AttachTo(_area.SelfTransform);
 
             if (_area.IsInside(_transform.RectPosition) == true)
             {
                 _insideScaleTimer += delta;
-                
+
                 if (_insideScaleTimer > _options.InsideScaleTime)
                     _insideScaleTimer = _options.InsideScaleTime;
-                
+
                 _body.SetMaterial(_area.MaskData?.Content);
             }
             else
             {
                 _insideScaleTimer -= delta;
-                
+
                 if (_insideScaleTimer < 0)
                     _insideScaleTimer = 0;
-                
+
                 _body.SetMaterial(null);
             }
-            
+
             var insideScaleProgress = _insideScaleTimer / _options.InsideScaleTime;
 
             _currentCenter = _center;
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
-            _moveProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
-            
+            var targtProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
+
+            _moveProgress = Mathf.Lerp(_moveProgress, targtProgress, delta * _options.ProgressSpeed);
+
             if (_moveProgress < insideScaleProgress)
                 _moveProgress = insideScaleProgress;
-
-            // if (_area.IsInside(_transform.RectPosition) == true)
-            //     _moveProgress = Mathf.Max(_moveProgress, _insideTimer / _options.Time);
 
             _moveProgress = Mathf.Clamp(_moveProgress, 0f, _timer / _options.Time);
             var targetSizeRange = new Vector2(_options.MinFillSize, _area.Size * 4f);
@@ -101,6 +103,7 @@ namespace GamePlay.Paints
                 _options.TargetSizeCurve.Evaluate(_moveProgress));
 
             var targetPositionFactor = _options.TargetPositionCurve.Evaluate(_moveProgress);
+            Debug.Log($"Progress: {_moveProgress} | Target: {targetPositionFactor}");
 
             if (targetPositionFactor >= 1f)
                 _fill.SetMaterial(_area.MaskData?.Content);
@@ -118,10 +121,6 @@ namespace GamePlay.Paints
 
                 _fill.SetRectPosition(fillPosition);
                 _body.UpdatePath(this);
-            }
-            else
-            {
-                _body.UpdatePath(null);
             }
         }
 

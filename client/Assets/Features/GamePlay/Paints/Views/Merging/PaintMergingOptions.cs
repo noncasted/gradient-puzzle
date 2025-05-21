@@ -7,6 +7,7 @@ namespace GamePlay.Paints
     [InlineEditor]
     public partial class PaintMergingOptions : ScriptableObject
     {
+        [SerializeField] private float _progressSpeed = 3f;
         [SerializeField] private float _initTime = 0.5f;
         [SerializeField] private float _insideScaleTime = 1f;
         [SerializeField] private float _minFillSize = 25;
@@ -18,6 +19,7 @@ namespace GamePlay.Paints
         [SerializeField] [CurveRange] private AnimationCurve _targetPositionCurve;
         [SerializeField] [CurveRange] private AnimationCurve _targetSizeCurve;
 
+        public float ProgressSpeed => _progressSpeed;
         public float InitTime => _initTime;
         public float InsideScaleTime => _insideScaleTime;
         public float MinFillSize => _minFillSize;

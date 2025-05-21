@@ -48,7 +48,7 @@ namespace GamePlay.Paints
             _merging.Show(new PaintMergingHandleOptions()
             {
                 Lifetime = handle.Lifetime,
-                ShowBody = true,
+                ShowBody = false,
                 Targets = new[] { target },
                 WithInit = false
             });
