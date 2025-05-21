@@ -34,7 +34,7 @@ namespace Services
         public async UniTask OnSetupAsync(IReadOnlyLifetime lifetime)
         {
             _lifetime = lifetime;
-            _save = await _dataStorage.GetEntry<LevelsSave>();
+            _save = _dataStorage.Get<LevelsSave>();
 
             var sections = new Dictionary<LevelSectionType, List<ILevelData>>();
 
@@ -79,13 +79,13 @@ namespace Services
             _save.Passed[(int)data.SectionType] = data.Index;
             _dataStorage.Save(_save).Forget();
             _userBackend.SaveProgress(_lifetime, (int)data.SectionType, data.Index).Forget();
-            
+
             RecalculateUnlocks().Forget();
         }
 
         public async UniTask RecalculateUnlocks()
         {
-            _save = await _dataStorage.GetEntry<LevelsSave>();
+            _save = _dataStorage.Get<LevelsSave>();
 
             foreach (var (type, list) in _sections)
             {

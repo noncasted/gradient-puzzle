@@ -27,29 +27,29 @@ namespace Global.Backend
         private readonly IDataStorage _dataStorage;
         private readonly PlatformOptions _platformOptions;
         private readonly BackendOptions _options;
-        
+
         [DllImport("__Internal")]
         private static extern string GetUserIdFromUrl();
 
         public async UniTask<Guid> Auth(IReadOnlyLifetime lifetime)
         {
-            var save = await _dataStorage.GetEntry<UserSave>();
-            
+            var save = _dataStorage.Get<UserSave>();
+
             Debug.Log($"Current platform: {Application.platform}");
 
             if (Application.platform == RuntimePlatform.WebGLPlayer)
             {
                 var rawUserId = GetUserIdFromUrl();
-                
+
                 if (string.IsNullOrEmpty(rawUserId) == true)
                     save.UserId = Guid.NewGuid();
                 else
                     save.UserId = Guid.Parse(rawUserId);
             }
-            
+
             if (save.UserId == Guid.Empty)
                 save.UserId = Guid.NewGuid();
-    
+
             await _dataStorage.Save(save);
             return save.UserId;
         }

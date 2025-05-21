@@ -95,7 +95,7 @@ namespace Loop
 
             Debug.Log("Get progress from backend");
             var progress = await _userBackend.GetProgress(lifetime);
-            var levelSave = await _dataStorage.GetEntry<LevelsSave>();
+            var levelSave = _dataStorage.Get<LevelsSave>();
 
             foreach (var (sectionKey, index) in progress)
             {
