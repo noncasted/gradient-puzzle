@@ -54,6 +54,7 @@ namespace GamePlay.Paints
                 _body,
                 _sourceImage,
                 _transform,
+                _moveArea,
                 _fill);
 
             _updater.Add(lifetime, this);

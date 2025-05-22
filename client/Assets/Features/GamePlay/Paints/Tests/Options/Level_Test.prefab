@@ -3254,6 +3254,10 @@ PrefabInstance:
       value: 0.6745098
       objectReference: {fileID: 0}
     - target: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}
+      propertyPath: _isAnchor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 964910438841306370, guid: d04d7591fa729c6429d108c360c19d65, type: 3}
       propertyPath: _shapes.Array.size
       value: 1
       objectReference: {fileID: 0}

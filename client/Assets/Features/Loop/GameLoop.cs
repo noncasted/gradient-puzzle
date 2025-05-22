@@ -213,7 +213,6 @@ namespace Loop
             foreach (var anchor in anchors)
             {
                 var paint = colorToPaint[anchor.Color];
-                anchor.PaintHandle.Set(paint);
                 anchor.PaintHandle.Lock();
                 paint.Anchor(anchor);
             }

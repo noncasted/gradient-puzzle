@@ -13,12 +13,14 @@ namespace GamePlay.Paints
             PaintMergingBody body,
             IPaintImage sourceImage,
             IPaintTransform transform,
+            IPaintMoveArea moveArea,
             IPaintFill fill)
         {
             _options = options;
             _body = body;
             _sourceImage = sourceImage;
             _transform = transform;
+            _moveArea = moveArea;
             _fill = fill;
         }
 
@@ -26,6 +28,7 @@ namespace GamePlay.Paints
         private readonly PaintMergingBody _body;
         private readonly IPaintImage _sourceImage;
         private readonly IPaintTransform _transform;
+        private readonly IPaintMoveArea _moveArea;
         private readonly IPaintFill _fill;
 
         private readonly List<UIVertex> _bodyPath = new();
@@ -66,7 +69,6 @@ namespace GamePlay.Paints
                 _body.UpdatePath(null);
 
             _timer += delta;
-            _transform.AttachTo(_area.SelfTransform);
 
             if (_area.IsInside(_transform.RectPosition) == true)
                 _body.SetMaterial(_area.MaskData?.Content);
@@ -79,6 +81,12 @@ namespace GamePlay.Paints
 
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
             var targetProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
+
+            if (distanceToArea <= _options.StartDistance)
+                _transform.AttachTo(_area.SelfTransform);
+            else
+                _transform.AttachTo(_moveArea.Transform);
+
 
             if (_area.IsInside(_transform.RectPosition) == true)
                 targetProgress = 1f;

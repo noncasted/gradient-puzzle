@@ -38,16 +38,17 @@ namespace GamePlay.Paints
             var handle = _stateMachine.CreateHandle(this);
 
             _interceptor.Detach();
-            _interceptor.Attach(target);
 
             _merging.Show(new PaintMergingHandleOptions()
             {
                 Lifetime = handle.Lifetime,
                 Targets = new[] { target },
-                ShowBody = false,
+                ShowBody = true,
             });
 
             await _mover.TransitTo(handle.Lifetime, target.GetNearestCenter(_transform.RectPosition));
+            _interceptor.Attach(target);
+            
             await _drop.Enter(target);
         }
     }
