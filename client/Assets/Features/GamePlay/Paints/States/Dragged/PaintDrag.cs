@@ -72,7 +72,6 @@ namespace GamePlay.Paints
                 Lifetime = lifetime,
                 ShowBody = _interceptor.Current is not IPaintDock,
                 Targets = targets,
-                WithInit = false
             });
             
             _mover.FollowCursor(lifetime).Forget();

@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Global.UI;
 using Internal;
+using Menu;
 using Menu.Sections;
 using Services;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace Overlay
         private ICompletionUI _completion;
         private ILevelSections _levelSections;
         private IGameContext _gameContext;
+        private IBackground _background;
+        private ILevelVisibility _levelVisibility;
 
         public IUIConstraints Constraints => new UIConstraints();
 
@@ -35,8 +38,12 @@ namespace Overlay
             IGameContext gameContext,
             ISettingsUI settings,
             ILevelSections levelSections,
+            IBackground background,
+            ILevelVisibility levelVisibility,
             ICompletionUI completion)
         {
+            _levelVisibility = levelVisibility;
+            _background = background;
             _gameContext = gameContext;
             _levelSections = levelSections;
             _completion = completion;
@@ -52,15 +59,18 @@ namespace Overlay
 
         public async UniTask ShowSections()
         {
+            _background.ToSections();
             _navigation.SetActive(false);
-            
+            _levelVisibility.Hide();
+
             var result = await _stateMachine.ProcessStack(
                 this,
                 _levelSections,
                 stateHandle => _levelSections.Show(stateHandle, _gameContext.Level != null));
 
             _navigation.SetActive(true);
-            
+            _levelVisibility.Show();
+
             if (result == null)
                 return;
 
@@ -80,7 +90,7 @@ namespace Overlay
         public void OnEntered(IUIStateHandle handle)
         {
             _settings.ListenClick(handle, () => _stateMachine.Process(this, _settingsUI));
-            _levels.ListenClick(handle, () => ShowSections().Forget());
+            _levels.ListenClick(handle, async () => { await ShowSections(); });
         }
     }
 }

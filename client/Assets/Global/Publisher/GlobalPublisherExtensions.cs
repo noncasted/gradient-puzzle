@@ -48,7 +48,6 @@ namespace Global.Publisher
                 .As<IJsErrorCallback>();
 
             builder.Register<ItchDataStorage>()
-                .WithParameter(SavesExtensions.GetSerializers())
                 .As<IDataStorage>()
                 .AsEventListener<IScopeBaseSetup>();
 

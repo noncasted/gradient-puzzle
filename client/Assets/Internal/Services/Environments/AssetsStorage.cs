@@ -126,9 +126,18 @@ namespace Internal
 
                 var ids = AssetDatabase.FindAssets("t:AssetsStorage");
 
-                if (ids.Length == 0 || ids.Length > 1)
-                    throw new Exception();
+                if (ids.Length == 0)
+                {
+                    Debug.LogError("No AssetsStorage found");
+                    return;
+                }
 
+                if (ids.Length > 1)
+                {
+                    Debug.LogError($"More than one AssetsStorage found");
+                    return;
+                }
+                
                 _isScanning = true;
 
                 var path = AssetDatabase.GUIDToAssetPath(ids[0]);

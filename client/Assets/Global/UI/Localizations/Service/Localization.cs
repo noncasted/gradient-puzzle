@@ -25,7 +25,7 @@ namespace Global.UI
         public async UniTask OnDataStorageLoaded(IReadOnlyLifetime lifetime, IDataStorage dataStorage)
         {
             _dataStorage = dataStorage;
-            var saves = await _dataStorage.GetEntry<LanguageSave>();
+            var saves = _dataStorage.Get<LanguageSave>();
 
             if (saves.IsOverriden == true)
                 _language = saves.Language;

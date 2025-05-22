@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "com.gradient-puzzle.shared": "file:P:/noncasted/gradient-puzzle/backend/Shared/Protocol",
+    "com.unity.2d.aseprite": "1.1.9",
+    "com.unity.2d.tilemap.extras": "4.1.0",
     "com.unity.addressables": "2.4.6",
     "com.unity.burst": "1.8.21",
     "com.unity.collections": "2.5.3",

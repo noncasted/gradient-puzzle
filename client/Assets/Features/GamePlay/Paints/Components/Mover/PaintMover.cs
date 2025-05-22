@@ -38,14 +38,14 @@ namespace GamePlay.Paints
         private readonly IPaintInterceptor _interceptor;
         private readonly PaintMoverOptions _options;
 
-        public UniTask TransitTo(IReadOnlyLifetime lifetime, Transform target)
+        public UniTask TransitTo(IReadOnlyLifetime lifetime, Vector2 target)
         {
-            var distance = Vector2.Distance(_transform.WorldPosition, target.position);
+            var distance = Vector2.Distance(_transform.RectPosition, target);
             var moveTime = _options.TransitTimeCurve.Evaluate(distance);
             var moveCurve = new Curve(moveTime, _options.TransitMoveCurve).CreateInstance();
             var heightCurve = new Curve(moveTime, _options.TransitHeightCurve).CreateInstance();
-            var startPosition = _transform.WorldPosition;
-            var directionSign = Mathf.Sign(target.position.x - _transform.WorldPosition.x);
+            var startPosition = _transform.RectPosition;
+            var directionSign = Mathf.Sign(target.x - _transform.RectPosition.x);
 
             return _updater.RunUpdateAction(lifetime, IsCompleted, Move);
 
@@ -54,9 +54,9 @@ namespace GamePlay.Paints
                 var moveFactor = moveCurve.StepForward(delta);
                 var heightFactor = heightCurve.StepForward(delta);
                 var height = Mathf.Lerp(0, _options.TransitHeight, heightFactor) * directionSign;
-                var position = Vector2.Lerp(startPosition, target.position, moveFactor);
+                var position = Vector2.Lerp(startPosition, target, moveFactor);
                 position.x += height;
-                _transform.SetWorldPosition(position);
+                _transform.SetRectPosition(position);
             }
 
             bool IsCompleted()
@@ -64,7 +64,7 @@ namespace GamePlay.Paints
                 if (moveCurve.IsFinished == true)
                     return false;
                 
-                distance = Vector2.Distance(_transform.WorldPosition, target.position);
+                distance = Vector2.Distance(_transform.RectPosition, target);
                 return distance > float.Epsilon;
             }
         }

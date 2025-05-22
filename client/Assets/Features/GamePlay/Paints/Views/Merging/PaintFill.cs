@@ -50,5 +50,10 @@ namespace GamePlay.Paints
         {
             _transform.sizeDelta = new Vector2(size, size);
         }
+
+        public void SetVisible(bool isVisible)
+        {
+            gameObject.SetActive(isVisible);
+        }
     }
 }
