@@ -2,7 +2,6 @@
 using GamePlay.Common;
 using Internal;
 using Services;
-using UnityEngine;
 
 namespace GamePlay.Paints
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -58,9 +59,9 @@ namespace GamePlay.Levels
                         return Color.clear;
                     }
 
-                    var r = byte.Parse(hexColor.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-                    var g = byte.Parse(hexColor.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-                    var b = byte.Parse(hexColor.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                    var r = byte.Parse(hexColor.Substring(0, 2), NumberStyles.HexNumber);
+                    var g = byte.Parse(hexColor.Substring(2, 2), NumberStyles.HexNumber);
+                    var b = byte.Parse(hexColor.Substring(4, 2), NumberStyles.HexNumber);
 
                     return new Color(r / 255f, g / 255f, b / 255f, 1f);
                 }

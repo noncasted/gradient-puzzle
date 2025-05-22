@@ -23,7 +23,7 @@ namespace GamePlay.Paints
         private MergeHandle _handle;
         private PaintMergingHandleOptions _handleOptions;
         private IPaintMoveArea _moveArea;
-        private IReadOnlyLifetime _currentLifetimer;
+        private IReadOnlyLifetime _currentLifetime;
 
         [Inject]
         private void Construct(
@@ -62,18 +62,17 @@ namespace GamePlay.Paints
 
         public void Show(PaintMergingHandleOptions options)
         {
-            _fill.SetVisible(options.ShowFill);
-            
+            _handle.SetFill(options.ShowFill);
             _handleOptions = options;
             _body.SetColor(_sourceImage.Color);
             _fill.SetColor(_sourceImage.Color);
             _handle.SetBody(options.ShowBody);
-            _currentLifetimer = options.Lifetime;
+            _currentLifetime = options.Lifetime;
         }
 
         public void OnUpdate(float delta)
         {
-            if (_currentLifetimer == null || _handleOptions == null || _currentLifetimer.IsTerminated == true)
+            if (_currentLifetime == null || _handleOptions == null || _currentLifetime.IsTerminated == true)
                 return;
 
             var (area, targetCenter) = GetClosestArea();

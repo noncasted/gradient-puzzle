@@ -1,6 +1,5 @@
-using SvgPathProperties.Base;
-
 using System;
+using SvgPathProperties.Base;
 
 namespace SvgPathProperties
 {
@@ -18,17 +17,17 @@ namespace SvgPathProperties
 
         public Point GetPointAtLength(double pos)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Point GetTangentAtLength(double pos)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public PointProperties GetPropertiesAtLength(double pos)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Rect GetBBox() => new Rect(X, Y, X, Y);

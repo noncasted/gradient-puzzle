@@ -43,7 +43,7 @@ namespace GamePlay.Paints
             {
                 Lifetime = handle.Lifetime,
                 Targets = new[] { target },
-                ShowBody = true,
+                ShowBody = false,
             });
 
             await _mover.TransitTo(handle.Lifetime, target.GetNearestCenter(_transform.RectPosition));

@@ -35,6 +35,7 @@ namespace GamePlay.Paints
 
         private IPaintTarget _area;
         private bool _showBody;
+        private bool _showFill;
         private float _moveProgress;
         private float _timer;
 
@@ -53,6 +54,12 @@ namespace GamePlay.Paints
 
             if (showBody == false)
                 _body.UpdatePath(null);
+        }
+
+        public void SetFill(bool showFill)
+        {
+            _showFill = showFill;
+            _fill.SetVisible(showFill);
         }
 
         public void SetArea(IPaintTarget area)
@@ -110,10 +117,13 @@ namespace GamePlay.Paints
 
             _fill.SetSize(targetSize);
 
-            if (_area.IsInside(_transform.RectPosition) == false)
-                _fill.SetVisible(_area.PaintHandle.Paint.Value == null);
-            else
-                _fill.SetVisible(true);
+            if (_showFill == true)
+            {
+                if (_area.IsInside(_transform.RectPosition) == false)
+                    _fill.SetVisible(_area.PaintHandle.Paint.Value == null);
+                else if (_options)
+                    _fill.SetVisible(true);
+            }
 
             if (_showBody == true)
             {
