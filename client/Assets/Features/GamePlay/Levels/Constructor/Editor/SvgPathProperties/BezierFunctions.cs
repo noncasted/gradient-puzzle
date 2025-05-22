@@ -1,5 +1,5 @@
-﻿using SvgPathProperties.Base;
-using System;
+﻿using System;
+using SvgPathProperties.Base;
 
 namespace SvgPathProperties
 {

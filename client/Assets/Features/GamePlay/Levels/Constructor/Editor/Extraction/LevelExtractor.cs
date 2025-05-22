@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SvgPathProperties;
 using UnityEngine;
 
 namespace GamePlay.Levels
@@ -95,7 +96,7 @@ namespace GamePlay.Levels
         {
             var renderPoints = new List<Vector2>();
 
-            var properties = new SvgPathProperties.SvgPath(pathData.D);
+            var properties = new SvgPath(pathData.D);
             var length = properties.Length;
 
             var previousPoint = Vector2.zero;

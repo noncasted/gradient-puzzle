@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using GamePlay.Common;
 using Global.Systems;
+using Internal;
 using UnityEngine;
 
 namespace GamePlay.Paints
@@ -38,6 +39,7 @@ namespace GamePlay.Paints
         public async UniTask Enter(IPaintTarget target)
         {
             var handle = _stateMachine.CreateHandle(this);
+            var mergeLifetime = handle.Lifetime.Child();
             var center = target.GetNearestCenter(_transform.RectPosition);
 
             var start = _transform.RectPosition;
@@ -47,8 +49,8 @@ namespace GamePlay.Paints
 
             _merging.Show(new PaintMergingHandleOptions()
             {
-                Lifetime = handle.Lifetime,
-                ShowBody = false,
+                Lifetime = mergeLifetime,
+                ShowBody = true,
                 Targets = new[] { target },
             });
             
@@ -56,6 +58,7 @@ namespace GamePlay.Paints
                 handle.Lifetime,
                 _options.DockScaleCurve,
                 progress => _transform.SetRectPosition(Vector2.Lerp(start, end, progress)));
+            mergeLifetime.Terminate();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GamePlay.Levels;
 using Internal;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -39,9 +38,10 @@ namespace Menu
 
         public void ToGame(IReadOnlyDictionary<Vector2, Color> colors)
         {
-            var (bottomLeft, topRight) = colors.Keys.ToList().GetBounds();
-            var topLeft = new Vector2(bottomLeft.x, topRight.y);
-            var bottomRight = new Vector2(topRight.x, bottomLeft.y);
+            var bottomLeft = new Vector2(-540, -540);
+            var topRight = new Vector2(540, 540);
+            var topLeft = new Vector2(-540, 540);
+            var bottomRight = new Vector2(540, -540);
 
             _targetColors[0] = GetNearestTo(topLeft);
             _targetColors[1] = GetNearestTo(topRight);

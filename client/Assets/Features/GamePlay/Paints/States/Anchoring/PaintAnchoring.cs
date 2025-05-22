@@ -38,7 +38,6 @@ namespace GamePlay.Paints
             var handle = _stateMachine.CreateHandle(this);
 
             _interceptor.Detach();
-            _interceptor.Attach(target);
 
             _merging.Show(new PaintMergingHandleOptions()
             {
@@ -48,6 +47,8 @@ namespace GamePlay.Paints
             });
 
             await _mover.TransitTo(handle.Lifetime, target.GetNearestCenter(_transform.RectPosition));
+            _interceptor.Attach(target);
+            
             await _drop.Enter(target);
         }
     }

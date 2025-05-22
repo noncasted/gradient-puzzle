@@ -152,7 +152,7 @@ namespace Loop
             foreach (var area in level.Areas)
             {
                 colors.Add(area.Color);
-                positionToColor.Add(area.Position, area.Color);
+                positionToColor.Add(area.RootCenter.anchoredPosition, area.Color);
                 target.Add(area);
                 colorToArea.Add(area.Color, area);
             }
@@ -186,13 +186,8 @@ namespace Loop
             _background.ToGame(positionToColor);
 
             await UniTask.Yield();
-            await UniTask.Yield();
-            await UniTask.Yield();
 
             _selectionScaler.Disable();
-
-            await UniTask.Yield();
-            await UniTask.Yield();
 
             foreach (var dock in docks)
                 dock.UpdateTransform(_selectionScaler.AreaSize);
@@ -213,7 +208,6 @@ namespace Loop
             foreach (var anchor in anchors)
             {
                 var paint = colorToPaint[anchor.Color];
-                anchor.PaintHandle.Set(paint);
                 anchor.PaintHandle.Lock();
                 paint.Anchor(anchor);
             }

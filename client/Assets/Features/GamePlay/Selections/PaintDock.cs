@@ -6,7 +6,6 @@ using Internal;
 using Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace GamePlay.Selections
 {

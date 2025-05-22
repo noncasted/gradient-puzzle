@@ -33,6 +33,7 @@ namespace GamePlay.Selections
         
         public void Disable()
         {
+            _grid.CalculateLayoutInputHorizontal();
             _grid.enabled = false;
         }
     }

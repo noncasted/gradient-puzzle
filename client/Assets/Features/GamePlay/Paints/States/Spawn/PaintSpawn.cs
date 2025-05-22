@@ -54,16 +54,16 @@ namespace GamePlay.Paints
                     _transform.AttachTo(dock.RootCenter);
                     _transform.SetLocalPosition(Vector2.zero);
                     var mergeLifetime = handle.Lifetime.Child();
-                    
+
                     _merging.Show(new PaintMergingHandleOptions()
                     {
                         Lifetime = mergeLifetime,
                         ShowBody = false,
                         Targets = new[] { target },
                     });
-                    
+
                     await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: handle.Lifetime.Token);
-                    
+
                     mergeLifetime.Terminate();
 
                     break;

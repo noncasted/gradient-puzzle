@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace GamePlay.Levels
@@ -26,7 +27,7 @@ namespace GamePlay.Levels
             foreach (var data in shapesData)
             {
 #if UNITY_EDITOR
-                var areaRenderer = UnityEditor.PrefabUtility.InstantiatePrefab(_prefab, transform) as AreaShapeRenderer;
+                var areaRenderer = PrefabUtility.InstantiatePrefab(_prefab, transform) as AreaShapeRenderer;
                 areaRenderer.SetPoints(data.RenderPoints);
 
                 _renderers.Add(areaRenderer);
@@ -53,7 +54,7 @@ namespace GamePlay.Levels
         {
 #if UNITY_EDITOR
             foreach (var areaRenderer in _renderers)
-                UnityEditor.EditorUtility.SetDirty(areaRenderer);
+                EditorUtility.SetDirty(areaRenderer);
 #endif
         }
     }
