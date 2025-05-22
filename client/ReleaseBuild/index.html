@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>gradient-puzzle</title>
+    <title>Gradients</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -25,26 +25,16 @@
     </div>
     <div id="unity-fullscreen-button" style="display: none;"></div>
     <script>
-   try {
-       const data = JSON.stringify({is_visible: true});
-       
-       window
-           .TelegramWebviewProxy
-           .postEvent('web_app_setup_back_button', data);
-   } catch (e){
-         console.log('TelegramWebviewProxy not found');
-   }
-
       const hideFullScreenButton = "";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/4d8ac56adc81dbc672eeb11e453adcee.loader.js";
+      const loaderUrl = buildUrl + "/977c75149533a1cffa6929e90890393c.loader.js";
       const config = {
-        dataUrl: buildUrl + "/70582da42d46b55652010d17e1548fc6.data.br",
-        frameworkUrl: buildUrl + "/65ea006eb87ce057e4da24a6024d4d88.framework.js.br",
-        codeUrl: buildUrl + "/afde3f37ec846233dadd09ab59ca8fbb.wasm.br",
+        dataUrl: buildUrl + "/c46450c47debb864f755f1b5d2491ea8.data.br",
+        frameworkUrl: buildUrl + "/c01c800a195375adff6b3e0960cc03a8.framework.js.br",
+        codeUrl: buildUrl + "/ec563586ebe19f1f798a6b3c1f7f77e5.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Bitach",
-        productName: "gradient-puzzle",
+        productName: "Gradients",
         productVersion: "1.0",
       };
 

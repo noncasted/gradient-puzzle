@@ -9,8 +9,10 @@
     <type fullname="GamePlay.Selections.DockObjectFactory" preserve="all" />
     <type fullname="GamePlay.Selections.PaintSelectionScaler" preserve="all" />
     <type fullname="GamePlay.Selections.Testasdasd" preserve="all" />
+    <type fullname="Menu.Background" preserve="all" />
     <type fullname="Menu.Levels.LevelSelection" preserve="all" />
     <type fullname="Menu.Levels.LevelSelectionView" preserve="all" />
+    <type fullname="Menu.LevelVisibility" preserve="all" />
     <type fullname="Menu.Sections.LevelSections" preserve="all" />
     <type fullname="Menu.Sections.LevelSectionView" preserve="all" />
     <type fullname="Overlay.CompletionUI" preserve="all" />
@@ -106,6 +108,7 @@
   </assembly>
   <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="UnityEngine.Canvas" preserve="all" />
+    <type fullname="UnityEngine.CanvasGroup" preserve="all" />
     <type fullname="UnityEngine.CanvasRenderer" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.TextCoreFontEngineModule">

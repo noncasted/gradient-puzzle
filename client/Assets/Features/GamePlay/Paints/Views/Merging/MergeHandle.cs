@@ -62,7 +62,7 @@ namespace GamePlay.Paints
 
         public void Update(float delta)
         {
-            if (_showBody == false)
+            if (_showBody == false || _area.PaintHandle.Paint.Value != null)
                 _body.UpdatePath(null);
 
             _timer += delta;
@@ -74,9 +74,9 @@ namespace GamePlay.Paints
                 _body.SetMaterial(null);
 
             RecalculateTarget();
-            
+
             _currentCenter = Vector2.Lerp(_currentCenter, _targetCenter, delta * _options.CenterMoveSpeed);
-            
+
             var distanceToArea = Vector2.Distance(_currentCenter, _transform.RectPosition);
             var targetProgress = 1f - Mathf.Clamp01(distanceToArea / _options.StartDistance);
 
@@ -102,6 +102,11 @@ namespace GamePlay.Paints
 
             _fill.SetSize(targetSize);
 
+            if (_area.IsInside(_transform.RectPosition) == false)
+                _fill.SetVisible(_area.PaintHandle.Paint.Value == null);
+            else
+                _fill.SetVisible(true);
+
             if (_showBody == true)
             {
                 var fillPosition = Vector2.Lerp(
@@ -110,7 +115,9 @@ namespace GamePlay.Paints
                     targetPositionFactor) - _transform.RectPosition;
 
                 _fill.SetRectPosition(fillPosition);
-                _body.UpdatePath(this);
+
+                if (_area.PaintHandle.Paint.Value == null)
+                    _body.UpdatePath(this);
             }
         }
 
@@ -118,7 +125,7 @@ namespace GamePlay.Paints
         {
             if (_area is IPaintDock)
                 return;
-            
+
             var firstNearest = _area.GetNearestCenter(_transform.RectPosition);
             var secondNearest = _area.GetNearestCenter(_transform.RectPosition, firstNearest);
 

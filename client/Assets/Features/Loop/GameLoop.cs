@@ -15,6 +15,7 @@ using Global.Saves;
 using Global.Systems;
 using Global.UI;
 using Internal;
+using Menu;
 using Overlay;
 using Services;
 using UnityEngine;
@@ -41,6 +42,7 @@ namespace Loop
             IGlobalContext globalContext,
             IUserBackend userBackend,
             IDataStorage dataStorage,
+            IBackground background,
             GameLoopCheats cheats)
         {
             _stateMachine = stateMachine;
@@ -60,6 +62,7 @@ namespace Loop
             _globalContext = globalContext;
             _userBackend = userBackend;
             _dataStorage = dataStorage;
+            _background = background;
             _cheats = cheats;
         }
 
@@ -82,6 +85,7 @@ namespace Loop
         private readonly IGlobalContext _globalContext;
         private readonly IUserBackend _userBackend;
         private readonly IDataStorage _dataStorage;
+        private readonly IBackground _background;
         private readonly GameLoopCheats _cheats;
 
         private ILifetime _currentLifetime;
@@ -137,6 +141,7 @@ namespace Loop
             var level = _levelLoader.Load(data);
 
             var colors = new List<Color>();
+            var positionToColor = new Dictionary<Vector2, Color>();
             var colorToPaint = new Dictionary<Color, IPaint>();
             var paintToColor = new Dictionary<IPaint, Color>();
             var paintToDock = new Dictionary<IPaint, IPaintDock>();
@@ -147,6 +152,7 @@ namespace Loop
             foreach (var area in level.Areas)
             {
                 colors.Add(area.Color);
+                positionToColor.Add(area.Position, area.Color);
                 target.Add(area);
                 colorToArea.Add(area.Color, area);
             }
@@ -177,6 +183,7 @@ namespace Loop
             }
 
             _gameContext.Setup(level, docks);
+            _background.ToGame(positionToColor);
 
             await UniTask.Yield();
             await UniTask.Yield();
