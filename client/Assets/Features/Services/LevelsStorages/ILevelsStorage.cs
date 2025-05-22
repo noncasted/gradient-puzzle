@@ -29,17 +29,12 @@ namespace Services
         public static ILevelData GetNext(this ILevelsStorage storage, ILevelData from)
         {
             var section = storage.Sections[from.SectionType];
-            Debug.Log($"Search index in section: {from.SectionType} {from.Index}");
             var index = GetIndex();
 
             if (index == section.Count - 1)
-            {
-                Debug.Log($"Search from index: {index} to first; Section completed");
                 return section.First();
-            }
             
             var nextIndex = index + 1;
-            Debug.Log($"Search from index: {index} to next {nextIndex}");
             return section[nextIndex];
 
             int GetIndex()
