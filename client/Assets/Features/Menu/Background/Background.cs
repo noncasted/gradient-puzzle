@@ -123,7 +123,7 @@ namespace Menu
         [Button]
         private void PushSections()
         {
-            Copy(_levels, _targetColors);
+            Copy(_sections, _targetColors);
         }
 
         [Button]
