@@ -32,10 +32,15 @@ namespace Services
             Debug.Log($"Search index in section: {from.SectionType} {from.Index}");
             var index = GetIndex();
 
-            if (index == storage.Sections.Count - 1)
+            if (index == section.Count - 1)
+            {
+                Debug.Log($"Search from index: {index} to first; Section completed");
                 return section.First();
-
-            return section[index + 1];
+            }
+            
+            var nextIndex = index + 1;
+            Debug.Log($"Search from index: {index} to next {nextIndex}");
+            return section[nextIndex];
 
             int GetIndex()
             {
