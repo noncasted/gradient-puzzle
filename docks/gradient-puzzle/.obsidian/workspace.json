@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "frontend test.md",
+                "file": "frontend setup.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "frontend test"
+              "title": "frontend setup"
             }
           }
         ]
@@ -167,9 +167,9 @@
   },
   "active": "4c0fe72f45d13f85",
   "lastOpenFiles": [
-    "illustrator.md",
-    "frontend setup.md",
     "frontend test.md",
+    "frontend setup.md",
+    "illustrator.md",
     "urls.md",
     "InkScape.md",
     "Welcome.md"
