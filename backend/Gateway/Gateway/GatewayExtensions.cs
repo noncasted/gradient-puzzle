@@ -21,7 +21,7 @@ public static class GatewayExtensions
         if (builder.Environment.IsDevelopment() == true)
             return builder;
 
-        var token = builder.ExtractString("TelegramToken");
+        var token = builder.ExtractString("TELEGRAM_TOKEN");
 
         builder.Services.AddSingleton(new TelegramOptions
         {
