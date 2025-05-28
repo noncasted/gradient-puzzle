@@ -2,6 +2,7 @@
 using Internal;
 using MPUIKIT;
 using Services;
+using Shared;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

@@ -25,6 +25,7 @@
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cinputs_005Cutils_005Cprojection/@EntryIndexedValue">True</s:Boolean>
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cinputs_005Cview/@EntryIndexedValue">True</s:Boolean>
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cinputs_005Cview_005Cactions/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cmetrics/@EntryIndexedValue">False</s:Boolean>
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cnetwork_005Cclient_005Cconnection_005Cconfiguration/@EntryIndexedValue">True</s:Boolean>
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cnetwork_005Cclient_005Cconnection/@EntryIndexedValue">True</s:Boolean>
     <s:Boolean x:Key="/Default/CodeInspection/NamespaceProvider/NamespaceFoldersToSkip/=assets_005Cglobal_005Cnetwork_005Cclient_005Chandle/@EntryIndexedValue">True</s:Boolean>

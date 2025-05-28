@@ -124,6 +124,10 @@ namespace GamePlay.Paints
                 else if (_options)
                     _fill.SetVisible(true);
             }
+            else
+            {
+                    _fill.SetVisible(false);
+            }
 
             if (_showBody == true)
             {

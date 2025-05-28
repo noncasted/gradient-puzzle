@@ -6,6 +6,7 @@ using Global.Backend;
 using Global.Publisher;
 using Global.Saves;
 using Internal;
+using Shared;
 
 namespace Services
 {
@@ -23,11 +24,11 @@ namespace Services
 
         private readonly IDataStorage _dataStorage;
         private readonly IUserBackend _userBackend;
+        private readonly LevelOptionsRegistry _optionsRegistry;
+        private readonly Dictionary<LevelSectionType, IReadOnlyList<ILevelData>> _sections = new();
 
         private LevelsSave _save;
         private IReadOnlyLifetime _lifetime;
-        private readonly Dictionary<LevelSectionType, IReadOnlyList<ILevelData>> _sections = new();
-        private LevelOptionsRegistry _optionsRegistry;
 
         public IReadOnlyDictionary<LevelSectionType, IReadOnlyList<ILevelData>> Sections => _sections;
 
@@ -55,7 +56,7 @@ namespace Services
 
             foreach (var (type, list) in sections)
             {
-                var sectionKey = (int)type;
+                var sectionKey = type;
 
                 if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
                     continue;
@@ -76,9 +77,9 @@ namespace Services
                 return;
 
             _sections[data.SectionType][data.Index].OnPassed();
-            _save.Passed[(int)data.SectionType] = data.Index;
+            _save.Passed[data.SectionType] = data.Index;
             _dataStorage.Save(_save).Forget();
-            _userBackend.SaveProgress(_lifetime, (int)data.SectionType, data.Index).Forget();
+            _userBackend.SaveProgress(_lifetime, data.SectionType, data.Index).Forget();
 
             RecalculateUnlocks().Forget();
         }
@@ -89,7 +90,7 @@ namespace Services
 
             foreach (var (type, list) in _sections)
             {
-                var sectionKey = (int)type;
+                var sectionKey = type;
 
                 if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
                     continue;
@@ -105,7 +106,7 @@ namespace Services
 
             foreach (var (type, list) in _sections)
             {
-                var sectionKey = (int)type;
+                var sectionKey = type;
 
                 if (_save.Passed.TryGetValue(sectionKey, out var index) == false)
                     continue;

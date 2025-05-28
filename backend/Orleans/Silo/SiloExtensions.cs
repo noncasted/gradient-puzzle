@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Orleans.Configuration;
+﻿using Orleans.Configuration;
 using Orleans.Providers;
 using ServiceDefaults;
 
@@ -42,19 +41,6 @@ public static class SiloExtensions
             });
 
             siloBuilder.AddActivityPropagation();
-        });
-
-        return builder;
-    }
-    
-    public static IEndpointRouteBuilder AddSiloHealthcheck(this IEndpointRouteBuilder builder)
-    {
-        builder.MapGet("silo-health", ([FromServices] ISiloSetup setup) =>
-        {
-            if (setup.IsStarted == true)
-                return Results.Ok();
-
-            return Results.Problem();
         });
 
         return builder;

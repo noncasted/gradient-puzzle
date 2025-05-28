@@ -2,6 +2,7 @@
 using Global.UI;
 using Internal;
 using Services;
+using Shared;
 using UnityEngine;
 using VContainer;
 

@@ -15,10 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entry\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Protocol\Protocol.csproj" />
       <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
     </ItemGroup>
 

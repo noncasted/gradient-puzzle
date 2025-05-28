@@ -16,6 +16,7 @@ namespace Global.Backend
                 .As<IBackendPostGateway>();
             
             builder.Register<BackendClient>()
+                .WithAsset<BackendOptions>()
                 .As<IBackendClient>();
 
             builder.Register<AuthBackend>()

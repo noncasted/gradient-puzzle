@@ -10,6 +10,7 @@ using GamePlay.Selections;
 using Global.Backend;
 using Global.Cameras;
 using Global.GameServices;
+using Global.Metrics;
 using Global.Publisher;
 using Global.Saves;
 using Global.Systems;
@@ -18,6 +19,7 @@ using Internal;
 using Menu;
 using Overlay;
 using Services;
+using Shared;
 using UnityEngine;
 
 namespace Loop
@@ -43,6 +45,7 @@ namespace Loop
             IUserBackend userBackend,
             IDataStorage dataStorage,
             IBackground background,
+            IMetrics metrics,
             GameLoopCheats cheats)
         {
             _stateMachine = stateMachine;
@@ -63,6 +66,7 @@ namespace Loop
             _userBackend = userBackend;
             _dataStorage = dataStorage;
             _background = background;
+            _metrics = metrics;
             _cheats = cheats;
         }
 
@@ -86,6 +90,7 @@ namespace Loop
         private readonly IUserBackend _userBackend;
         private readonly IDataStorage _dataStorage;
         private readonly IBackground _background;
+        private readonly IMetrics _metrics;
         private readonly GameLoopCheats _cheats;
 
         private ILifetime _currentLifetime;
@@ -134,6 +139,7 @@ namespace Loop
 
         private async UniTask HandleLevel(IReadOnlyLifetime lifetime, ILevelData data)
         {
+            var startTime = DateTime.Now;
             _overlay.HideReset();
 
             await _paintCollection.Initialize();
@@ -197,7 +203,7 @@ namespace Loop
             foreach (var paint in paints)
             {
                 var dock = paintToDock[paint];
-                paint.Spawn(dock);
+                paint.Spawn(dock).Forget();
                 await UniTask.Delay(TimeSpan.FromSeconds(PointSpawnDelay));
             }
 
@@ -209,7 +215,7 @@ namespace Loop
             {
                 var paint = colorToPaint[anchor.Color];
                 anchor.PaintHandle.Lock();
-                paint.Anchor(anchor);
+                paint.Anchor(anchor).Forget();
             }
 
             var levelLifetime = lifetime.Child();
@@ -249,9 +255,18 @@ namespace Loop
             }
 
             await UniTask.WhenAll(completionTasks);
-            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
 
             _levelsStorage.OnLevelPassed(data);
+            
+            var resultTime = DateTime.Now - startTime;
+
+            _metrics.Send(new MetricsContexts.Level()
+            {
+                Section = data.Options.SectionType,
+                LevelIndex = data.Index,
+                Time = resultTime
+            }).Forget();
 
             await _stateMachine.ProcessChild(_overlay, _completionUI);
 
