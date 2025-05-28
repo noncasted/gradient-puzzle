@@ -2,5 +2,5 @@
 
 public interface IMetricsPublisher
 {
-    Task Publish(IMigrationMetadata migrationMetadata, IMetricData dataToInsert);
+    Task Publish(IMetricData dataToInsert);
 }

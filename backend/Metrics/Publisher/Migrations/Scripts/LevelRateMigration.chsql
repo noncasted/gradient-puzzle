@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS {0}.{1}  -- level_rate
+(
+    name String, 
+    section String,
+    level_index Int32,
+    rate Int32,
+) ENGINE = ReplacingMergeTree()
+PRIMARY KEY(name, section, level_index, rate)
+ORDER BY (name, section, level_index, rate)

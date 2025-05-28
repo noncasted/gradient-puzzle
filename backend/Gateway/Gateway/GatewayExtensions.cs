@@ -60,7 +60,8 @@ public static class GatewayExtensions
 
         var services = builder.Services;
 
-        services.AddSingleton<IMigrationMetadata, LevelMetrics.Migration>();
+        services.AddSingleton<IMigrationMetadata, LevelPassMetrics.Migration>();
+        services.AddSingleton<IMigrationMetadata, LevelRateMetrics.Migration>();
 
         services.AddSingleton(options);
         services.AddHostedSingleton<IMetricsPublisher, MetricsPublisher>();
