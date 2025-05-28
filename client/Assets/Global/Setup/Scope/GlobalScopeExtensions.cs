@@ -5,6 +5,7 @@ using Global.Cameras;
 using Global.GameLoops;
 using Global.GameServices;
 using Global.Inputs;
+using Global.Metrics;
 using Global.Publisher;
 using Global.Systems;
 using Global.UI;
@@ -36,6 +37,7 @@ namespace Global.Setup
                     .AddLoop()
                     .AddGameServices()
                     .AddSystemUtils()
+                    .AddMetrics()
                     .AddBackend();
 
                 return UniTask.WhenAll(

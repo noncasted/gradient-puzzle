@@ -14,4 +14,8 @@
         <PackageReference Include="Microsoft.Orleans.Transactions" Version="9.0.1"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Protocol\Protocol.csproj" />
+    </ItemGroup>
+
 </Project>

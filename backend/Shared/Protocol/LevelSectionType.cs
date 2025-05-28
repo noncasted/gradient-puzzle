@@ -1,4 +1,4 @@
-﻿namespace Services
+﻿namespace Shared
 {
     public enum LevelSectionType
     {

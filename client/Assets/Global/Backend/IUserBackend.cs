@@ -2,12 +2,13 @@
 using System.Net;
 using Cysharp.Threading.Tasks;
 using Internal;
+using Shared;
 
 namespace Global.Backend
 {
     public interface IUserBackend
     {
-        UniTask<IReadOnlyDictionary<int, int>> GetProgress(IReadOnlyLifetime lifetime);
-        UniTask SaveProgress(IReadOnlyLifetime lifetime, int section, int level);
+        UniTask<IReadOnlyDictionary<LevelSectionType, int>> GetProgress(IReadOnlyLifetime lifetime);
+        UniTask SaveProgress(IReadOnlyLifetime lifetime, LevelSectionType section, int level);
     }   
 }

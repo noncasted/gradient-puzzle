@@ -19,16 +19,13 @@
         <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0"/>
         <PackageReference Include="Aspire.Hosting.Redis" Version="9.0.0" />
         <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.0.0" />
+        <PackageReference Include="ClickHouse.Hosting" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\Deployment\Startup\Startup.csproj" />
         <ProjectReference Include="..\..\Gateway\Gateway\Gateway.csproj" />
         <ProjectReference Include="..\..\Orleans\Silo\Silo.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="aspirate-output\" />
+        <ProjectReference Include="..\Startup\Startup.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using Cysharp.Threading.Tasks;
 using Global.GameServices;
 using Internal;
@@ -25,9 +24,9 @@ namespace Global.Backend
         private readonly IGlobalContext _globalContext;
         private readonly BackendOptions _backendOptions;
 
-        public async UniTask<IReadOnlyDictionary<int, int>> GetProgress(IReadOnlyLifetime lifetime)
+        public async UniTask<IReadOnlyDictionary<LevelSectionType, int>> GetProgress(IReadOnlyLifetime lifetime)
         {
-            var request = new GetUserProgress.Request()
+            var request = new UserContexts.GetProgress.Request()
             {
                 UserId = _globalContext.UserId
             };
@@ -37,17 +36,17 @@ namespace Global.Backend
             var bodyJson = JsonConvert.SerializeObject(request);
             Debug.Log($"[Backend] Get player progress: {bodyJson}");
 
-            var response = await _client.PostJson<GetUserProgress.Response>(lifetime, url, request);
+            var response = await _client.PostJson<UserContexts.GetProgress.Response>(lifetime, url, request);
             
             return response.PassedLevels;
         }
 
-        public UniTask SaveProgress(IReadOnlyLifetime lifetime, int section, int level)
+        public UniTask SaveProgress(IReadOnlyLifetime lifetime, LevelSectionType section, int level)
         {
-            var request = new SetUserProgress.Request()
+            var request = new UserContexts.SetProgress()
             {
                 UserId = _globalContext.UserId,
-                Stage = section,
+                Section = section,
                 Level = level
             };
 

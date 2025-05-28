@@ -10,7 +10,6 @@ public static class TaskExtensions
         Console.WriteLine(t.Exception.ToString());
     });
 
-
     public static void NoAwait(this Task? task)
     {
         task?.ContinueWith(_noAwaitContinuation,

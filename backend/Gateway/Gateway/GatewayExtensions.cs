@@ -1,28 +1,24 @@
-﻿using ServiceDefaults;
+﻿using Common;
+using Metrics;
+using ServiceDefaults;
 
 namespace Gateway;
 
 public static class GatewayExtensions
 {
-    public static IHostApplicationBuilder AddSecrets(this IHostApplicationBuilder builder)
+    public static IHostApplicationBuilder AddTelegram(this IHostApplicationBuilder builder)
     {
         if (builder.Environment.IsDevelopment() == true)
-        {
-            builder.Configuration.AddJsonFile("secrets.json");
-            var options = builder.Configuration.GetSection("TelegramOptions").Get<TelegramOptions>();
-            builder.Services.AddSingleton(options!);
-        }
-        else
-        {
-            var token = Environment.GetEnvironmentVariable("TELEGRAM_TOKEN")!;
+            return builder;
+        
+        var token = builder.ExtractString("TelegramToken");
 
-            var options = new TelegramOptions()
-            {
-                Token = token
-            };
+        builder.Services.AddSingleton(new TelegramOptions
+        {
+            Token = token
+        });
 
-            builder.Services.AddSingleton(options);
-        }
+        builder.Services.AddHostedService<TelegramBot>();
 
         return builder;
     }
@@ -43,6 +39,35 @@ public static class GatewayExtensions
         });
 
         return builder;
+    }
+
+    public static IHostApplicationBuilder AddMetrics(this IHostApplicationBuilder builder)
+    {
+        var options = new ClickHouseOptions
+        {
+            ConnectionString = GetConnectionString()
+        };
+
+        var services = builder.Services;
+
+        services.AddSingleton<IMigrationMetadata, LevelMetrics.Migration>();
+
+        services.AddSingleton(options);
+        services.AddHostedSingleton<IMetricsPublisher, MetricsPublisher>();
+
+        return builder;
+
+        string GetConnectionString()
+        {
+            if (builder.Environment.IsDevelopment() == true)
+                return builder.Configuration.GetConnectionString("default")!;
+
+            var host = builder.ExtractString("ClickHouse_Host");
+            var username = builder.ExtractString("ClickHouse_Login");
+            var password = builder.ExtractString("ClickHouse_Password");
+
+            return $"Host={host};Protocol=http;Port=8123;Username={username};Password={password};";
+        }
     }
 
     public static void ConfigureCors(this IHostApplicationBuilder builder)
@@ -70,5 +95,13 @@ public static class GatewayExtensions
                 }
             });
         });
+    }
+
+    private static string ExtractString(this IHostApplicationBuilder builder, string key)
+    {
+        if (builder.Environment.IsDevelopment() == true)
+            return builder.Configuration[key]!;
+
+        return Environment.GetEnvironmentVariable(key)!;
     }
 }

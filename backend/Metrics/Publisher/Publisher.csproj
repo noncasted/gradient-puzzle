@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Metrics.Publisher</AssemblyName>
+        <RootNamespace>Metrics</RootNamespace>
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ClickHouse.Client" Version="7.14.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Shared\Protocol\Protocol.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Migrations\Scripts\LevelMigration.chsql" />
+      <EmbeddedResource Include="Migrations\Scripts\LevelMigration.chsql" />
+    </ItemGroup>
+
+</Project>

@@ -9,20 +9,20 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder AddUserEndpoints(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost("getProgress", GetProgress);
-        builder.MapPost("setLevelPassed", SetLevelPassed);
+        builder.MapPost(UserContexts.GetProgress.Endpoint, GetProgress);
+        builder.MapPost(UserContexts.SetProgress.Endpoint, SetLevelPassed);
 
         return builder;
     }
 
-    private static async Task<GetUserProgress.Response> GetProgress(
-        [FromBody] GetUserProgress.Request request,
+    private static async Task<UserContexts.GetProgress.Response> GetProgress(
+        [FromBody] UserContexts.GetProgress.Request request,
         [FromServices] IGrainFactory grains)
     {
         var userProgress = grains.GetGrain<IUserProgress>(request.UserId);
         var state = await userProgress.GetProgress();
 
-        var response = new GetUserProgress.Response
+        var response = new UserContexts.GetProgress.Response
         {
             PassedLevels = state.PassedLevels
         };
@@ -31,10 +31,10 @@ public static class UserEndpoints
     }
 
     private static Task SetLevelPassed(
-        [FromBody] SetUserProgress.Request request,
+        [FromBody] UserContexts.SetProgress request,
         [FromServices] IGrainFactory grains)
     {
         var userProgress = grains.GetGrain<IUserProgress>(request.UserId);
-        return userProgress.OnLevelPassed(request.Stage, request.Level);
+        return userProgress.OnLevelPassed(request.Section, request.Level);
     }
 }

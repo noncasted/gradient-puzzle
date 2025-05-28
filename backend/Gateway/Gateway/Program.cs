@@ -1,24 +1,29 @@
 using Gateway;
+using Metrics;
 using ServiceDefaults;
 using Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("secrets.json");
+
 builder
     .AddServiceDefaults()
-    .AddSecrets()
+    .AddTelegram()
     .AddOrleans()
+    .AddMetrics()
     .ConfigureCors();
 
 builder.Services
-    .AddOpenApi()
-    .AddHostedService<TelegramBot>()
-    .AddHostedService<GatewaySetup>();
+    .AddOpenApi();
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-app.AddUserEndpoints();
+
+app
+    .AddUserEndpoints()
+    .AddMetricsEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

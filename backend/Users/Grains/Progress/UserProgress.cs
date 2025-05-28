@@ -1,4 +1,6 @@
-﻿namespace Users;
+﻿using Shared;
+
+namespace Users;
 
 public class UserProgress : Grain, IUserProgress
 {
@@ -16,7 +18,7 @@ public class UserProgress : Grain, IUserProgress
         return Task.FromResult(_state.State);
     }
 
-    public Task OnLevelPassed(int stage, int level)
+    public Task OnLevelPassed(LevelSectionType stage, int level)
     {
         _state.State.OnPassed(stage, level);
         return _state.WriteStateAsync();

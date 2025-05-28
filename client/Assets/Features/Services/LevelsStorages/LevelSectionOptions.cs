@@ -1,4 +1,5 @@
 ﻿using Internal;
+using Shared;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

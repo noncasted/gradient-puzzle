@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Global.Publisher;
+using Shared;
 
 namespace Global.Saves
 {
     [Serializable]
     public class LevelsSave
     {
-        public Dictionary<int, int> Passed { get; set; } = new();
+        public Dictionary<LevelSectionType, int> Passed { get; set; } = new();
     }
 }
