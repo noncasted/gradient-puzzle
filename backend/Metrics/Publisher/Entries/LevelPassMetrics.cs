@@ -2,15 +2,15 @@
 
 namespace Metrics;
 
-public static class LevelMetrics
+public static class LevelPassMetrics
 {
-    public const string TableName = "level";
+    public const string Table = "level_pass";
 
-    public static Payload ToPayload(this MetricsContexts.Level context)
+    public static Payload ToPayload(this MetricsContexts.LevelPass context)
     {
         return new Payload
         {
-            Name = $"{context.Section.ToName()}_{context.LevelIndex}",
+            Name = context.Section.CreateLevelName(context.LevelIndex),
             Section = context.Section.ToName(),
             LevelIndex = context.LevelIndex,
             Time = (int)context.Time.TotalSeconds,
@@ -23,6 +23,8 @@ public static class LevelMetrics
         public required string Section { get; init; }
         public required int LevelIndex { get; init; }
         public required int Time { get; init; }
+
+        public string TableName => Table;
 
         public object[] ToArrayOfObjects()
         {
@@ -38,13 +40,13 @@ public static class LevelMetrics
 
     public class Migration : MigrationBase, IMigrationMetadata
     {
-        public override string TableName => LevelMetrics.TableName;
+        public string TableName => Table;
 
         public IEnumerable<string> GetScripts()
         {
             var scripts = new List<string>();
 
-            var script = string.Format(this.ReadMigrationScript("LevelMigration.chsql"), DatabaseName, TableName);
+            var script = string.Format(this.ReadMigrationScript("LevelPassMigration.chsql"), DatabaseName, Table);
             scripts.Add(script);
 
             return scripts;

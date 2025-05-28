@@ -188,7 +188,7 @@ namespace Loop
                 paintToDock.Add(paint, dock);
             }
 
-            _gameContext.Setup(level, docks);
+            _gameContext.Setup(level, docks, data);
             _background.ToGame(positionToColor);
 
             await UniTask.Yield();
@@ -261,7 +261,7 @@ namespace Loop
             
             var resultTime = DateTime.Now - startTime;
 
-            _metrics.Send(new MetricsContexts.Level()
+            _metrics.Send(new MetricsContexts.LevelPass()
             {
                 Section = data.Options.SectionType,
                 LevelIndex = data.Index,

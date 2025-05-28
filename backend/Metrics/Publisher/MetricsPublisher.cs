@@ -48,17 +48,15 @@ public class MetricsPublisher : BackgroundService, IMetricsPublisher
             await TryExecute(() => _connection.ExecuteStatementAsync(script));
     }
 
-    public async Task Publish(
-        IMigrationMetadata migrationMetadata,
-        IMetricData dataToInsert)
+    public async Task Publish(IMetricData data)
     {
-        using var bulkCopyInterface = GetBulkCopyInterface(migrationMetadata.TableName, 1);
+        using var bulkCopyInterface = GetBulkCopyInterface(data.TableName, 1);
 
         await TryExecute(() => bulkCopyInterface.InitAsync());
 
         try
         {
-            await bulkCopyInterface.WriteToServerAsync(new List<object[]>() { dataToInsert.ToArrayOfObjects() });
+            await bulkCopyInterface.WriteToServerAsync(new List<object[]>() { data.ToArrayOfObjects() });
         }
         catch (ClickHouseServerException ex)
         {

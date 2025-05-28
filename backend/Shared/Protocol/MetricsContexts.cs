@@ -9,17 +9,28 @@ namespace Shared
     
     public class MetricsContexts
     {
-        public const string Endpoint = "/metrics";
+        public const string EndpointGroup = "/metrics";
         
-        public class Level : IMetricContext
+        public class LevelPass : IMetricContext
         {
-            public const string Name = "/level";
+            public const string Name = "/levelPass";
 
             public string Endpoint => Name;
             
             public LevelSectionType Section { get; set; }
             public int LevelIndex { get; set; }
             public TimeSpan Time { get; set; }
+        }
+        
+        public class LevelRate : IMetricContext
+        {
+            public const string Name = "/levelRate";
+
+            public string Endpoint => Name;
+            
+            public LevelSectionType Section { get; set; }
+            public int LevelIndex { get; set; }
+            public LevelRating Rate { get; set; }
         }
     }
 }

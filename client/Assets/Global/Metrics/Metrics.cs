@@ -20,7 +20,7 @@ namespace Global.Metrics
         
         public UniTask Send(IMetricContext context)
         {
-            var url = _backend.Url + MetricsContexts.Endpoint + context.Endpoint;
+            var url = _backend.Url + MetricsContexts.EndpointGroup + context.Endpoint;
             return _backend.PostJson(_scopeLifetime, url, context);
         }
     }
