@@ -62,11 +62,7 @@ public static class GatewayExtensions
             if (builder.Environment.IsDevelopment() == true)
                 return builder.Configuration.GetConnectionString("default")!;
 
-            var host = builder.ExtractString("ClickHouse_Host");
-            var username = builder.ExtractString("ClickHouse_Login");
-            var password = builder.ExtractString("ClickHouse_Password");
-
-            return $"Host={host};Protocol=http;Port=8123;Username={username};Password={password};";
+            return builder.Configuration.GetConnectionString(ConnectionNames.ClickHouse)!;
         }
     }
 

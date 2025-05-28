@@ -28,6 +28,9 @@ public class MetricsPublisher : BackgroundService, IMetricsPublisher
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _logger.LogInformation("[Metrics] Starting ClickHouse publisher... Connection string: {ConnectionString}",
+            _options.ConnectionString);
+        
         while (await IsConnected() == false)
             await Task.Delay(100, stoppingToken);
 
@@ -38,6 +41,8 @@ public class MetricsPublisher : BackgroundService, IMetricsPublisher
 
         foreach (var migration in _migrations)
             scripts.AddRange(migration.GetScripts());
+        
+        _logger.LogInformation("[Metrics] Found {MigrationCount} migrations to execute.", scripts.Count);
 
         foreach (var script in scripts)
             await TryExecute(() => _connection.ExecuteStatementAsync(script));
@@ -98,7 +103,7 @@ public class MetricsPublisher : BackgroundService, IMetricsPublisher
                 _logger.LogError(e, "[Metrics] Error while executing command: {Message}", e.Message);
             }
         }
-        
+
         if (attempt >= _options.ConnectionAttempCount)
         {
             _logger.LogError("[Metrics] Failed to execute command after {AttemptCount} attempts.", attempt);
