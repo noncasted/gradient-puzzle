@@ -20,7 +20,12 @@
 
     <ItemGroup>
       <None Remove="Migrations\Scripts\LevelMigration.chsql" />
-      <EmbeddedResource Include="Migrations\Scripts\LevelMigration.chsql" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Migrations\Scripts\LevelRateMigration.chsql" />
+      <None Remove="Migrations\Scripts\LevelPassMigration.chsql" />
+      <EmbeddedResource Include="Migrations\Scripts\LevelPassMigration.chsql" />
     </ItemGroup>
 
 </Project>

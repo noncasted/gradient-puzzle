@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Shared;
 
 namespace Metrics;
 
@@ -19,5 +20,10 @@ public static class MetricsExtensions
         using var stream = assembly.GetManifestResourceStream(resourcePath)!;
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
+    }
+
+    public static string CreateLevelName(this LevelSectionType section, int index)
+    {
+        return $"{section.ToName()}_{index}";
     }
 }

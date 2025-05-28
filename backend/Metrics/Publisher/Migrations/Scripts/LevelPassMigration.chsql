@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS {0}.{1}  -- level
+CREATE TABLE IF NOT EXISTS {0}.{1}  -- level_pass
 (
     name String, 
     section String,
