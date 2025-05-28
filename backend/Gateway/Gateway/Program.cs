@@ -5,10 +5,9 @@ using Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("secrets.json");
-
 builder
     .AddServiceDefaults()
+    .AddSecrets()
     .AddTelegram()
     .AddOrleans()
     .AddMetrics()

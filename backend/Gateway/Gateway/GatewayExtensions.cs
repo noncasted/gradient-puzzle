@@ -6,11 +6,21 @@ namespace Gateway;
 
 public static class GatewayExtensions
 {
+    public static IHostApplicationBuilder AddSecrets(this IHostApplicationBuilder builder)
+    {
+        if (builder.Environment.IsDevelopment() == false)
+            return builder;
+
+        builder.Configuration.AddJsonFile("secrets.json");
+
+        return builder;
+    }
+
     public static IHostApplicationBuilder AddTelegram(this IHostApplicationBuilder builder)
     {
         if (builder.Environment.IsDevelopment() == true)
             return builder;
-        
+
         var token = builder.ExtractString("TelegramToken");
 
         builder.Services.AddSingleton(new TelegramOptions
