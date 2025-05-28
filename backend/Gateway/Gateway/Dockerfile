@@ -5,6 +5,7 @@ EXPOSE 8080
 EXPOSE 8443
 
 ENV ConnectionStrings__postgres=${DB_CONNECTION_STRING}
+ENV ConnectionStrings__clickhouse=${CLICKHOUSE_CONNECTION_STRING}
 ENV TELEGRAM_TOKEN=$TELEGRAM_TOKEN
 ENV BUILD_URL=$BUILD_URL
 
@@ -20,6 +21,8 @@ COPY ["Common/Extensions/Extensions.csproj", "Common/Extensions/"]
 COPY ["Users/Endpoints/Endpoints.csproj", "Users/Endpoints/"]
 COPY ["Shared/Protocol/Protocol.csproj", "Shared/Protocol/"]
 COPY ["Users/Interfaces/Interfaces.csproj", "Users/Interfaces/"]
+COPY ["Metrics/Endpoints/Endpoints.csproj", "Metrics/Endpoints/"]
+COPY ["Metrics/Publisher/Publisher.csproj", "Metrics/Publisher/"]
 
 RUN dotnet restore "Gateway/Gateway/Gateway.csproj"
 COPY . .
