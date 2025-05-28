@@ -15,6 +15,7 @@
     <type fullname="Menu.LevelVisibility" preserve="all" />
     <type fullname="Menu.Sections.LevelSections" preserve="all" />
     <type fullname="Menu.Sections.LevelSectionView" preserve="all" />
+    <type fullname="Overlay.CompletionStar" preserve="all" />
     <type fullname="Overlay.CompletionUI" preserve="all" />
     <type fullname="Overlay.GamePlayCanvasScreenMatchSetter" preserve="all" />
     <type fullname="Overlay.MainOverlay" preserve="all" />
