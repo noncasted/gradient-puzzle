@@ -9,9 +9,12 @@ namespace Menu
 {
     public interface IBackground
     {
-        void ToGame(IReadOnlyDictionary<Vector2, Color> colors);
+        void SetGame(IReadOnlyDictionary<Vector2, Color> colors);
+        void ToGame();
         void ToSections();
         void ToLevels();
+        void ToSettings();
+        void ToCompletion();
     }
 
     [DisallowMultipleComponent]
@@ -19,14 +22,15 @@ namespace Menu
     {
         [SerializeField] private Color _levelTargetColor;
         [SerializeField] private float _levelColorLerp = 0.5f;
-        
+
         [SerializeField] private float _switchTime = 2f;
-        
+
         [SerializeField] private Color[] _sections;
         [SerializeField] private Color[] _levels;
 
-        [SerializeField] private Color[] _currentColors;
-        [SerializeField] private Color[] _targetColors;
+        private readonly Color[] _currentColors = new Color[4];
+        private readonly Color[] _targetColors = new Color[4];
+        private readonly Color[] _gameColors = new Color[4];
 
         private float _timer;
 
@@ -36,19 +40,17 @@ namespace Menu
                 .As<IBackground>();
         }
 
-        public void ToGame(IReadOnlyDictionary<Vector2, Color> colors)
+        public void SetGame(IReadOnlyDictionary<Vector2, Color> colors)
         {
             var bottomLeft = new Vector2(-540, -540);
             var topRight = new Vector2(540, 540);
             var topLeft = new Vector2(-540, 540);
             var bottomRight = new Vector2(540, -540);
 
-            _targetColors[0] = GetNearestTo(topLeft);
-            _targetColors[1] = GetNearestTo(topRight);
-            _targetColors[2] = GetNearestTo(bottomRight);
-            _targetColors[3] = GetNearestTo(bottomLeft);
-
-            _timer = 0f;
+            _gameColors[0] = GetNearestTo(topLeft);
+            _gameColors[1] = GetNearestTo(topRight);
+            _gameColors[2] = GetNearestTo(bottomRight);
+            _gameColors[3] = GetNearestTo(bottomLeft);
 
             Color GetNearestTo(Vector2 position)
             {
@@ -62,24 +64,29 @@ namespace Menu
             }
         }
 
+        public void ToGame()
+        {
+            SwitchTarget(_gameColors);
+        }
+
         public void ToSections()
         {
-            _targetColors[0] = _sections[0];
-            _targetColors[1] = _sections[1];
-            _targetColors[2] = _sections[2];
-            _targetColors[3] = _sections[3];
-
-            _timer = 0f;
+            SwitchTarget(_sections);
         }
 
         public void ToLevels()
         {
-            _targetColors[0] = _levels[0];
-            _targetColors[1] = _levels[1];
-            _targetColors[2] = _levels[2];
-            _targetColors[3] = _levels[3];
+            SwitchTarget(_levels);
+        }
 
-            _timer = 0f;
+        public void ToSettings()
+        {
+            SwitchTarget(_sections);
+        }
+
+        public void ToCompletion()
+        {
+            SwitchTarget(_sections);
         }
 
         public override void ModifyMesh(VertexHelper vh)
@@ -123,32 +130,40 @@ namespace Menu
         [Button]
         private void PushSections()
         {
-            Copy(_sections, _targetColors);
+            ForceCopy(_sections, _targetColors);
         }
 
         [Button]
         private void PushLevels()
         {
-            Copy(_levels, _targetColors);
+            ForceCopy(_levels, _targetColors);
         }
 
         [Button]
         private void CopyTargetToSections()
         {
-            Copy(_targetColors, _sections);
+            ForceCopy(_targetColors, _sections);
         }
 
         [Button]
         private void CopyTargetToLevels()
         {
-            Copy(_targetColors, _levels);
+            ForceCopy(_targetColors, _levels);
         }
 
-        private void Copy(Color[] from, Color[] to)
+        private void SwitchTarget(Color[] from)
+        {
+            for (var i = 0; i < from.Length; i++)
+                _targetColors[i] = from[i];
+
+            _timer = 0f;
+        }
+
+        private void ForceCopy(Color[] from, Color[] to)
         {
             for (var i = 0; i < from.Length; i++)
                 to[i] = from[i];
-            
+
             _timer = 1;
             graphic.SetAllDirty();
         }

@@ -4,7 +4,7 @@ using MPUIKIT;
 using NaughtyAttributes;
 using UnityEngine;
 
-namespace Overlay
+namespace Menu.Completion
 {
     [DisallowMultipleComponent]
     public class CompletionStar : MonoBehaviour

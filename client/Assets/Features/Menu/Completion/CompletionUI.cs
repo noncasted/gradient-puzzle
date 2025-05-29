@@ -8,7 +8,7 @@ using Shared;
 using UnityEngine;
 using VContainer;
 
-namespace Overlay
+namespace Menu.Completion
 {
     [DisallowMultipleComponent]
     public class CompletionUI : MonoBehaviour, ICompletionUI, IUIStateAsyncEnterHandler, ISceneService
@@ -16,9 +16,11 @@ namespace Overlay
         [SerializeField] private DesignButton _nextButton;
         [SerializeField] private CompletionStar[] _stars;
 
-        private IOverlayBackground _background;
         private IMetrics _metrics;
         private IGameContext _gameContext;
+        private IBackground _background;
+        private ILevelVisibility _levelVisibility;
+        private IMenuNavigation _navigation;
 
         public IUIConstraints Constraints { get; } = UIConstraints.Game;
 
@@ -26,11 +28,15 @@ namespace Overlay
         private void Construct(
             IMetrics metrics,
             IGameContext gameContext,
-            IOverlayBackground background)
+            IBackground background,
+            ILevelVisibility levelVisibility, 
+            IMenuNavigation navigation)
         {
+            _navigation = navigation;
+            _levelVisibility = levelVisibility;
+            _background = background;
             _gameContext = gameContext;
             _metrics = metrics;
-            _background = background;
         }
 
         public void Create(IScopeBuilder builder)
@@ -45,7 +51,9 @@ namespace Overlay
         {
             handle.AttachGameObject(gameObject);
 
-            _background.Show(handle);
+            _background.ToCompletion();
+            _levelVisibility.Hide();
+            _navigation.Hide();
 
             var rating = -1;
 
@@ -57,11 +65,15 @@ namespace Overlay
 
             await _nextButton.WaitClick(handle);
 
+            _background.ToGame();
+            _levelVisibility.Show();
+            _navigation.Show();
+
             if (rating != -1)
             {
                 _metrics.Send(new MetricsContexts.LevelRate()
                 {
-                    Section = _gameContext.LevelData.Options.SectionType, 
+                    Section = _gameContext.LevelData.Options.SectionType,
                     LevelIndex = _gameContext.LevelData.Index,
                     Rate = IndexToRating(rating)
                 }).Forget();
@@ -70,7 +82,7 @@ namespace Overlay
             void OnStarClicked(int index)
             {
                 rating = index;
-                
+
                 for (var i = 0; i < _stars.Length; i++)
                 {
                     var star = _stars[i];
@@ -81,7 +93,7 @@ namespace Overlay
                         star.Hide();
                 }
             }
-            
+
             LevelRating IndexToRating(int index)
             {
                 return index switch

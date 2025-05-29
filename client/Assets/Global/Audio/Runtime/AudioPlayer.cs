@@ -10,6 +10,7 @@ namespace Global.Audio
     [DisallowMultipleComponent]
     public class AudioPlayer : MonoBehaviour, IAudioVolume, IAudioPlayer, IDataStorageLoadListener
     {
+        [SerializeField] private float _baseVolume;
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource[] _soundSources;
 
@@ -48,7 +49,7 @@ namespace Global.Audio
 
         public void SetVolume(AudioLine line, float volume)
         {
-            _values[line] = volume;
+            _values[line] = volume * _baseVolume;
 
             if (_isMuted.Value == true)
                 return;

@@ -1,18 +1,18 @@
 ﻿using Cysharp.Threading.Tasks;
 using Global.UI;
 using Internal;
-using Menu;
+using Menu.Completion;
 using Menu.Sections;
+using Menu.Settings;
 using Services;
 using UnityEngine;
 using VContainer;
 
-namespace Overlay
+namespace Menu
 {
     [DisallowMultipleComponent]
     public class MainOverlay : MonoBehaviour, IMainOverlay, IUIStateEnterHandler, ISceneService
     {
-        [SerializeField] private GameObject _navigation;
         [SerializeField] private DesignButton _settings;
         [SerializeField] private DesignButton _levels;
         [SerializeField] private DesignButton _reset;
@@ -26,6 +26,7 @@ namespace Overlay
         private IGameContext _gameContext;
         private IBackground _background;
         private ILevelVisibility _levelVisibility;
+        private IMenuNavigation _navigation;
 
         public IUIConstraints Constraints => new UIConstraints();
 
@@ -40,8 +41,10 @@ namespace Overlay
             ILevelSections levelSections,
             IBackground background,
             ILevelVisibility levelVisibility,
-            ICompletionUI completion)
+            ICompletionUI completion,
+            IMenuNavigation navigation)
         {
+            _navigation = navigation;
             _levelVisibility = levelVisibility;
             _background = background;
             _gameContext = gameContext;
@@ -59,17 +62,10 @@ namespace Overlay
 
         public async UniTask ShowSections()
         {
-            _background.ToSections();
-            _navigation.SetActive(false);
-            _levelVisibility.Hide();
-
             var result = await _stateMachine.ProcessStack(
                 this,
                 _levelSections,
                 stateHandle => _levelSections.Show(stateHandle, _gameContext.Level != null));
-
-            _navigation.SetActive(true);
-            _levelVisibility.Show();
 
             if (result == null)
                 return;

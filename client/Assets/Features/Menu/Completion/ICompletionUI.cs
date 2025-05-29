@@ -1,6 +1,6 @@
 ﻿using Global.UI;
 
-namespace Overlay
+namespace Menu.Completion
 {
     public interface ICompletionUI : IUIState
     {

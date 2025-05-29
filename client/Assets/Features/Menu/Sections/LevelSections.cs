@@ -24,7 +24,10 @@ namespace Menu.Sections
         private IUIStateMachine _stateMachine;
         private ILevelSelection _levelSelection;
         private ILevelsStorage _levels;
+
         private IBackground _background;
+        private ILevelVisibility _levelVisibility;
+        private IMenuNavigation _navigation;
 
         public IUIConstraints Constraints => UIConstraints.Game;
 
@@ -34,8 +37,12 @@ namespace Menu.Sections
             ILevelSelection levelSelection,
             ILevelsStorage levels,
             IBackground background,
+            ILevelVisibility levelVisibility,
+            IMenuNavigation navigation,
             IScriptableRegistry<LevelSectionOptions> sections)
         {
+            _navigation = navigation;
+            _levelVisibility = levelVisibility;
             _background = background;
             _levels = levels;
             _levelSelection = levelSelection;
@@ -64,9 +71,14 @@ namespace Menu.Sections
             }
         }
 
-        public UniTask<ILevelData> Show(IUIStateHandle handle, bool withBackOptions)
+        public async UniTask<ILevelData> Show(IUIStateHandle handle, bool withBackOptions)
         {
             handle.AttachGameObject(gameObject);
+
+            _background.ToSections();
+            _levelVisibility.Hide();
+            _navigation.Hide();
+
             _back.gameObject.SetActive(withBackOptions);
 
             var completion = new UniTaskCompletionSource<ILevelData>();
@@ -84,6 +96,7 @@ namespace Menu.Sections
             async UniTask OnClicked(LevelSectionType sectionType)
             {
                 _background.ToLevels();
+
                 var selection = await _stateMachine.ProcessStack(
                     this,
                     _levelSelection,
@@ -98,7 +111,17 @@ namespace Menu.Sections
                 completion.TrySetResult(selection);
             }
 
-            return completion.Task;
+            var result = await completion.Task;
+
+            if (withBackOptions)
+                _background.ToGame();
+            else
+                _background.ToLevels();
+
+            _levelVisibility.Show();
+            _navigation.Show();
+
+            return result;
         }
     }
 }
