@@ -17,7 +17,7 @@ using Global.Systems;
 using Global.UI;
 using Internal;
 using Menu;
-using Overlay;
+using Menu.Completion;
 using Services;
 using Shared;
 using UnityEngine;
@@ -70,7 +70,7 @@ namespace Loop
             _cheats = cheats;
         }
 
-        private const float PointSpawnDelay = 0.05f;
+        private const float PointSpawnDelay = 0.1f;
 
         private readonly IUIStateMachine _stateMachine;
         private readonly IMainOverlay _overlay;
@@ -189,7 +189,8 @@ namespace Loop
             }
 
             _gameContext.Setup(level, docks, data);
-            _background.ToGame(positionToColor);
+            _background.SetGame(positionToColor);
+            _background.ToGame();
 
             await UniTask.Yield();
 

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Overlay
+namespace Menu
 { 
     [DisallowMultipleComponent]
     public class GamePlayCanvasScreenMatchSetter : MonoBehaviour, ISceneService

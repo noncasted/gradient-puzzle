@@ -10,17 +10,17 @@
     <type fullname="GamePlay.Selections.PaintSelectionScaler" preserve="all" />
     <type fullname="GamePlay.Selections.Testasdasd" preserve="all" />
     <type fullname="Menu.Background" preserve="all" />
+    <type fullname="Menu.Completion.CompletionStar" preserve="all" />
+    <type fullname="Menu.Completion.CompletionUI" preserve="all" />
+    <type fullname="Menu.GamePlayCanvasScreenMatchSetter" preserve="all" />
     <type fullname="Menu.Levels.LevelSelection" preserve="all" />
     <type fullname="Menu.Levels.LevelSelectionView" preserve="all" />
     <type fullname="Menu.LevelVisibility" preserve="all" />
+    <type fullname="Menu.MainOverlay" preserve="all" />
+    <type fullname="Menu.MenuNavigation" preserve="all" />
     <type fullname="Menu.Sections.LevelSections" preserve="all" />
     <type fullname="Menu.Sections.LevelSectionView" preserve="all" />
-    <type fullname="Overlay.CompletionStar" preserve="all" />
-    <type fullname="Overlay.CompletionUI" preserve="all" />
-    <type fullname="Overlay.GamePlayCanvasScreenMatchSetter" preserve="all" />
-    <type fullname="Overlay.MainOverlay" preserve="all" />
-    <type fullname="Overlay.OverlayBackground" preserve="all" />
-    <type fullname="Overlay.SettingsUI" preserve="all" />
+    <type fullname="Menu.Settings.SettingsUI" preserve="all" />
     <type fullname="Services.GameCamera" preserve="all" />
     <type fullname="Services.GamePlayInputPositionConverter" preserve="all" />
     <type fullname="GamePlay.Selections.PaintSelectionScaleDictionary" preserve="nothing" serialized="true" />

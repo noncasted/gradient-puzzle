@@ -3,7 +3,7 @@ using Global.UI;
 using Internal;
 using Services;
 
-namespace Overlay
+namespace Menu
 {
     public interface IMainOverlay : IUIState 
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using System;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Internal
@@ -28,6 +29,23 @@ namespace Internal
             {
                 lifetimedValue.Set(value);
             }
+        }
+
+        public static void Advise<T>(
+            this UnityEvent<T> source,
+            T baseValue,
+            IReadOnlyLifetime lifetime,
+            Action<T> action)
+        {
+            source.ToLifetimedValue(baseValue, lifetime).Advise(lifetime, action);
+        }
+        
+        public static void Advise(
+            this Slider slider,
+            IReadOnlyLifetime lifetime,
+            Action<float> action)
+        {
+            slider.onValueChanged.Advise(slider.value, lifetime, action);
         }
     }
 }
